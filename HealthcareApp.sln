@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HealthcareApp", "..\Les2\Les2\Les2\HealthcareApp.csproj", "{4454ED61-225B-4C93-B267-DB25CC9434A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HealthcareApp", "..\HealthcareApp\HealthcareApp\HealthcareApp.csproj", "{4454ED61-225B-4C93-B267-DB25CC9434A8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
