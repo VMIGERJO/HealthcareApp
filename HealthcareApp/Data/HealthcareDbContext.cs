@@ -30,7 +30,6 @@ namespace Les2.Data
             new PatientEntityTypeConfiguration().Configure(modelBuilder.Entity<Patient>());
             new PrescriptionEntityTypeConfiguration().Configure(modelBuilder.Entity<Prescription>());
             new MedicationEntityTypeConfiguration().Configure(modelBuilder.Entity<Medication>());
-            new PrescriptionMedicationEntityTypeConfiguration().Configure(modelBuilder.Entity<PrescriptionMedication>());
         }
     }
 

@@ -11,10 +11,8 @@ namespace Les2.Entities
     {
         public string? ActiveSubstance { get; set; }
         public string Name { get; set; }
-        public float? Dosage { get; set; }
+        public String Dosage { get; set; }
         public string? Manufacturer { get; set; }
-
-        public ICollection<PrescriptionMedication> PrescriptionMedications { get; set; }
     }
 
 }

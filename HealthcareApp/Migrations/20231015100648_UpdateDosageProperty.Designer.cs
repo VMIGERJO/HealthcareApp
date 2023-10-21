@@ -4,6 +4,7 @@ using Les2.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealthcareApp.Migrations
 {
     [DbContext(typeof(HealthcareDbContext))]
-    partial class HealthcareDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231015100648_UpdateDosageProperty")]
+    partial class UpdateDosageProperty
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -83,15 +86,10 @@ namespace HealthcareApp.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<int?>("PrescriptionId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PrescriptionId");
 
                     b.ToTable("Medications");
                 });
@@ -169,11 +167,19 @@ namespace HealthcareApp.Migrations
                     b.ToTable("Prescriptions");
                 });
 
-            modelBuilder.Entity("Les2.Entities.Medication", b =>
+            modelBuilder.Entity("Les2.Entities.PrescriptionMedication", b =>
                 {
-                    b.HasOne("Les2.Entities.Prescription", null)
-                        .WithMany("Medications")
-                        .HasForeignKey("PrescriptionId");
+                    b.Property<int>("PrescriptionID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MedicationID")
+                        .HasColumnType("int");
+
+                    b.HasKey("PrescriptionID", "MedicationID");
+
+                    b.HasIndex("MedicationID");
+
+                    b.ToTable("PrescriptionMedication");
                 });
 
             modelBuilder.Entity("Les2.Entities.Prescription", b =>
@@ -195,9 +201,33 @@ namespace HealthcareApp.Migrations
                     b.Navigation("Patient");
                 });
 
+            modelBuilder.Entity("Les2.Entities.PrescriptionMedication", b =>
+                {
+                    b.HasOne("Les2.Entities.Medication", "Medication")
+                        .WithMany("PrescriptionMedications")
+                        .HasForeignKey("MedicationID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Les2.Entities.Prescription", "Prescription")
+                        .WithMany("PrescriptionMedications")
+                        .HasForeignKey("PrescriptionID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Medication");
+
+                    b.Navigation("Prescription");
+                });
+
             modelBuilder.Entity("Les2.Entities.Doctor", b =>
                 {
                     b.Navigation("Prescriptions");
+                });
+
+            modelBuilder.Entity("Les2.Entities.Medication", b =>
+                {
+                    b.Navigation("PrescriptionMedications");
                 });
 
             modelBuilder.Entity("Les2.Entities.Patient", b =>
@@ -207,7 +237,7 @@ namespace HealthcareApp.Migrations
 
             modelBuilder.Entity("Les2.Entities.Prescription", b =>
                 {
-                    b.Navigation("Medications");
+                    b.Navigation("PrescriptionMedications");
                 });
 #pragma warning restore 612, 618
         }

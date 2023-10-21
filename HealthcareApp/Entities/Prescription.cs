@@ -14,7 +14,7 @@ namespace Les2.Entities
         public int DoctorID { get; set; }
         public Doctor Doctor { get; set; }
         public DateTime PrescriptionDate { get; set; }
-        public ICollection<PrescriptionMedication> PrescriptionMedications { get; set; }
+        public List<Medication> Medications { get; } = new();
     }
 
 }
