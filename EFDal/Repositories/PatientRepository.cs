@@ -1,4 +1,5 @@
-﻿using Les2.Entities;
+﻿using EFDal.Repositories.Interfaces;
+using Les2.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -6,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HealthcareApp.Repositories
+namespace EFDal.Repositories
 {
-    public class PatientRepository : GenericRepository<Patient>
+    public class PatientRepository : GenericRepository<Patient>, IPatientRepository
     {
         public PatientRepository(DbContext context) : base(context)
         {

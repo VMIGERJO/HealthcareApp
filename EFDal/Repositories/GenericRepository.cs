@@ -1,4 +1,5 @@
-﻿using HealthcareApp.Entities;
+﻿using EFDal.Repositories.Interfaces;
+using HealthcareApp.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-public class GenericRepository<TEntity> where TEntity : BaseEntity
+public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : BaseEntity
 {
     internal readonly DbContext _context;
     internal readonly DbSet<TEntity> _dbSet;
@@ -22,21 +23,22 @@ public class GenericRepository<TEntity> where TEntity : BaseEntity
         return await _dbSet.AsNoTracking().ToListAsync();
     }
 
-    public virtual async Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> filter)
-    {
-        return await _dbSet.Where(filter).ToListAsync();
-    }
+    //public virtual async Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> filter)
+    //{
+    //    return await _dbSet.Where(filter).ToListAsync();
+    //}
 
     public virtual async Task<TEntity> GetByIdAsync(object id)
     {
         return await _dbSet.FindAsync(id);
     }
 
-    public virtual void Insert(TEntity entity)
+    public virtual int Insert(TEntity entity)
     {
         entity.CreatedAt = DateTime.Now;
         _dbSet.Add(entity);
         _context.SaveChanges();
+        return entity.Id;
     }
 
     public void Update(TEntity entity)

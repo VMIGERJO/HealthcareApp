@@ -1,6 +1,8 @@
-﻿using HealthcareApp.Controller;
+﻿using BL.Managers;
+using BL.Managers.Interfaces;
+using EFDal.Repositories;
+using EFDal.Repositories.Interfaces;
 using HealthcareApp.Presentation;
-using HealthcareApp.Repositories;
 using Les2.Data;
 using Les2.Entities;
 using System;
@@ -19,16 +21,19 @@ namespace Les2
             HealthcareDbContext healthcareDbContext = new HealthcareDbContext();
 
             // Initialize Repos
-            DoctorRepository doctorRepository = new DoctorRepository(healthcareDbContext);
-            PatientRepository patientRepository = new PatientRepository(healthcareDbContext);
-            MedicationRepository medicationRepository = new MedicationRepository(healthcareDbContext);
+            IDoctorRepository doctorRepository = new DoctorRepository(healthcareDbContext);
+            IPatientRepository patientRepository = new PatientRepository(healthcareDbContext);
+            IMedicationRepository medicationRepository = new MedicationRepository(healthcareDbContext);
             GenericRepository<Prescription> prescriptionRepository = new GenericRepository<Prescription>(healthcareDbContext);
 
-            // Initialize DomainController
-            DomainController controller = new DomainController(doctorRepository, medicationRepository, patientRepository, prescriptionRepository);
+            // Initialize Managers
+            IDoctorManager doctorManager = new DoctorManager(doctorRepository);
+            IPatientManager patientManager = new PatientManager(patientRepository);
+            IMedicationManager medicationManager = new MedicationManager(medicationRepository);
+            IGenericManager<Prescription> prescriptionManager = new GenericManager<Prescription>(prescriptionRepository);
 
             // Initialize Presentation class
-            ConsoleInterface consoleInterface = new ConsoleInterface(controller);
+            ConsoleInterface consoleInterface = new ConsoleInterface(medicationManager, prescriptionManager, patientManager, doctorManager);
 
 
             // Try to add new medication

@@ -1,4 +1,5 @@
-﻿using HealthcareApp.Controller;
+﻿using BL.Managers;
+using BL.Managers.Interfaces;
 using Les2.Entities;
 using System;
 using System.Collections.Generic;
@@ -10,11 +11,17 @@ namespace HealthcareApp.Presentation
 {
     public class ConsoleInterface
     {
-        private DomainController controller;
+        internal readonly IMedicationManager _medicationManager;
+        internal readonly IGenericManager<Prescription> _prescriptionManager;
+        internal readonly IPatientManager _patientManager;
+        internal readonly IDoctorManager _doctorManager;
 
-        public ConsoleInterface(DomainController controller)
+        public ConsoleInterface(IMedicationManager medicationManager, IGenericManager<Prescription> prescriptionManager, IPatientManager patientManager, IDoctorManager doctorManager)
         {
-            this.controller = controller ?? throw new ArgumentNullException(nameof(controller));
+            this._medicationManager = medicationManager ?? throw new ArgumentNullException(nameof(medicationManager));
+            this._prescriptionManager = prescriptionManager ?? throw new ArgumentNullException(nameof(prescriptionManager));
+            this._patientManager = patientManager ?? throw new ArgumentNullException(nameof(patientManager));
+            this._doctorManager = doctorManager ?? throw new ArgumentNullException(nameof(doctorManager));
         }
 
         private static T AddEntity<T>(Func<T> createEntity, Action<T> addEntityAction) where T : class
@@ -62,16 +69,16 @@ namespace HealthcareApp.Presentation
 
         public Medication AddMedication()
         {
-            return AddEntity<Medication>(() => new Medication(), (medication) => controller.AddMedication(medication));
+            return AddEntity<Medication>(() => new Medication(), (medication) => _medicationManager.Add(medication));
         }
 
         public Patient AddPatient()
         {
-            return AddEntity<Patient>(() => new Patient(), (patient) => controller.AddPatient(patient));
+            return AddEntity<Patient>(() => new Patient(), (patient) => _patientManager.Add(patient));
         }
         public Doctor AddDoctor()
         {
-            return AddEntity<Doctor>(() => new Doctor(), (doctor) => controller.AddDoctor(doctor));
+            return AddEntity<Doctor>(() => new Doctor(), (doctor) => _doctorManager.Add(doctor));
         }
 
         public Prescription AddPrescription()
@@ -84,7 +91,7 @@ namespace HealthcareApp.Presentation
             Console.Write($"Doctor last name: ");
             string doctorLastName = Console.ReadLine();
 
-            Doctor doctor = controller.GetDoctor(doctorFirstName, doctorLastName);
+            Doctor doctor = _doctorManager.GetByName(doctorFirstName, doctorLastName);
 
             Console.Write($"Enter patient first name: ");
             String patientFirstName = Console.ReadLine();
@@ -92,7 +99,7 @@ namespace HealthcareApp.Presentation
             Console.Write($"Enter patient last name: ");
             String patientLastName = Console.ReadLine();
 
-            Patient patient = controller.GetPatient(patientFirstName, patientLastName);
+            Patient patient = _patientManager.GetByName(patientFirstName, patientLastName);
 
             Console.Write($"Select a medication: ");
             Console.Write($"Trade name: ");
@@ -101,7 +108,7 @@ namespace HealthcareApp.Presentation
             Console.Write($"Dosage: ");
             string? medicationDosage = Console.ReadLine();
 
-            Medication medication = controller.GetMedication(medicationTradeName, medicationDosage);
+            Medication medication = _medicationManager.GetByTradeNameAndDosage(medicationTradeName, medicationDosage);
 
             Prescription prescription = new Prescription
             {
@@ -114,7 +121,7 @@ namespace HealthcareApp.Presentation
             };
             prescription.Medications.Add(medication);
 
-            controller.AddPrescription(prescription);
+            _prescriptionManager.Add(prescription);
 
             return prescription;
 
