@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 public class GenericRepository<TEntity> where TEntity : BaseEntity
 {
-    private readonly DbContext _context;
-    private readonly DbSet<TEntity> _dbSet;
+    internal readonly DbContext _context;
+    internal readonly DbSet<TEntity> _dbSet;
 
     public GenericRepository(DbContext context)
     {

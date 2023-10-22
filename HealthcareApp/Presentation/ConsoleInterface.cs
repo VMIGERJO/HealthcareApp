@@ -101,18 +101,22 @@ namespace HealthcareApp.Presentation
             Console.Write($"Dosage: ");
             string? medicationDosage = Console.ReadLine();
 
-            Medication medication = controller.GetMedication(medicationTradeName, medicationDosage = null);
+            Medication medication = controller.GetMedication(medicationTradeName, medicationDosage);
 
             Prescription prescription = new Prescription
             {
                 PatientID = patient.Id,
                 Patient = patient,
                 DoctorID = doctor.Id,
-                Doctor = doctor
+                Doctor = doctor,
+                PrescriptionDate = DateTime.Now
 
             };
+            prescription.Medications.Add(medication);
 
-            return null;
+            controller.AddPrescription(prescription);
+
+            return prescription;
 
         }
 

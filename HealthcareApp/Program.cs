@@ -1,5 +1,6 @@
 ﻿using HealthcareApp.Controller;
 using HealthcareApp.Presentation;
+using HealthcareApp.Repositories;
 using Les2.Data;
 using Les2.Entities;
 using System;
@@ -18,9 +19,9 @@ namespace Les2
             HealthcareDbContext healthcareDbContext = new HealthcareDbContext();
 
             // Initialize Repos
-            GenericRepository<Doctor> doctorRepository = new GenericRepository<Doctor>(healthcareDbContext);
-            GenericRepository<Patient> patientRepository = new GenericRepository<Patient>(healthcareDbContext);
-            GenericRepository<Medication> medicationRepository = new GenericRepository<Medication>(healthcareDbContext);
+            DoctorRepository doctorRepository = new DoctorRepository(healthcareDbContext);
+            PatientRepository patientRepository = new PatientRepository(healthcareDbContext);
+            MedicationRepository medicationRepository = new MedicationRepository(healthcareDbContext);
             GenericRepository<Prescription> prescriptionRepository = new GenericRepository<Prescription>(healthcareDbContext);
 
             // Initialize DomainController
@@ -31,9 +32,7 @@ namespace Les2
 
 
             // Try to add new medication
-            consoleInterface.AddMedication();
-            consoleInterface.AddDoctor();
-            consoleInterface.AddPatient();
+            consoleInterface.AddPrescription();
 
 
 

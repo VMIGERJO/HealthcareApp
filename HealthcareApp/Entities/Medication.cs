@@ -13,6 +13,8 @@ namespace Les2.Entities
         public string Name { get; set; }
         public String Dosage { get; set; }
         public string? Manufacturer { get; set; }
+
+        public List<Prescription> Prescriptions;
     }
 
 }
