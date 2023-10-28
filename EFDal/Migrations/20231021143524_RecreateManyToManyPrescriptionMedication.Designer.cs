@@ -4,6 +4,7 @@ using Les2.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealthcareApp.Migrations
 {
     [DbContext(typeof(HealthcareDbContext))]
-    partial class HealthcareDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231021143524_RecreateManyToManyPrescriptionMedication")]
+    partial class RecreateManyToManyPrescriptionMedication
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,6 +33,9 @@ namespace HealthcareApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -43,6 +49,9 @@ namespace HealthcareApp.Migrations
                     b.Property<string>("Specialization")
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -61,9 +70,13 @@ namespace HealthcareApp.Migrations
                         .HasMaxLength(40)
                         .HasColumnType("nvarchar(40)");
 
-                    b.Property<float?>("Dosage")
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Dosage")
+                        .IsRequired()
                         .HasMaxLength(40)
-                        .HasColumnType("real");
+                        .HasColumnType("nvarchar(40)");
 
                     b.Property<string>("Manufacturer")
                         .HasColumnType("nvarchar(max)");
@@ -72,6 +85,9 @@ namespace HealthcareApp.Migrations
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -94,6 +110,9 @@ namespace HealthcareApp.Migrations
                     b.Property<int>("Age")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(40)
@@ -108,6 +127,9 @@ namespace HealthcareApp.Migrations
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)");
 
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
 
                     b.ToTable("Patients");
@@ -121,6 +143,9 @@ namespace HealthcareApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("DoctorID")
                         .HasColumnType("int");
 
@@ -128,6 +153,9 @@ namespace HealthcareApp.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("PrescriptionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -139,19 +167,19 @@ namespace HealthcareApp.Migrations
                     b.ToTable("Prescriptions");
                 });
 
-            modelBuilder.Entity("Les2.Entities.PrescriptionMedication", b =>
+            modelBuilder.Entity("MedicationPrescription", b =>
                 {
-                    b.Property<int>("PrescriptionID")
+                    b.Property<int>("MedicationsId")
                         .HasColumnType("int");
 
-                    b.Property<int>("MedicationID")
+                    b.Property<int>("PrescriptionsId")
                         .HasColumnType("int");
 
-                    b.HasKey("PrescriptionID", "MedicationID");
+                    b.HasKey("MedicationsId", "PrescriptionsId");
 
-                    b.HasIndex("MedicationID");
+                    b.HasIndex("PrescriptionsId");
 
-                    b.ToTable("PrescriptionMedication");
+                    b.ToTable("MedicationPrescription");
                 });
 
             modelBuilder.Entity("Les2.Entities.Prescription", b =>
@@ -173,23 +201,19 @@ namespace HealthcareApp.Migrations
                     b.Navigation("Patient");
                 });
 
-            modelBuilder.Entity("Les2.Entities.PrescriptionMedication", b =>
+            modelBuilder.Entity("MedicationPrescription", b =>
                 {
-                    b.HasOne("Les2.Entities.Medication", "Medication")
-                        .WithMany("PrescriptionMedications")
-                        .HasForeignKey("MedicationID")
+                    b.HasOne("Les2.Entities.Medication", null)
+                        .WithMany()
+                        .HasForeignKey("MedicationsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Les2.Entities.Prescription", "Prescription")
-                        .WithMany("PrescriptionMedications")
-                        .HasForeignKey("PrescriptionID")
+                    b.HasOne("Les2.Entities.Prescription", null)
+                        .WithMany()
+                        .HasForeignKey("PrescriptionsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Medication");
-
-                    b.Navigation("Prescription");
                 });
 
             modelBuilder.Entity("Les2.Entities.Doctor", b =>
@@ -197,19 +221,9 @@ namespace HealthcareApp.Migrations
                     b.Navigation("Prescriptions");
                 });
 
-            modelBuilder.Entity("Les2.Entities.Medication", b =>
-                {
-                    b.Navigation("PrescriptionMedications");
-                });
-
             modelBuilder.Entity("Les2.Entities.Patient", b =>
                 {
                     b.Navigation("Prescriptions");
-                });
-
-            modelBuilder.Entity("Les2.Entities.Prescription", b =>
-                {
-                    b.Navigation("PrescriptionMedications");
                 });
 #pragma warning restore 612, 618
         }

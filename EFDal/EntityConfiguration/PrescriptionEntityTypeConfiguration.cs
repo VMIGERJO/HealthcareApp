@@ -23,6 +23,10 @@ namespace Les2.Data.EntityConfiguration
                 .HasOne(p => p.Patient)
                 .WithMany(pt => pt.Prescriptions)
                 .HasForeignKey(p => p.PatientID);
+
+            builder
+                .HasMany(p => p.Medications)
+                .WithMany(m => m.Prescriptions);
         }
     }
 }
