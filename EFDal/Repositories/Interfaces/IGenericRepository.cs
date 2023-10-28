@@ -9,4 +9,5 @@ public interface IGenericRepository<TEntity> where TEntity : BaseEntity
     Task<TEntity> GetByIdAsync(object id);
     int Insert(TEntity entity);
     void Update(TEntity entity);
+    List<TEntity> Search(List<Expression<Func<TEntity, bool>>> filters, Expression<Func<TEntity, object>> orderExpression, bool orderAsc);
 }
