@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFDal", "EFDal\EFDal.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BL", "BL\BL.csproj", "{DDFD76D4-8AE1-419E-A597-2E4529168E25}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthCareAppWPF", "HealthCareAppWPF\HealthCareAppWPF.csproj", "{A9D41B6C-1E0F-4979-87AB-280304F49464}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{DDFD76D4-8AE1-419E-A597-2E4529168E25}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DDFD76D4-8AE1-419E-A597-2E4529168E25}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DDFD76D4-8AE1-419E-A597-2E4529168E25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9D41B6C-1E0F-4979-87AB-280304F49464}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9D41B6C-1E0F-4979-87AB-280304F49464}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9D41B6C-1E0F-4979-87AB-280304F49464}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9D41B6C-1E0F-4979-87AB-280304F49464}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
