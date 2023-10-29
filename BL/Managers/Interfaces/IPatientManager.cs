@@ -1,4 +1,6 @@
-﻿using Les2.Entities;
+﻿using BL.DTO;
+using HealthCareAppWPF.DTO;
+using EFDal.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +11,6 @@ namespace BL.Managers.Interfaces
 {
     public interface IPatientManager : IGenericManager<Patient>
     {
-        public Patient GetByName(string firstName, string lastName);
+        public List<PatientBasicDTO> PatientSearch(PatientSearchValuesDTO patientQuery);
     }
 }

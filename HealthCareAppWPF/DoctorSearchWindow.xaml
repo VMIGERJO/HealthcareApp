@@ -16,8 +16,8 @@
         <ListView Name="DoctorListView" HorizontalAlignment="Center" VerticalAlignment="Top" Width="400" Height="240" Margin="10,140,10,0">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="First Name" Width="150" DisplayMemberBinding="{Binding FirstName}" />
-                    <GridViewColumn Header="Last Name" Width="150" DisplayMemberBinding="{Binding LastName}" />
+                    <GridViewColumn Header="Name" Width="150" DisplayMemberBinding="{Binding Name}" />
+                    <GridViewColumn Header="Specialization" Width="150" DisplayMemberBinding="{Binding Specialization}" />
                 </GridView>
             </ListView.View>
         </ListView>

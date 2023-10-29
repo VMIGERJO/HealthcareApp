@@ -1,4 +1,5 @@
-﻿using EFDal.Repositories.Interfaces;
+﻿using EFDal.Data;
+using EFDal.Repositories.Interfaces;
 using HealthcareApp.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -12,7 +13,7 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
     internal readonly DbContext _context;
     internal readonly DbSet<TEntity> _dbSet;
 
-    public GenericRepository(DbContext context)
+    public GenericRepository(HealthcareDbContext context)
     {
         _context = context ?? throw new ArgumentNullException(nameof(context));
         _dbSet = _context.Set<TEntity>();

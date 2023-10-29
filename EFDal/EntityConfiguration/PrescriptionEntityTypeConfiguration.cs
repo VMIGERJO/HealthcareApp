@@ -1,4 +1,4 @@
-﻿using Les2.Entities;
+﻿using EFDal.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -8,7 +8,7 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Les2.Data.EntityConfiguration
+namespace EFDal.Data.EntityConfiguration
 {
     public class PrescriptionEntityTypeConfiguration : IEntityTypeConfiguration<Prescription>
     {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,14 +28,14 @@ namespace HealthCareAppWPF
 
         private void PatientButton_Click(object sender, RoutedEventArgs e)
         {
-            PatientSearchWindow patientSearchWindow = new PatientSearchWindow();
+            PatientSearchWindow patientSearchWindow = App.ServiceProvider.GetService<PatientSearchWindow>();
             patientSearchWindow.Show();
         }
 
 
         private void DoctorButton_Click(object sender, RoutedEventArgs e)
         {
-            DoctorSearchWindow doctorSearchWindow = new DoctorSearchWindow();
+            DoctorSearchWindow doctorSearchWindow = App.ServiceProvider.GetService<DoctorSearchWindow>();
             doctorSearchWindow.Show();
         }
 

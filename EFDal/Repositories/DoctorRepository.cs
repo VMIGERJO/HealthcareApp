@@ -1,17 +1,18 @@
 ﻿using EFDal.Repositories.Interfaces;
-using Les2.Entities;
+using EFDal.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EFDal.Data;
 
 namespace EFDal.Repositories
 {
     public class DoctorRepository : GenericRepository<Doctor>, IDoctorRepository
     {
-        public DoctorRepository(DbContext context) : base(context)
+        public DoctorRepository(HealthcareDbContext context) : base(context)
         {
         }
 

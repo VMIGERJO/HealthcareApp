@@ -1,11 +1,14 @@
 ﻿using BL.Managers.Interfaces;
 using EFDal.Repositories.Interfaces;
-using Les2.Entities;
+using EFDal.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HealthCareAppWPF.DTO;
+using BL.DTO;
+using System.Linq.Expressions;
 
 namespace BL.Managers
 {
@@ -17,9 +20,26 @@ namespace BL.Managers
             this._doctorRepository = doctorRepository;
         }
 
-        public Doctor GetByName(string firstName, string lastName)
+        public List<DoctorBasicDTO> DoctorSearch(DoctorSearchValuesDTO doctorQuery)
         {
-           return _doctorRepository.GetByName(firstName, lastName);
+            List<Expression<Func<Doctor, bool>>> searchExpression = new();
+
+            if (doctorQuery?.LastName != null)
+                searchExpression.Add(p => p.LastName.Contains(doctorQuery.LastName));
+
+            if (doctorQuery?.FirstName != null)
+                searchExpression.Add(p => p.FirstName.Contains(doctorQuery.FirstName));
+
+            var searchResults = _repository.Search(searchExpression, p => p.LastName);
+
+            var result = searchResults.Select(pt => new DoctorBasicDTO()
+            {
+                Name = $"{pt.LastName} {pt.FirstName}",
+                Id = pt.Id,
+                Specialization = $"{pt.Specialization}"
+            }).ToList();
+
+            return result;
         }
     }
 }

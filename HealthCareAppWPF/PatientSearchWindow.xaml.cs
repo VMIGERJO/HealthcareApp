@@ -1,4 +1,7 @@
-﻿using System;
+﻿using BL.DTO;
+using BL.Managers.Interfaces;
+using HealthCareAppWPF.DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,19 +22,22 @@ namespace HealthCareAppWPF
     /// </summary>
     public partial class PatientSearchWindow : Window
     {
-        public PatientSearchWindow()
+        private IPatientManager _patientManager;
+        public PatientSearchWindow(IPatientManager patientManager)
         {
             InitializeComponent();
+            this._patientManager = patientManager;
         }
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-            string firstName = FirstNameBox.Text;
-            string lastName = LastNameBox.Text;
+            PatientSearchValuesDTO patientQuery = new();
+            patientQuery.FirstName = FirstNameBox.Text;
+            patientQuery.LastName = LastNameBox.Text;
 
-            //List<Patient> matchingPatients = GetPatientsByFirstNameLastName(firstName, lastName);
+            List<PatientBasicDTO> matchingPatients = _patientManager.PatientSearch(patientQuery);
 
-            //PatientListView.ItemsSource = matchingPatients;
+            PatientListView.ItemsSource = matchingPatients;
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)

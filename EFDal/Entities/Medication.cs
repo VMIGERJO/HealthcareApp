@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Les2.Entities
+namespace EFDal.Entities
 {
     public class Medication : BaseEntity
     {

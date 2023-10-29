@@ -1,4 +1,6 @@
-﻿using HealthCareAppWPF.DTO;
+﻿using BL.DTO;
+using BL.Managers.Interfaces;
+using HealthCareAppWPF.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,10 +18,11 @@ using System.Windows.Shapes;
 namespace HealthCareAppWPF {
 public partial class DoctorSearchWindow : Window
 {
-    public DoctorSearchWindow()
+    private IDoctorManager _doctorManager;
+    public DoctorSearchWindow(IDoctorManager doctorManager)
     {
         InitializeComponent();
-
+        this._doctorManager = doctorManager;
         // Populate the ListView with doctor data (you can fetch this from your database).
         //List<DoctorBasicDTO> doctors = GetAllDoctorBasicDTO(); // Replace with your data retrieval logic.
         //DoctorListView.ItemsSource = doctors;
@@ -33,15 +36,13 @@ public partial class DoctorSearchWindow : Window
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-            // Retrieve first name and last name from textboxes.
-            string firstName = FirstNameBox.Text;
-            string lastName = LastNameBox.Text;
+            DoctorSearchValuesDTO doctorQuery = new();
+            doctorQuery.FirstName = FirstNameBox.Text;
+            doctorQuery.LastName = LastNameBox.Text;
 
-            // Call a method to retrieve doctors based on the entered first name and last name.
-            //List<DoctorBasicDTO> matchingDoctors = GetDoctorsByFirstNameLastName(firstName, lastName);
+            List<DoctorBasicDTO> matchingDoctors = _doctorManager.DoctorSearch(doctorQuery);
 
-            // Populate the ListView with matching doctors.
-            //DoctorListView.ItemsSource = matchingDoctors;
+            DoctorListView.ItemsSource = matchingDoctors;
         }
     }
 

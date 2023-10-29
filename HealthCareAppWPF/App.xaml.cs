@@ -8,18 +8,19 @@ using BL.Managers.Interfaces;
 using EFDal.Repositories.Interfaces;
 using EFDal.Repositories;
 using BL.Managers;
+using EFDal.Data;
 
 namespace HealthCareAppWPF
 {
 
     public partial class App : Application
     {
-        private IServiceProvider _serviceProvider;
+        public static IServiceProvider ServiceProvider { get; private set; }
 
 
         protected override void OnExit(ExitEventArgs e)
         {
-            if (_serviceProvider is IDisposable disposable)
+            if (ServiceProvider is IDisposable disposable)
             {
                 disposable.Dispose();
             }
@@ -36,8 +37,8 @@ namespace HealthCareAppWPF
             // Register your services and dependencies.
             var connectionString = Settings.Default.ConnectionString;
 
-            //services.AddDbContext<HealthcareDbContext>(opt => opt.UseSqlServer(connectionString)
-            //                                        , ServiceLifetime.Transient);
+            services.AddDbContext<HealthcareDbContext>(opt => opt.UseSqlServer(connectionString)
+                                                    , ServiceLifetime.Transient);
             services.AddTransient<IPatientManager, PatientManager>();
             services.AddTransient<IDoctorManager, DoctorManager>();
             services.AddTransient<IPatientRepository, PatientRepository>();
@@ -48,10 +49,10 @@ namespace HealthCareAppWPF
             services.AddTransient<PatientSearchWindow>();
 
             // Build the service provider.
-            _serviceProvider = services.BuildServiceProvider();
+            ServiceProvider = services.BuildServiceProvider();
 
             // Create and show your main window.
-            var mainWindow = new MainWindow();
+            var mainWindow = ServiceProvider.GetService<MainWindow>();
             // mainWindow.DataContext = _serviceProvider.GetRequiredService<MainViewModel>(); // Example usage.
             mainWindow.Show();
         }

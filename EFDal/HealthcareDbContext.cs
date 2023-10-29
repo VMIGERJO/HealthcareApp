@@ -4,14 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Les2.Data
+namespace EFDal.Data
 {
-    using Les2.Data.EntityConfiguration;
-    using Les2.Entities;
+    using EFDal.Data.EntityConfiguration;
+    using EFDal.Entities;
     using Microsoft.EntityFrameworkCore;
 
     public class HealthcareDbContext : DbContext
     {
+        public HealthcareDbContext(DbContextOptions options) : base(options)
+        {
+        }
+
         public DbSet<Medication> Medications { get; set; }
         public DbSet<Prescription> Prescriptions { get; set; }
         public DbSet<Patient> Patients { get; set; }
