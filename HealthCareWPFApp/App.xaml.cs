@@ -1,21 +1,24 @@
-﻿using HealthCareAppWPF;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
-using System.Windows;
+﻿using BL.Managers.Interfaces;
+using BL.Managers;
 using System;
-using HealthCareAppWPF.Properties;
-using BL.Managers.Interfaces;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows;
+using Microsoft.Extensions.DependencyInjection;
 using EFDal.Repositories.Interfaces;
 using EFDal.Repositories;
-using BL.Managers;
 
-namespace HealthCareAppWPF
+namespace HealthCareWPFApp
 {
-
+    /// <summary>
+    /// Interaction logic for App.xaml
+    /// </summary>
     public partial class App : Application
     {
         private IServiceProvider _serviceProvider;
-
 
         protected override void OnExit(ExitEventArgs e)
         {
@@ -26,7 +29,7 @@ namespace HealthCareAppWPF
             base.OnExit(e);
         }
 
-        public void Application_Startup(object sender, StartupEventArgs e)
+        private void Application_Startup(object sender, StartupEventArgs e)
         {
             // base.OnStartup(e);
 
@@ -34,9 +37,9 @@ namespace HealthCareAppWPF
             var services = new ServiceCollection();
 
             // Register your services and dependencies.
-            var connectionString = Settings.Default.ConnectionString;
+            // var connectionString = Settings.Default.ConnectionString;
 
-            //services.AddDbContext<HealthcareDbContext>(opt => opt.UseSqlServer(connectionString)
+            // services.AddDbContext<HealthcareDbContext>(opt => opt.UseSqlServer(connectionString)
             //                                        , ServiceLifetime.Transient);
             services.AddTransient<IPatientManager, PatientManager>();
             services.AddTransient<IDoctorManager, DoctorManager>();
@@ -44,8 +47,8 @@ namespace HealthCareAppWPF
             services.AddTransient<IDoctorRepository, DoctorRepository>();
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddSingleton<MainWindow>();
-            services.AddTransient<DoctorSearchWindow>();
-            services.AddTransient<PatientSearchWindow>();
+            // services.AddTransient<DoctorSearchWindow>();
+            // services.AddTransient<PatientSearchWindow>();
 
             // Build the service provider.
             _serviceProvider = services.BuildServiceProvider();
@@ -54,8 +57,7 @@ namespace HealthCareAppWPF
             var mainWindow = new MainWindow();
             // mainWindow.DataContext = _serviceProvider.GetRequiredService<MainViewModel>(); // Example usage.
             mainWindow.Show();
+
         }
     }
 }
-
-
