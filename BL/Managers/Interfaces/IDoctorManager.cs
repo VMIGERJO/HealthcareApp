@@ -12,5 +12,6 @@ namespace BL.Managers.Interfaces
     public interface IDoctorManager : IGenericManager<Doctor>
     {
         List<DoctorBasicDTO> DoctorSearch(DoctorSearchValuesDTO doctorQuery);
+        Doctor UniqueDoctorSearch(DoctorSearchValuesDTO doctorQuery);
     }
 }

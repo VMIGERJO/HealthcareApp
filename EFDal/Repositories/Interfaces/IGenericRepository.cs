@@ -10,4 +10,6 @@ public interface IGenericRepository<TEntity> where TEntity : BaseEntity
     int Insert(TEntity entity);
     void Update(TEntity entity);
     List<TEntity> Search(List<Expression<Func<TEntity, bool>>> filters, Expression<Func<TEntity, object>> orderExpression, bool orderAsc=true);
+    TEntity UniqueSearch(List<Expression<Func<TEntity, bool>>> filters);
+
 }

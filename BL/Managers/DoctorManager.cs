@@ -1,14 +1,11 @@
 ﻿using BL.Managers.Interfaces;
 using EFDal.Repositories.Interfaces;
 using EFDal.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using EFDal.Exceptions;
 using HealthCareAppWPF.DTO;
 using BL.DTO;
 using System.Linq.Expressions;
+using System.Runtime.ExceptionServices;
 
 namespace BL.Managers
 {
@@ -40,6 +37,20 @@ namespace BL.Managers
             }).ToList();
 
             return result;
+        }
+
+        public Doctor UniqueDoctorSearch(DoctorSearchValuesDTO doctorQuery)
+        {
+            List<Expression<Func<Doctor, bool>>> searchExpression = new();
+
+            if (doctorQuery?.LastName != null)
+                searchExpression.Add(p => p.LastName.Contains(doctorQuery.LastName));
+
+            if (doctorQuery?.FirstName != null)
+                searchExpression.Add(p => p.FirstName.Contains(doctorQuery.FirstName));
+            
+            
+            return _repository.UniqueSearch(searchExpression);
         }
     }
 }

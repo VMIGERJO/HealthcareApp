@@ -21,23 +21,28 @@ namespace HealthCareAppWPF
     /// </summary>
     public partial class MainWindow : Window
     {
+
+        private Stack<UserControl> _viewHistory = new Stack<UserControl>();
+
         public MainWindow()
         {
             InitializeComponent();
         }
 
-        private void PatientButton_Click(object sender, RoutedEventArgs e)
+        public void NavigateToView(UserControl view)
         {
-            PatientSearchWindow patientSearchWindow = App.ServiceProvider.GetService<PatientSearchWindow>();
-            patientSearchWindow.Show();
+            _viewHistory.Push(view);
+            MainContentControl.Content = view;
         }
 
-
-        private void DoctorButton_Click(object sender, RoutedEventArgs e)
+        private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            DoctorSearchWindow doctorSearchWindow = App.ServiceProvider.GetService<DoctorSearchWindow>();
-            doctorSearchWindow.Show();
+            if (_viewHistory.Count > 1) // Ensure there's a view to go back to
+            {
+                _viewHistory.Pop(); // Pop the current view
+                UserControl previousView = _viewHistory.Peek(); // Get the previous view
+                MainContentControl.Content = previousView; // Set it as the content
+            }
         }
-
     }
 }

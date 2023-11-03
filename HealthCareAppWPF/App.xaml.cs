@@ -9,6 +9,7 @@ using EFDal.Repositories.Interfaces;
 using EFDal.Repositories;
 using BL.Managers;
 using EFDal.Data;
+using System.Windows.Controls;
 
 namespace HealthCareAppWPF
 {
@@ -46,14 +47,18 @@ namespace HealthCareAppWPF
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddSingleton<MainWindow>();
             services.AddTransient<DoctorSearchWindow>();
-            services.AddTransient<PatientSearchWindow>();
+            services.AddTransient<LandingPageControl>();
+            services.AddTransient<DoctorLoginControl>();
+            services.AddTransient<DoctorLandingPage>();
+            services.AddTransient<PatientSearchControl>();
 
             // Build the service provider.
             ServiceProvider = services.BuildServiceProvider();
 
             // Create and show your main window.
             var mainWindow = ServiceProvider.GetService<MainWindow>();
-            // mainWindow.DataContext = _serviceProvider.GetRequiredService<MainViewModel>(); // Example usage.
+            UserControl initialView = new LandingPageControl(mainWindow);
+            mainWindow.NavigateToView(initialView);
             mainWindow.Show();
         }
     }
