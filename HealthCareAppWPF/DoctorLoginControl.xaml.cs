@@ -21,24 +21,55 @@ namespace HealthCareAppWPF
     /// <summary>
     /// Interaction logic for DoctorLoginControl.xaml
     /// </summary>
-    public partial class DoctorLoginControl : UserControl
+    public partial class LoginControl : UserControl
     {
         private IDoctorManager _doctorManager;
+        private IPatientManager _patientManager;
         private MainWindow _mainWindow;
-        public DoctorLoginControl(MainWindow mainWindow, IDoctorManager doctorManager)
+        public LoginControl(MainWindow mainWindow, IDoctorManager doctorManager, IPatientManager patientManager)
         {
             InitializeComponent();
             this._doctorManager = doctorManager;
+            this._patientManager = patientManager;
             this._mainWindow = mainWindow;
         }
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
+            ComboBoxItem selectedRole = RoleDropdown.SelectedItem as ComboBoxItem;
+
+            if (selectedRole != null)
+            {
+                string role = selectedRole.Content.ToString();
+
+                if (role == "Patient")
+                {
+                    HandlePatientLogin();
+                }
+                else if (role == "Doctor")
+                {
+                    HandleDoctorLogin();
+                }
+            }
+        }
+
+        private void HandlePatientLogin()
+        {
+            PatientSearchValuesDTO patientQuery = new();
+            patientQuery.FirstName = DoctorLoginFirstNameBox.Text;
+            patientQuery.LastName = DoctorLoginLastNameBox.Text;
+            Patient loggedInPatient = _patientManager.UniquePatientSearch(patientQuery);
+            PatientLandingControl patientLandingControl = new(loggedInPatient);
+            _mainWindow.NavigateToView(patientLandingControl);
+        }
+
+        private void HandleDoctorLogin()
+        {
             DoctorSearchValuesDTO doctorQuery = new();
             doctorQuery.FirstName = DoctorLoginFirstNameBox.Text;
             doctorQuery.LastName = DoctorLoginLastNameBox.Text;
             Doctor loggedInDoctor = _doctorManager.UniqueDoctorSearch(doctorQuery);
-            DoctorLandingPage doctorLandingPage = new(loggedInDoctor);
+            DoctorLandingPage doctorLandingPage = new(_mainWindow, loggedInDoctor);
             _mainWindow.NavigateToView(doctorLandingPage);
         }
     }

@@ -1,0 +1,56 @@
+﻿<UserControl x:Class="HealthCareAppWPF.PatientLandingControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:HealthCareAppWPF"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid Margin="0,-2,0,2">
+            <!-- Title -->
+            <TextBlock x:Name="TitleTextBlock" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="24" Margin="10,20,10,0"/>
+
+            <!-- My Prescriptions Label -->
+            <TextBlock Text="My Prescriptions" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="18" Margin="10,60,10,0"/>
+
+            <!-- Prescription ListView -->
+            <ListView x:Name="PrescriptionListView" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,90,10,0">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Date" Width="120" DisplayMemberBinding="{Binding Date}" />
+                        <GridViewColumn Header="Doctor" Width="200" DisplayMemberBinding="{Binding Doctor}" />
+                        <GridViewColumn Header="Medications" Width="400" DisplayMemberBinding="{Binding Medications}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+            <!-- Search for a Doctor Section -->
+            <TextBlock Text="Search for a doctor:" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="18" Margin="10,222,0,0"/>
+
+            <!-- First Name Search Box -->
+            <TextBlock Text="First name:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,256,0,0"/>
+            <TextBox x:Name="FirstNameSearchBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Margin="76,256,0,0"/>
+
+            <!-- Last Name Search Box -->
+            <TextBlock Text="Last name:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,282,0,0"/>
+            <TextBox x:Name="LastNameSearchBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Margin="80,286,0,0"/>
+
+            <!-- Specialization Dropdown -->
+            <TextBlock Text="Specialization:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,312,0,0"/>
+            <ComboBox x:Name="SpecializationDropdown" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Margin="98,312,0,0"/>
+            <!-- Search Button for Doctor Search -->
+            <Button Content="Search" x:Name="DoctorSearchButton" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Margin="10,342,0,0"/>
+
+            <!-- Doctor Search Results ListView -->
+            <ListView x:Name="DoctorSearchResultsListView" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="322,225,0,0">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Name" Width="150" DisplayMemberBinding="{Binding Name}" />
+                        <GridViewColumn Header="Specialization" Width="100" DisplayMemberBinding="{Binding Specialization}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+    </Grid>
+</UserControl>

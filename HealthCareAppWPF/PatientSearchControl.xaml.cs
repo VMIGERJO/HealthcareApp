@@ -42,6 +42,14 @@ namespace HealthCareAppWPF
             PatientListView.ItemsSource = matchingPatients;
         }
 
-        
+        private void UpdateMedicalHistoryButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CreatePrescriptionButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

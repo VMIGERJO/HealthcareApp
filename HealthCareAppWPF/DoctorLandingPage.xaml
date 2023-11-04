@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:HealthCareAppWPF"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Margin="0,42,0,-42">
+    <Grid>
         <!-- Title -->
         <TextBlock Name="TitleTextBlock" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="24" Margin="10,20,10,0"/>
 
@@ -17,7 +17,8 @@
 
         <!-- Actions Section -->
         <StackPanel Name="ActionsPanel" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="40,150,40,0">
-            <Button Content="Create Prescription" Width="150" Height="40" Click="CreatePrescriptionButton_Click"/>
+            <Button Content="Manage Patients" Width="150" Margin="0,0,0,10" Height="40" Click="ManagePatientsButton_Click"/>
+            <Button Content="Prescriptions History" Width="150" Margin="0,0,0,10" Height="40" Click="PrescriptionsHistoryButton_Click"/>
         </StackPanel>
     </Grid>
 </UserControl>

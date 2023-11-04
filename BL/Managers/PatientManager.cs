@@ -41,5 +41,19 @@ namespace BL.Managers
 
             return result;
         }
+
+        public Patient UniquePatientSearch(PatientSearchValuesDTO patientQuery)
+        {
+            List<Expression<Func<Patient, bool>>> searchExpression = new();
+
+            if (patientQuery?.LastName != null)
+                searchExpression.Add(p => p.LastName.Contains(patientQuery.LastName));
+
+            if (patientQuery?.FirstName != null)
+                searchExpression.Add(p => p.FirstName.Contains(patientQuery.FirstName));
+
+
+            return _repository.UniqueSearch(searchExpression);
+        }
     }
 }

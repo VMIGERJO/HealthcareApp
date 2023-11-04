@@ -13,5 +13,6 @@ namespace BL.Managers.Interfaces
     {
         List<DoctorBasicDTO> DoctorSearch(DoctorSearchValuesDTO doctorQuery);
         Doctor UniqueDoctorSearch(DoctorSearchValuesDTO doctorQuery);
+        
     }
 }

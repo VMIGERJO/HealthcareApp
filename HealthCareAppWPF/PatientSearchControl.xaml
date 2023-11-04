@@ -22,6 +22,12 @@
         <!-- Search button -->
         <Button Content="Search" HorizontalAlignment="Left" VerticalAlignment="Top" Width="113" Height="42" Margin="322,54,0,0" Click="PatientSearchButton_Click"/>
 
-        <!-- Back button -->
+        <StackPanel Name="ActionsPanel" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="340,150,40,0">
+            <Button Content="Create Prescription" Width="120" Margin="0,0,0,10" Height="40" Click="CreatePrescriptionButton_Click"/>
+            <Button  Width="120" Margin="0,0,0,10" Height="40" Click="UpdateMedicalHistoryButton_Click">
+                <TextBlock Text="Update Medical History" TextWrapping="Wrap" TextAlignment="Center"/>
+            </Button>
+
+        </StackPanel>
     </Grid>
 </UserControl>

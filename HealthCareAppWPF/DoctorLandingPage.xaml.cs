@@ -1,4 +1,5 @@
 ﻿using EFDal.Entities;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,22 +23,30 @@ namespace HealthCareAppWPF
     public partial class DoctorLandingPage : UserControl
     {
         private Doctor _doctor;
-        public DoctorLandingPage(Doctor doctor)
+        private MainWindow _mainWindow;
+        public DoctorLandingPage(MainWindow mainWindow, Doctor doctor)
         {
             InitializeComponent();
+            this._mainWindow = mainWindow;
             this._doctor = doctor;
             TitleTextBlock.Text = $"Welcome Dr. {doctor.FirstName} {doctor.LastName}";
             SpecializationTextBox.Text = $"{doctor.Specialization}";
         }
 
-        private void CreatePrescriptionButton_Click(object sender, RoutedEventArgs e)
+        private void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void UpdateButton_Click(object sender, RoutedEventArgs e)
+        private void PrescriptionsHistoryButton_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void ManagePatientsButton_Click(object sender, RoutedEventArgs e)
+        {
+            PatientSearchControl patientSearchControl = App.ServiceProvider.GetService<PatientSearchControl>();
+            _mainWindow.NavigateToView(patientSearchControl);
         }
     }
 }

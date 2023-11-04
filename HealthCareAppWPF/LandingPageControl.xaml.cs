@@ -37,7 +37,7 @@ namespace HealthCareAppWPF
 
         private void DoctorButton_Click(object sender, RoutedEventArgs e)
         {
-            DoctorLoginControl doctorLoginControl = App.ServiceProvider.GetService<DoctorLoginControl>();
+            LoginControl doctorLoginControl = App.ServiceProvider.GetService<LoginControl>();
             _mainWindow.NavigateToView(doctorLoginControl);
         }
     }
