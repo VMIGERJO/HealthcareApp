@@ -1,6 +1,7 @@
 ﻿using BL.DTO;
 using BL.Managers;
 using BL.Managers.Interfaces;
+using EFDal.Entities;
 using HealthCareAppWPF.DTO;
 using System;
 using System.Collections.Generic;
@@ -40,11 +41,32 @@ namespace HealthCareAppWPF
             patientQuery.LastName = PatientLastNameBox.Text;
             List<PatientBasicDTO> matchingPatients = _patientManager.PatientSearch(patientQuery);
             PatientListView.ItemsSource = matchingPatients;
+            PatientListView.SelectionChanged += PatientListView_SelectionChanged;
+
+        }
+
+        private async void PatientListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (PatientListView.SelectedItem != null)
+            {
+                int patientId = ((PatientBasicDTO)PatientListView.SelectedItem).Id;
+                Patient selectedPatient = await _patientManager.GetById(patientId);
+                AddressTextBox.Text = selectedPatient.Address;
+                MedicalHistoryTextBox.Text = selectedPatient.MedicalHistory;
+                PatientDetailsContent.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                PatientDetailsContent.Visibility = Visibility.Hidden;
+            }
+
         }
 
         private void UpdateMedicalHistoryButton_Click(object sender, RoutedEventArgs e)
         {
-
+            //int patientId = ((PatientBasicDTO)PatientListView.SelectedItem).Id;
+            //Patient selectedPatient = await _patientManager.GetById(patientId);
+            //_patientManager.Update()
         }
 
         private void CreatePrescriptionButton_Click(object sender, RoutedEventArgs e)

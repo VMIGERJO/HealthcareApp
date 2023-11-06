@@ -59,7 +59,7 @@ namespace HealthCareAppWPF
             patientQuery.FirstName = DoctorLoginFirstNameBox.Text;
             patientQuery.LastName = DoctorLoginLastNameBox.Text;
             Patient loggedInPatient = _patientManager.UniquePatientSearch(patientQuery);
-            PatientLandingControl patientLandingControl = new(loggedInPatient);
+            PatientLandingControl patientLandingControl = new(loggedInPatient, _mainWindow);
             _mainWindow.NavigateToView(patientLandingControl);
         }
 

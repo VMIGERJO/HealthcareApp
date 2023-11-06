@@ -25,32 +25,20 @@
                 </ListView.View>
             </ListView>
 
-            <!-- Search for a Doctor Section -->
-            <TextBlock Text="Search for a doctor:" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="18" Margin="10,222,0,0"/>
+            <!-- My Information Section -->
+            <TextBlock Text="My Information" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="18" Margin="10,274,0,0" />
 
-            <!-- First Name Search Box -->
-            <TextBlock Text="First name:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,256,0,0"/>
-            <TextBox x:Name="FirstNameSearchBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Margin="76,256,0,0"/>
+            <!-- Address Label and Field -->
+            <TextBlock Text="Address:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,320,0,0"/>
+            <TextBox Name="AddressTextBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Margin="72,319,0,0" IsReadOnly="True" Height="36"/>
+            <Button Content="Edit" Name="EditAddressButton" HorizontalAlignment="Left" Click="EditAddressButton_Click" VerticalAlignment="Top" Width="80" Margin="286,319,0,0"/>
 
-            <!-- Last Name Search Box -->
-            <TextBlock Text="Last name:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,282,0,0"/>
-            <TextBox x:Name="LastNameSearchBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Margin="80,286,0,0"/>
+            <!-- Medical History Label and Field -->
+            <TextBlock Text="Medical History:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,360,0,0"/>
+            <TextBox Name="MedicalHistoryTextBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="365" Height="60" Margin="10,380,0,0" IsReadOnly="True"/>
 
-            <!-- Specialization Dropdown -->
-            <TextBlock Text="Specialization:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,312,0,0"/>
-            <ComboBox x:Name="SpecializationDropdown" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Margin="98,312,0,0"/>
-            <!-- Search Button for Doctor Search -->
-            <Button Content="Search" x:Name="DoctorSearchButton" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Margin="10,342,0,0"/>
-
-            <!-- Doctor Search Results ListView -->
-            <ListView x:Name="DoctorSearchResultsListView" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="322,225,0,0">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="Name" Width="150" DisplayMemberBinding="{Binding Name}" />
-                        <GridViewColumn Header="Specialization" Width="100" DisplayMemberBinding="{Binding Specialization}" />
-                    </GridView>
-                </ListView.View>
-            </ListView>
+            <Button Content="Search for a doctor" Name="SearchDoctorButton"  Width="140" Height="40" Margin="450,355,210,55" Click="SearchDoctorButton_Click"></Button>
+            <Button Content="Update" x:Name="UpdateButton" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Margin="286,343,0,0" Visibility="Hidden" Click="UpdateButton_Click"/>
         </Grid>
     </Grid>
 </UserControl>

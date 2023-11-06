@@ -1,12 +1,12 @@
 ﻿<Window x:Class="HealthCareAppWPF.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Healthcare App" Height="398" Width="600">
+        Title="Healthcare App" Height="500" Width="600">
     <Grid>
 
         <!-- ContentControl to switch between Patient and Doctor login -->
         <ContentControl x:Name="MainContentControl" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,0,0,0"/>
-        <Button Content="Back" HorizontalAlignment="Right" VerticalAlignment="Top" Width="84" Height="40" Margin="0,314,30,0" Click="BackButton_Click"/>
+        <Button Content="Back" HorizontalAlignment="Right" VerticalAlignment="Top" Width="84" Height="40" Margin="0,400,30,0" Click="BackButton_Click" RenderTransformOrigin="0.458,2.714"/>
 
     </Grid>
 </Window>

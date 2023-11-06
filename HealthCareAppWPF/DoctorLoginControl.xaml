@@ -5,20 +5,20 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:HealthCareAppWPF"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="500" d:DesignWidth="600">
     <Grid>
-        <Label HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="24" Margin="290,47,0,0">
+        <Label HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="24" Margin="182,65,0,0">
             <Run Language="nl-be" Text="Log in as a:"/>
         </Label>
-        <ComboBox Name="RoleDropdown" HorizontalAlignment="Left" FontSize="18" VerticalAlignment="Top" Width="150" Margin="430,55,0,0">
+        <ComboBox Name="RoleDropdown" HorizontalAlignment="Left" FontSize="18" VerticalAlignment="Top" Width="150" Margin="322,73,0,0">
             <ComboBoxItem Content="Patient"/>
             <ComboBoxItem Content="Doctor"/>
         </ComboBox>
-        <Label Content="First Name:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="225,98,0,0"/>
-        <TextBox Name="DoctorLoginFirstNameBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="169" Margin="300,104,0,0" Height="20"/>
+        <Label Content="First Name:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="117,116,0,0"/>
+        <TextBox Name="DoctorLoginFirstNameBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="168" Margin="194,122,0,0" Height="20"/>
 
-        <Label Content="Last Name:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="225,134,0,0"/>
-        <TextBox Name="DoctorLoginLastNameBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="169" Margin="300,137,0,0" Height="20"/>
-        <Button Content="Login" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Height="40" Click="LoginButton_Click" Margin="380,185,0,0" />
+        <Label Content="Last Name:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="117,152,0,0"/>
+        <TextBox Name="DoctorLoginLastNameBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="168" Margin="194,155,0,0" Height="20"/>
+        <Button Content="Login" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Height="40" Click="LoginButton_Click" Margin="272,203,0,0" />
     </Grid>
 </UserControl>

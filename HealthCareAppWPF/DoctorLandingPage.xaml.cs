@@ -40,7 +40,8 @@ namespace HealthCareAppWPF
 
         private void PrescriptionsHistoryButton_Click(object sender, RoutedEventArgs e)
         {
-
+            PastPrescriptionsControl pastPrescriptionsControl = App.ServiceProvider.GetService<PastPrescriptionsControl>();
+            _mainWindow.NavigateToView(pastPrescriptionsControl);
         }
 
         private void ManagePatientsButton_Click(object sender, RoutedEventArgs e)

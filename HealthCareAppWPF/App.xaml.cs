@@ -47,10 +47,11 @@ namespace HealthCareAppWPF
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddSingleton<MainWindow>();
             services.AddTransient<DoctorSearchWindow>();
-            services.AddTransient<LandingPageControl>();
             services.AddTransient<LoginControl>();
             services.AddTransient<DoctorLandingPage>();
             services.AddTransient<PatientSearchControl>();
+            services.AddTransient<DoctorSearchControl>();
+            services.AddTransient<PastPrescriptionsControl>();
 
             // Build the service provider.
             ServiceProvider = services.BuildServiceProvider();
