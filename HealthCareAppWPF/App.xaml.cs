@@ -46,8 +46,7 @@ namespace HealthCareAppWPF
             services.AddTransient<IDoctorRepository, DoctorRepository>();
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddSingleton<MainWindow>();
-            services.AddTransient<DoctorSearchWindow>();
-            services.AddTransient<LoginControl>();
+            services.AddTransient<LandingControl>();
             services.AddTransient<DoctorLandingPage>();
             services.AddTransient<PatientSearchControl>();
             services.AddTransient<DoctorSearchControl>();
@@ -58,7 +57,7 @@ namespace HealthCareAppWPF
 
             // Create and show your main window.
             var mainWindow = ServiceProvider.GetService<MainWindow>();
-            var loginControl = ServiceProvider.GetService<LoginControl>();
+            var loginControl = ServiceProvider.GetService<LandingControl>();
             mainWindow.NavigateToView(loginControl);
             mainWindow.Show();
         }

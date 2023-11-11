@@ -3,6 +3,7 @@ using BL.Managers;
 using BL.Managers.Interfaces;
 using EFDal.Entities;
 using HealthCareAppWPF.DTO;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -62,16 +63,25 @@ namespace HealthCareAppWPF
 
         }
 
-        private void UpdateMedicalHistoryButton_Click(object sender, RoutedEventArgs e)
+        private async void UpdateMedicalHistoryButton_Click(object sender, RoutedEventArgs e)
         {
-            //int patientId = ((PatientBasicDTO)PatientListView.SelectedItem).Id;
-            //Patient selectedPatient = await _patientManager.GetById(patientId);
-            //_patientManager.Update()
+            int patientId = ((PatientBasicDTO)PatientListView.SelectedItem).Id;
+            Patient selectedPatient = await _patientManager.GetById(patientId);
+            selectedPatient.MedicalHistory = MedicalHistoryTextBox.Text;
+            _patientManager.Update(selectedPatient);
         }
 
-        private void CreatePrescriptionButton_Click(object sender, RoutedEventArgs e)
+        private async void CreatePrescriptionButton_Click(object sender, RoutedEventArgs e)
         {
-
+            if (PatientListView.SelectedItem != null)
+            {
+                int patientId = ((PatientBasicDTO)PatientListView.SelectedItem).Id;
+                Patient selectedPatient = await _patientManager.GetById(patientId);
+                IMedicationManager medicationManager = App.ServiceProvider.GetService<IMedicationManager>();
+                CreatePrescriptionControl createPrescriptionControl = new(selectedPatient, medicationManager);
+                _mainWindow.NavigateToView(createPrescriptionControl);
+            }
+            
         }
     }
 }

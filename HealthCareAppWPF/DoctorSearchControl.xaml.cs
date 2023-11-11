@@ -27,11 +27,20 @@ namespace HealthCareAppWPF
     {
         private MainWindow _mainWindow;
         private IDoctorManager _doctorManager;
+        private List<DoctorBasicDTO> allDoctors;
+
         public DoctorSearchControl(MainWindow mainWindow, IDoctorManager doctorManager)
         {
             InitializeComponent();
             this._mainWindow = mainWindow;
             this._doctorManager = doctorManager;
+            LoadDoctorsAsync();
+        }
+
+        private async Task LoadDoctorsAsync()
+        {
+            allDoctors = await _doctorManager.GetAllDoctorsAsync();
+            DoctorListView.ItemsSource = allDoctors;
         }
 
         private void DoctorSearchButton_Click(object sender, RoutedEventArgs e)

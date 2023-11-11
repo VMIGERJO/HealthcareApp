@@ -5,7 +5,7 @@
     <Grid>
 
         <!-- ContentControl to switch between Patient and Doctor login -->
-        <ContentControl x:Name="MainContentControl" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,0,0,0"/>
+        <ContentControl x:Name="MainContentControl"/>
         <Button Content="Back" HorizontalAlignment="Right" VerticalAlignment="Top" Width="84" Height="40" Margin="0,400,30,0" Click="BackButton_Click" RenderTransformOrigin="0.458,2.714"/>
 
     </Grid>

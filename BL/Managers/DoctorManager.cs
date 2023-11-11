@@ -39,6 +39,20 @@ namespace BL.Managers
             return result;
         }
 
+        public async Task<List<DoctorBasicDTO>> GetAllDoctorsAsync()
+        {
+            var searchResults = await _doctorRepository.GetAllAsync();
+
+            var result = searchResults.Select(pt => new DoctorBasicDTO()
+            {
+                Name = $"{pt.LastName} {pt.FirstName}",
+                Id = pt.Id,
+                Specialization = $"{pt.Specialization}"
+            }).ToList();
+
+            return result;
+        }
+
         public Doctor UniqueDoctorSearch(DoctorSearchValuesDTO doctorQuery)
         {
             List<Expression<Func<Doctor, bool>>> searchExpression = new();
