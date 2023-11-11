@@ -1,4 +1,6 @@
-﻿using EFDal.Repositories.Interfaces;
+﻿using EFDal.Data;
+using EFDal.Exceptions;
+using EFDal.Repositories.Interfaces;
 using HealthcareApp.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -12,7 +14,7 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
     internal readonly DbContext _context;
     internal readonly DbSet<TEntity> _dbSet;
 
-    public GenericRepository(DbContext context)
+    public GenericRepository(HealthcareDbContext context)
     {
         _context = context ?? throw new ArgumentNullException(nameof(context));
         _dbSet = _context.Set<TEntity>();
@@ -55,11 +57,11 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
 
     public virtual List<TEntity> Search(List<Expression<Func<TEntity, bool>>> filters, Expression<Func<TEntity, object>> orderExpression, bool orderAsc = true)
     {
-        var queryAble = _dbSet.AsQueryable();
+        IQueryable<TEntity> queryAble = _dbSet.AsQueryable();
 
         filters ??= new();
 
-        foreach (var filter in filters)
+        foreach (Expression<Func<TEntity, bool>> filter in filters)
         {
             if (filter == null)
                 continue;
@@ -68,9 +70,38 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
 
         queryAble = orderAsc ? queryAble.OrderBy(orderExpression) : queryAble.OrderByDescending(orderExpression);
 
-        var result = queryAble.ToList();
+        List<TEntity> result = queryAble.ToList();
 
         return result;
+    }
+
+    public virtual TEntity UniqueSearch(List<Expression<Func<TEntity, bool>>> filters)
+    {
+        IQueryable<TEntity> queryAble = _dbSet.AsQueryable();
+
+        filters ??= new();
+
+        foreach (Expression<Func<TEntity, bool>> filter in filters)
+        {
+            if (filter == null)
+                continue;
+            queryAble = queryAble.Where(filter);
+        }
+
+        List<TEntity> result = queryAble.ToList();
+
+        if (queryAble.Count() == 0)
+        {
+            throw new NoResultsFoundException();
+
+        } else if (queryAble.Count() > 1)
+        {
+            throw new NonUniqueQueryException();
+        } else
+        {
+            return queryAble.First();
+        }
+
     }
 
 }

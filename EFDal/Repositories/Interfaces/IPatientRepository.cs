@@ -1,4 +1,4 @@
-﻿using Les2.Entities;
+﻿using EFDal.Entities;
 
 namespace EFDal.Repositories.Interfaces
 {

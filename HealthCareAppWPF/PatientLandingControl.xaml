@@ -1,0 +1,44 @@
+﻿<UserControl x:Class="HealthCareAppWPF.PatientLandingControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:HealthCareAppWPF"
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="600">
+    <Grid>
+        <Grid Margin="0,-2,0,2">
+            <!-- Title -->
+            <TextBlock x:Name="TitleTextBlock" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="24" Margin="10,20,10,0"/>
+
+            <!-- My Prescriptions Label -->
+            <TextBlock Text="My Prescriptions" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="18" Margin="10,60,10,0"/>
+
+            <!-- Prescription ListView -->
+            <ListView x:Name="PrescriptionListView" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,90,10,0">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Date" Width="120" DisplayMemberBinding="{Binding Date}" />
+                        <GridViewColumn Header="Doctor" Width="200" DisplayMemberBinding="{Binding Doctor}" />
+                        <GridViewColumn Header="Medications" Width="400" DisplayMemberBinding="{Binding Medications}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+            <!-- My Information Section -->
+            <TextBlock Text="My Information" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="18" Margin="10,274,0,0" />
+
+            <!-- Address Label and Field -->
+            <TextBlock Text="Address:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,320,0,0"/>
+            <TextBox Name="AddressTextBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Margin="72,319,0,0" IsReadOnly="True" Height="36"/>
+            <Button Content="Edit" Name="EditAddressButton" HorizontalAlignment="Left" Click="EditAddressButton_Click" VerticalAlignment="Top" Width="80" Margin="286,319,0,0"/>
+
+            <!-- Medical History Label and Field -->
+            <TextBlock Text="Medical History:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,360,0,0"/>
+            <TextBox Name="MedicalHistoryTextBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="365" Height="60" Margin="10,380,0,0" IsReadOnly="True"/>
+
+            <Button Content="Search for a doctor" Name="SearchDoctorButton" HorizontalAlignment="Left" VerticalAlignment="Top"  Width="116" Height="40" Margin="395,320,0,0" Click="SearchDoctorButton_Click"/>
+            <Button Content="Update" x:Name="UpdateButton" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Margin="286,343,0,0" Visibility="Hidden" Click="UpdateButton_Click"/>
+        </Grid>
+    </Grid>
+</UserControl>

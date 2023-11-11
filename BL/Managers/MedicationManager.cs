@@ -1,6 +1,6 @@
 ﻿using BL.Managers.Interfaces;
 using EFDal.Repositories.Interfaces;
-using Les2.Entities;
+using EFDal.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
