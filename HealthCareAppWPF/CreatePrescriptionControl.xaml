@@ -21,7 +21,7 @@
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Medication" Width="300" DisplayMemberBinding="{Binding MedicationName}" />
-                    <GridViewColumn Header="Dose" Width="100" DisplayMemberBinding="{Binding Age}" />
+                    <GridViewColumn Header="Dose" Width="100" DisplayMemberBinding="{Binding Dose}" />
                     <GridViewColumn Header="Select" Width="80">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>

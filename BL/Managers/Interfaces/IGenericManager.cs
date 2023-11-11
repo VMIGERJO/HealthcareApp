@@ -10,7 +10,6 @@ namespace BL.Managers.Interfaces
     public interface IGenericManager<TEntity> where TEntity : BaseEntity
     {
         void Delete(int id);
-        Task<IEnumerable<TEntity>> GetAll();
         Task<TEntity> GetById(int id);
         int Add(TEntity entity);
         void Update(TEntity entity);

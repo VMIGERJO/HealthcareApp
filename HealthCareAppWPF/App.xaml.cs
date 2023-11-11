@@ -41,8 +41,10 @@ namespace HealthCareAppWPF
             services.AddDbContext<HealthcareDbContext>(opt => opt.UseSqlServer(connectionString)
                                                     , ServiceLifetime.Transient);
             services.AddTransient<IPatientManager, PatientManager>();
+            services.AddTransient<IMedicationManager, MedicationManager>();
             services.AddTransient<IDoctorManager, DoctorManager>();
             services.AddTransient<IPatientRepository, PatientRepository>();
+            services.AddTransient<IMedicationRepository, MedicationRepository>();
             services.AddTransient<IDoctorRepository, DoctorRepository>();
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddSingleton<MainWindow>();

@@ -1,5 +1,6 @@
 ﻿using BL.Managers.Interfaces;
 using EFDal.Entities;
+using BL.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,8 +31,14 @@ namespace HealthCareAppWPF
             this._patient = patient;
             this._medicationManager = medicationManager;
             TitleTextBlock.Text = $"{DateTime.Now:yyyy-MM-dd} - {patient.FirstName} {patient.LastName}";
+            LoadMedicationsAsync();
         }
 
+        private async Task LoadMedicationsAsync()
+        {
+            List<MedicationDTO> allMedications = await _medicationManager.GetAllMedicationsAsync();
+            MedicationsListView.ItemsSource = allMedications;
 
+        }
     }
 }

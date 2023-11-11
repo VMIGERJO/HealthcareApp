@@ -20,7 +20,7 @@ namespace BL.Managers
         }
 
         // Returns all entities.
-        public virtual async Task<IEnumerable<TEntity>> GetAll()
+        public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
         {
             return await _repository.GetAllAsync();
         }
