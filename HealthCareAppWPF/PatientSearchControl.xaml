@@ -24,7 +24,7 @@
         <!-- Patient Details Section -->
         <ContentControl Name="PatientDetailsContent" HorizontalAlignment="Left" Visibility="Hidden" VerticalAlignment="Top" Margin="360,120,10,0">
             <StackPanel>
-                <!-- Address Label and Field -->
+                <!-- Patient Details section -->
                 <Label Content="Patient Details" HorizontalAlignment="Center" FontSize="16"/>
                 <!-- Address Label and Field -->
                 <TextBlock Text="Address:" HorizontalAlignment="Left" VerticalAlignment="Top"/>
@@ -33,7 +33,7 @@
                 <!-- Medical History Label and Field -->
                 <TextBlock Text="Medical History:" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                 <TextBox x:Name="MedicalHistoryTextBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="100"/>
-                <Button Content="Update" Margin="5,10,5,5" Width="80"></Button>
+                <Button Content="Update" Click="UpdatePatientDetailsButton_Click" Margin="5,10,5,5" Width="80"></Button>
             </StackPanel>
         </ContentControl>
         <Button Content="Create Prescription" Width="120" Height="40" Click="CreatePrescriptionButton_Click" Margin="25,405,455,55"/>

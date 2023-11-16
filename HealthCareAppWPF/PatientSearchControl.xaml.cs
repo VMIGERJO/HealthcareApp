@@ -65,12 +65,24 @@ namespace HealthCareAppWPF
 
         }
 
-        private async void UpdateMedicalHistoryButton_Click(object sender, RoutedEventArgs e)
+        private async void UpdatePatientDetailsButton_Click(object sender, RoutedEventArgs e)
         {
             int patientId = ((PatientBasicDTO)PatientListView.SelectedItem).Id;
             Patient selectedPatient = await _patientManager.GetById(patientId);
             selectedPatient.MedicalHistory = MedicalHistoryTextBox.Text;
-            _patientManager.Update(selectedPatient);
+            selectedPatient.Address = AddressTextBox.Text;
+
+            try
+            {
+                _patientManager.Update(selectedPatient);
+                MessageBox.Show("Patient details updated succesfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error updating patient details: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            
         }
 
         private async void CreatePrescriptionButton_Click(object sender, RoutedEventArgs e)
