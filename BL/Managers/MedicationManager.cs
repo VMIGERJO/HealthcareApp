@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using BL.DTO;
 using EFDal.Repositories;
 using HealthCareAppWPF.DTO;
+using System.Linq.Expressions;
 
 namespace BL.Managers
 {
@@ -20,20 +21,34 @@ namespace BL.Managers
             _medicationRepository = medicationRepository;
         }
 
-        public Medication GetByTradeNameAndDosage(string tradeName, string dosage)
-        {
-            return _medicationRepository.GetByTradeNameAndDosage(tradeName, dosage);
-        }
-
-        public async Task<List<MedicationDTO>> GetAllMedicationsAsync()
+        public async Task<List<MedicationBasicDTO>> GetAllMedicationsAsync()
         {
             var searchResults = await _medicationRepository.GetAllAsync();
 
-            var result = searchResults.Select(md => new MedicationDTO()
+            var result = searchResults.Select(md => new MedicationBasicDTO()
             {
                 MedicationName = md.Name,
                 Dose = md.Dosage,
-                IsSelected = false
+                Id = md.Id
+            }).ToList();
+
+            return result;
+        }
+
+        public List<MedicationBasicDTO> MedicationSearch(MedicationSearchValuesDTO medicationQuery)
+        {
+            List<Expression<Func<Medication, bool>>> searchExpression = new();
+
+            if (medicationQuery?.Name != null)
+                searchExpression.Add(m => m.Name.Contains(medicationQuery.Name));
+
+            var searchResults = _repository.Search(searchExpression, m => m.Name);
+
+            var result = searchResults.Select(m => new MedicationBasicDTO()
+            {
+                MedicationName = m.Name,
+                Id = m.Id,
+                Dose = m.Dosage
             }).ToList();
 
             return result;

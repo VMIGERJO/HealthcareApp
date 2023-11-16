@@ -10,7 +10,7 @@ namespace BL.Managers.Interfaces
 {
     public interface IMedicationManager : IGenericManager<Medication>
     {
-        Task<List<MedicationDTO>> GetAllMedicationsAsync();
-        public Medication GetByTradeNameAndDosage(string tradeName, string Dosage);
+        Task<List<MedicationBasicDTO>> GetAllMedicationsAsync();
+        List<MedicationBasicDTO> MedicationSearch(MedicationSearchValuesDTO medicationQuery);
     }
 }

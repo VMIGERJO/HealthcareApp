@@ -38,7 +38,7 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
     public virtual int Insert(TEntity entity)
     {
         entity.CreatedAt = DateTime.Now;
-        _dbSet.Add(entity);
+        _dbSet.Update(entity);
         _context.SaveChanges();
         return entity.Id;
     }

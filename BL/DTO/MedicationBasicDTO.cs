@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace BL.DTO
 {
-    public class MedicationDTO
+    public class MedicationBasicDTO
     {
         public string MedicationName { get; set; }
         public string Dose { get; set; }
-        public bool IsSelected { get; set; }
+        public int Id { get; set; }
     }
 }

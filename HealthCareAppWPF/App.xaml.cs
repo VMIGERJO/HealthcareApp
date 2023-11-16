@@ -43,7 +43,9 @@ namespace HealthCareAppWPF
             services.AddTransient<IPatientManager, PatientManager>();
             services.AddTransient<IMedicationManager, MedicationManager>();
             services.AddTransient<IDoctorManager, DoctorManager>();
+            services.AddTransient<IPrescriptionManager, PrescriptionManager>();
             services.AddTransient<IPatientRepository, PatientRepository>();
+            services.AddTransient<IPrescriptionRepository, PrescriptionRepository>();
             services.AddTransient<IMedicationRepository, MedicationRepository>();
             services.AddTransient<IDoctorRepository, DoctorRepository>();
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));

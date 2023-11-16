@@ -2,7 +2,8 @@
 
 namespace EFDal.Repositories.Interfaces
 {
-    public interface IPatientRepository : IGenericRepository<Patient>
+    public interface IPrescriptionRepository : IGenericRepository<Prescription>
     {
+
     }
 }
