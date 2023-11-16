@@ -11,7 +11,7 @@ namespace BL.Managers.Interfaces
     {
         void Delete(int id);
         Task<TEntity> GetById(int id);
-        int Add(TEntity entity);
+        bool Add(TEntity entity);
         void Update(TEntity entity);
     }
 }
