@@ -37,22 +37,117 @@ namespace HealthCareAppWPF
 
         private void SignInButton_Click(object sender, RoutedEventArgs e)
         {
+            bool registrationModeActive = RegistrationToggle.IsChecked ?? false;
             ComboBoxItem selectedRole = RoleDropdown.SelectedItem as ComboBoxItem;
 
             if (selectedRole != null)
             {
                 string role = selectedRole.Content.ToString();
 
-                if (role == "Patient")
+                if (registrationModeActive)
                 {
-                    HandlePatientLogin();
+                    HandleRegistration(role);
                 }
-                else if (role == "Doctor")
+                else
                 {
-                    HandleDoctorLogin();
+                    HandleLogin(role);
                 }
             }
         }
+
+        private void HandleRegistration(string role)
+        {
+            switch (role)
+            {
+                case "Patient":
+                    HandlePatientRegistration();
+                    break;
+                case "Doctor":
+                    HandleDoctorRegistration();
+                    break;
+            }
+        }
+
+        private void HandlePatientRegistration()
+        {
+            string firstName = DoctorLoginFirstNameBox.Text;
+            string lastName = DoctorLoginLastNameBox.Text;
+            string address = AddressBox.Text;
+            int age;
+
+            // Validate and parse age input
+            if (!int.TryParse(AgeBox.Text, out age))
+            {
+                // Handle invalid age input, e.g., display an error message
+                MessageBox.Show("Invalid age input. Please enter a valid number.");
+                return;
+            }
+
+            Patient newPatient = new Patient
+            {
+                FirstName = firstName,
+                LastName = lastName,
+                Address = address,
+                Age = age
+            };
+
+            // Assuming _patientManager.RegisterPatient is a method to handle patient registration
+            bool registrationSuccess = _patientManager.Add(newPatient);
+
+            if (registrationSuccess)
+            {
+                // Optionally, you can provide feedback to the user, e.g., display a success message
+                MessageBox.Show("Patient registration successful!");
+            }
+            else
+            {
+                // Handle registration failure, e.g., display an error message
+                MessageBox.Show("Patient registration failed. Please try again.");
+            }
+        }
+
+        private void HandleDoctorRegistration()
+        {
+            string firstName = DoctorLoginFirstNameBox.Text;
+            string lastName = DoctorLoginLastNameBox.Text;
+            string specialization = SpecializationBox.Text;
+            
+
+            Doctor newDoctor = new Doctor
+            {
+                FirstName = firstName,
+                LastName = lastName,
+                Specialization = specialization,
+            };
+
+            // Assuming _doctorManager.RegisterDoctor is a method to handle doctor registration
+            bool registrationSuccess = _doctorManager.Add(newDoctor);
+
+            if (registrationSuccess)
+            {
+                // Optionally, you can provide feedback to the user, e.g., display a success message
+                MessageBox.Show("Doctor registration successful!");
+            }
+            else
+            {
+                // Handle registration failure, e.g., display an error message
+                MessageBox.Show("Doctor registration failed. Please try again.");
+            }
+        }
+
+        private void HandleLogin(string role)
+        {
+            switch (role)
+            {
+                case "Patient":
+                    HandlePatientLogin();
+                    break;
+                case "Doctor":
+                    HandleDoctorLogin();
+                    break;
+            }
+        }
+
 
         private void HandlePatientLogin()
         {
@@ -136,8 +231,8 @@ namespace HealthCareAppWPF
                 AgeLabel.Visibility = showFields ? Visibility.Visible : Visibility.Hidden;
                 AgeBox.Visibility = showFields ? Visibility.Visible : Visibility.Hidden;
 
-                AddressLabel.Visibility = showFields ? Visibility.Hidden : Visibility.Visible;
-                AddressBox.Visibility = showFields ? Visibility.Hidden : Visibility.Visible;
+                AddressLabel.Visibility = showFields ? Visibility.Visible : Visibility.Hidden;
+                AddressBox.Visibility = showFields ? Visibility.Visible : Visibility.Hidden;
             }
         }
     }

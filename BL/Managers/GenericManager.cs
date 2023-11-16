@@ -32,9 +32,19 @@ namespace BL.Managers
         }
 
         // Adds an entity.
-        public virtual int Add(TEntity entity)
+        public virtual bool Add(TEntity entity)
         {
-            return _repository.Insert(entity);
+            try
+            {
+                int result = _repository.Insert(entity);
+                return result > 0;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception to the console
+                Console.WriteLine($"Exception while adding entity of type {typeof(TEntity)}: {ex.Message}");
+                return false;
+            }
         }
 
         // Updates an entity.
