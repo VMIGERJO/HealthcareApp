@@ -21,7 +21,7 @@ namespace EFDal.Repositories
         {
             for (int i = 0; i < prescription.Medications.Count; i++)
             {
-                prescription.Medications[i] = _context.ProcessStubEntity<Medication>(prescription.Medications[i]);
+                prescription.Medications[i] = _context.ToTracked(prescription.Medications[i]);
             }
             return base.Insert(prescription);
         }
