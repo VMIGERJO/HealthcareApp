@@ -1,4 +1,5 @@
-﻿using EFDal.Entities;
+﻿using BL.Managers.Interfaces;
+using EFDal.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -46,7 +47,8 @@ namespace HealthCareAppWPF
 
         private void ManagePatientsButton_Click(object sender, RoutedEventArgs e)
         {
-            PatientSearchControl patientSearchControl = App.ServiceProvider.GetService<PatientSearchControl>();
+            IPatientManager patientManager = App.ServiceProvider.GetService<IPatientManager>();
+            PatientSearchControl patientSearchControl = new(patientManager, _mainWindow, _doctor);
             _mainWindow.NavigateToView(patientSearchControl);
         }
     }

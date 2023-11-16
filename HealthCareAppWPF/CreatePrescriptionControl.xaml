@@ -6,34 +6,42 @@
              xmlns:local="clr-namespace:HealthCareAppWPF"
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="600">
-    <Grid>
+    <Grid Height="500" VerticalAlignment="Top">
         <!-- Title with Current Date and Patient Name -->
         <TextBlock Name="TitleTextBlock" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="18" Margin="10,10,10,0"/>
 
-        <!-- Label for Medication -->
-        <TextBlock Text="Select a medication:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,40,10,0"/>
-
-        <!-- Textbox for Medication -->
-        <TextBox Name="MedicationTextBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Margin="150,40,10,0"/>
+        <!-- Filter -->
+        <TextBlock Text="Filter by medication name:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,40,10,0"/>
+        <TextBox Name="FilterByNameBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Margin="165,40,0,0"/>
+        <Button Content="Filter" Name="FilterButton" Width="40" Click="FilterButton_Click" VerticalAlignment="Top" Margin="373,38,0,0" HorizontalAlignment="Left" Height="20"></Button>
 
         <!-- ListView for Available Medications -->
         <ListView Name="MedicationsListView" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,80,10,0" Height="200">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Medication" Width="300" DisplayMemberBinding="{Binding MedicationName}" />
-                    <GridViewColumn Header="Dose" Width="100" DisplayMemberBinding="{Binding Age}" />
-                    <GridViewColumn Header="Select" Width="80">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <CheckBox IsChecked="{Binding IsSelected}" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
+                    <GridViewColumn Header="Dose" Width="100" DisplayMemberBinding="{Binding Dose}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <!-- Button to Add to current prescription -->
+        <Button Content="Add"  Click="AddToPrescriptionButton_Click" FontSize="14" Name="AddToPrescriptionButton" HorizontalAlignment="Left" VerticalAlignment="Top" Width="88" Margin="468,167,0,0" Height="40"/>
+        <TextBlock Text="Current Prescription" FontSize="14" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,293,0,0"/>
+
+        <!-- ListView for Currently added to prescription -->
+        <ListView Name="PrescriptionListView" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,318,0,0" Height="100" Width="410">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Medication" Width="300" DisplayMemberBinding="{Binding MedicationName}" />
+                    <GridViewColumn Header="Dose" Width="100" DisplayMemberBinding="{Binding Dose}" />
                 </GridView>
             </ListView.View>
         </ListView>
 
+        <!-- Button to remove medication from Prescription -->
+        <Button Content="Remove" Click="RemoveFromPrescriptionButton_Click" FontSize="14" Name="RemoveFromPrescriptionButton" HorizontalAlignment="Left" VerticalAlignment="Top" Width="88" Margin="468,331,0,0" Height="40"/>
+
         <!-- Button to Create Prescription -->
-        <Button Content="Create Prescription" Name="CreatePrescriptionButton" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Margin="10,300,10,0"/>
+        <Button Content="Create Prescription" Click="CreatePrescriptionButton_Click" Name="CreatePrescriptionButton" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Margin="216,433,0,0" Height="24"/>
     </Grid>
 </UserControl>

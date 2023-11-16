@@ -28,11 +28,13 @@ namespace HealthCareAppWPF
     {
         private IPatientManager _patientManager;
         private MainWindow _mainWindow;
-        public PatientSearchControl(IPatientManager patientManager, MainWindow mainWindow)
+        private Doctor _doctor;
+        public PatientSearchControl(IPatientManager patientManager, MainWindow mainWindow, Doctor doctor)
         {
             InitializeComponent();
             this._patientManager = patientManager;
             this._mainWindow = mainWindow;
+            this._doctor = doctor;
         }
 
         private void PatientSearchButton_Click(object sender, RoutedEventArgs e)
@@ -78,7 +80,8 @@ namespace HealthCareAppWPF
                 int patientId = ((PatientBasicDTO)PatientListView.SelectedItem).Id;
                 Patient selectedPatient = await _patientManager.GetById(patientId);
                 IMedicationManager medicationManager = App.ServiceProvider.GetService<IMedicationManager>();
-                CreatePrescriptionControl createPrescriptionControl = new(selectedPatient, medicationManager);
+                IPrescriptionManager prescriptionManager = App.ServiceProvider.GetService<IPrescriptionManager>();
+                CreatePrescriptionControl createPrescriptionControl = new(selectedPatient, _doctor, medicationManager, prescriptionManager);
                 _mainWindow.NavigateToView(createPrescriptionControl);
             }
             

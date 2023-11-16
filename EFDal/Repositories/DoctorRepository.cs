@@ -15,12 +15,5 @@ namespace EFDal.Repositories
         public DoctorRepository(HealthcareDbContext context) : base(context)
         {
         }
-
-        public Doctor GetByName(string firstName, string lastName)
-        {
-            Doctor result = _dbSet.Where(p => p.FirstName == firstName && p.LastName == lastName).FirstOrDefault();
-
-            return result;
-        }
     }
 }

@@ -14,7 +14,7 @@ namespace EFDal.Entities
         public String Dosage { get; set; }
         public string? Manufacturer { get; set; }
 
-        public List<Prescription> Prescriptions;
+        public List<Prescription> Prescriptions = new();
     }
 
 }
