@@ -21,11 +21,11 @@ namespace HealthCareAppWPF
     /// <summary>
     /// Interaction logic for DoctorLandingPage.xaml
     /// </summary>
-    public partial class DoctorLandingPage : UserControl
+    public partial class DoctorLandingControl : UserControl
     {
         private Doctor _doctor;
         private MainWindow _mainWindow;
-        public DoctorLandingPage(MainWindow mainWindow, Doctor doctor)
+        public DoctorLandingControl(MainWindow mainWindow, Doctor doctor)
         {
             InitializeComponent();
             this._mainWindow = mainWindow;

@@ -51,7 +51,7 @@ namespace HealthCareAppWPF
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddSingleton<MainWindow>();
             services.AddTransient<LandingControl>();
-            services.AddTransient<DoctorLandingPage>();
+            services.AddTransient<DoctorLandingControl>();
             services.AddTransient<PatientSearchControl>();
             services.AddTransient<DoctorSearchControl>();
             services.AddTransient<PastPrescriptionsControl>();

@@ -70,8 +70,8 @@ namespace HealthCareAppWPF
             doctorQuery.FirstName = DoctorLoginFirstNameBox.Text;
             doctorQuery.LastName = DoctorLoginLastNameBox.Text;
             Doctor loggedInDoctor = _doctorManager.UniqueDoctorSearch(doctorQuery);
-            DoctorLandingPage doctorLandingPage = new(_mainWindow, loggedInDoctor);
-            _mainWindow.NavigateToView(doctorLandingPage);
+            DoctorLandingControl doctorLandingControl = new(_mainWindow, loggedInDoctor);
+            _mainWindow.NavigateToView(doctorLandingControl);
         }
 
         private void RegistrationToggle_Click(object sender, RoutedEventArgs e)
