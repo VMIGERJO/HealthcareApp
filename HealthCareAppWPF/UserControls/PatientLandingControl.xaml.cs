@@ -1,4 +1,5 @@
 ﻿using BL.Managers.Interfaces;
+using BL.DTO;
 using EFDal.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -27,15 +28,25 @@ namespace HealthCareAppWPF
         private Patient _patient;
         private MainWindow _mainWindow;
         private IPatientManager _patientManager;
-        public PatientLandingControl(IPatientManager patientManager, Patient patient, MainWindow mainWindow)
+        private IPrescriptionManager _prescriptionManager;
+        public PatientLandingControl(IPatientManager patientManager, IPrescriptionManager prescriptionManager, Patient patient, MainWindow mainWindow)
         {
             InitializeComponent();
             this._patient = patient;
             this._mainWindow = mainWindow;
             this._patientManager = patientManager;
-            TitleTextBlock.Text = $"Welcome {patient.FirstName} {patient.LastName}";
-            AddressTextBox.Text = patient.Address;
-            MedicalHistoryTextBox.Text = patient.MedicalHistory;
+            this._prescriptionManager = prescriptionManager;
+            LoadPageInformation();
+
+            
+        }
+
+        private async Task LoadPageInformation()
+        {
+            TitleTextBlock.Text = $"Welcome {_patient.FirstName} {_patient.LastName}";
+            AddressTextBox.Text = _patient.Address;
+            MedicalHistoryTextBox.Text = _patient.MedicalHistory;
+            PrescriptionListView.ItemsSource = await _prescriptionManager.PrescriptionSearchAsync(new PrescriptionSearchValuesDTO() { PatientID = _patient.Id });
         }
 
         private void SearchDoctorButton_Click(object sender, RoutedEventArgs e)

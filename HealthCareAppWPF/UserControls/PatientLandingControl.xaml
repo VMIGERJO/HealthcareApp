@@ -15,12 +15,12 @@
             <TextBlock Text="My Prescriptions" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="18" Margin="10,60,10,0"/>
 
             <!-- Prescription ListView -->
-            <ListView x:Name="PrescriptionListView" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,90,10,0">
+            <ListView x:Name="PrescriptionListView" ScrollViewer.CanContentScroll="True" MaxHeight="160" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,90,10,0">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Date" Width="120" DisplayMemberBinding="{Binding Date}" />
-                        <GridViewColumn Header="Doctor" Width="200" DisplayMemberBinding="{Binding Doctor}" />
-                        <GridViewColumn Header="Medications" Width="400" DisplayMemberBinding="{Binding Medications}" />
+                        <GridViewColumn Header="Doctor" Width="200" DisplayMemberBinding="{Binding DoctorName}" />
+                        <GridViewColumn Header="Medications" Width="400" DisplayMemberBinding="{Binding MedicationNames}" />
                     </GridView>
                 </ListView.View>
             </ListView>

@@ -1,6 +1,7 @@
 ﻿using BL.DTO;
 using BL.Managers.Interfaces;
 using EFDal.Entities;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,7 @@ namespace HealthCareAppWPF
         private IDoctorManager _doctorManager;
         private IPatientManager _patientManager;
         private MainWindow _mainWindow;
+
         public LandingControl(MainWindow mainWindow, IDoctorManager doctorManager, IPatientManager patientManager)
         {
             InitializeComponent();
@@ -153,7 +155,8 @@ namespace HealthCareAppWPF
             patientQuery.FirstName = DoctorLoginFirstNameBox.Text;
             patientQuery.LastName = DoctorLoginLastNameBox.Text;
             Patient loggedInPatient = _patientManager.UniquePatientSearch(patientQuery);
-            PatientLandingControl patientLandingControl = new(_patientManager, loggedInPatient, _mainWindow);
+            IPrescriptionManager prescriptionManager = App.ServiceProvider.GetService<IPrescriptionManager>();
+            PatientLandingControl patientLandingControl = new(_patientManager, prescriptionManager, loggedInPatient, _mainWindow);
             _mainWindow.NavigateToView(patientLandingControl);
         }
 
