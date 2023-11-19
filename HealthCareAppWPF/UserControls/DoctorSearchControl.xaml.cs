@@ -5,6 +5,7 @@ using EFDal.Entities;
 using HealthCareAppWPF.DTO;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,29 +28,57 @@ namespace HealthCareAppWPF
     {
         private MainWindow _mainWindow;
         private IDoctorManager _doctorManager;
-        private List<DoctorBasicDTO> allDoctors;
+        public ObservableCollection<DoctorBasicDTO> DisplayedDoctors { get; set; }
 
         public DoctorSearchControl(MainWindow mainWindow, IDoctorManager doctorManager)
         {
             InitializeComponent();
             this._mainWindow = mainWindow;
             this._doctorManager = doctorManager;
-            LoadDoctorsAsync();
+            DisplayedDoctors = new ObservableCollection<DoctorBasicDTO>();
+            DoctorListView.ItemsSource = DisplayedDoctors;
+            try
+            {
+                LoadDoctorsAsync();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while loading doctors: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
         }
 
         private async Task LoadDoctorsAsync()
         {
-            allDoctors = await _doctorManager.GetAllDoctorsAsync();
-            DoctorListView.ItemsSource = allDoctors;
+            List<DoctorBasicDTO> allDoctors = await _doctorManager.GetAllDoctorsAsync();
+
+            DisplayedDoctors.Clear();
+            foreach (DoctorBasicDTO doctor in allDoctors)
+            {
+                DisplayedDoctors.Add(doctor);
+            }
+
+            UpdateSpecializationDropdown();
         }
 
-        private void DoctorSearchButton_Click(object sender, RoutedEventArgs e)
+        private async void DoctorSearchButton_Click(object sender, RoutedEventArgs e)
         {
             DoctorSearchValuesDTO doctorQuery = new();
             doctorQuery.FirstName = DoctorFirstNameBox.Text;
             doctorQuery.LastName = DoctorLastNameBox.Text;
-            List<DoctorBasicDTO> matchingDoctors = _doctorManager.DoctorSearch(doctorQuery);
-            DoctorListView.ItemsSource = matchingDoctors;
+            doctorQuery.Specialization = SpecializationDropdown.SelectedItem as string;
+            List<DoctorBasicDTO> matchingDoctors = await _doctorManager.DoctorSearchAsync(doctorQuery);
+            DisplayedDoctors.Clear();
+            foreach (DoctorBasicDTO doctor in matchingDoctors)
+            {
+                DisplayedDoctors.Add(doctor);
+            }
+        }
+
+        private void UpdateSpecializationDropdown()
+        {
+            List<string> displayedSpecializations = DisplayedDoctors.Select(d => d.Specialization).ToList();
+            SpecializationDropdown.ItemsSource = displayedSpecializations.Distinct().ToList();
         }
     }
 }

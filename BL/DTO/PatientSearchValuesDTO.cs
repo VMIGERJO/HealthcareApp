@@ -10,5 +10,6 @@ namespace BL.DTO
     {
         public string LastName { get; set; }
         public string FirstName { get; set; }
+        public string Specialization { get; set; }
     }
 }

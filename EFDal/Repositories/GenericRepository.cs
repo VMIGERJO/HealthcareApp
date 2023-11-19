@@ -55,7 +55,7 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
         _dbSet.Where(x => x.Id == id).ExecuteDelete();
     }
 
-    public virtual List<TEntity> Search(List<Expression<Func<TEntity, bool>>> filters, Expression<Func<TEntity, object>> orderExpression, bool orderAsc = true)
+    public async virtual Task<List<TEntity>> SearchAsync(List<Expression<Func<TEntity, bool>>> filters, Expression<Func<TEntity, object>> orderExpression, bool orderAsc = true, params Expression<Func<TEntity, object>>[] includes)
     {
         IQueryable<TEntity> queryAble = _dbSet.AsQueryable();
 
@@ -70,7 +70,10 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
 
         queryAble = orderAsc ? queryAble.OrderBy(orderExpression) : queryAble.OrderByDescending(orderExpression);
 
-        List<TEntity> result = queryAble.ToList();
+        // Include related entities
+        queryAble = includes.Aggregate(queryAble, (current, include) => current.Include(include));
+
+        List<TEntity> result = await queryAble.ToListAsync();
 
         return result;
     }
@@ -104,4 +107,23 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
 
     }
 
+    public List<TEntity> Search(List<Expression<Func<TEntity, bool>>> filters, Expression<Func<TEntity, object>> orderExpression, bool orderAsc = true)
+    {
+        IQueryable<TEntity> queryAble = _dbSet.AsQueryable();
+
+        filters ??= new();
+
+        foreach (Expression<Func<TEntity, bool>> filter in filters)
+        {
+            if (filter == null)
+                continue;
+            queryAble = queryAble.Where(filter);
+        }
+
+        queryAble = orderAsc ? queryAble.OrderBy(orderExpression) : queryAble.OrderByDescending(orderExpression);
+
+        List<TEntity> result = queryAble.ToList();
+
+        return result;
+    }
 }

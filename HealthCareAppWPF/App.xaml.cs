@@ -53,6 +53,7 @@ namespace HealthCareAppWPF
             services.AddTransient<LandingControl>();
             services.AddTransient<DoctorLandingControl>();
             services.AddTransient<PatientSearchControl>();
+            services.AddTransient<PatientLandingControl>();
             services.AddTransient<DoctorSearchControl>();
             services.AddTransient<PastPrescriptionsControl>();
 

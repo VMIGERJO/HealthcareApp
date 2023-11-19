@@ -17,7 +17,7 @@ namespace BL.Managers
             this._doctorRepository = doctorRepository;
         }
 
-        public List<DoctorBasicDTO> DoctorSearch(DoctorSearchValuesDTO doctorQuery)
+        public async Task<List<DoctorBasicDTO>> DoctorSearchAsync(DoctorSearchValuesDTO doctorQuery)
         {
             List<Expression<Func<Doctor, bool>>> searchExpression = new();
 
@@ -27,7 +27,10 @@ namespace BL.Managers
             if (doctorQuery?.FirstName != null)
                 searchExpression.Add(p => p.FirstName.Contains(doctorQuery.FirstName));
 
-            var searchResults = _repository.Search(searchExpression, p => p.LastName);
+            if (doctorQuery?.Specialization != null)
+                searchExpression.Add(p => p.Specialization.Equals(doctorQuery.Specialization));
+
+            var searchResults = await _repository.SearchAsync(searchExpression, p => p.LastName);
 
             var result = searchResults.Select(pt => new DoctorBasicDTO()
             {

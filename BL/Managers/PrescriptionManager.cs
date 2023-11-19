@@ -20,5 +20,31 @@ namespace BL.Managers
         {
             _prescriptionRepository = prescriptionRepository;
         }
+
+        public async Task<List<PrescriptionViewDTO>> PrescriptionSearchAsync(PrescriptionSearchValuesDTO prescriptionQuery)
+        {
+            List<Expression<Func<Prescription, bool>>> searchExpression = new();
+
+            if (prescriptionQuery?.PatientID != null)
+                searchExpression.Add(p => p.PatientID.Equals(prescriptionQuery.PatientID));
+
+            if (prescriptionQuery?.DoctorID != null)
+                searchExpression.Add(p => p.DoctorID.Equals(prescriptionQuery.DoctorID));
+
+            List<Prescription> searchResults = await _repository.SearchAsync(searchExpression, p => p.PrescriptionDate, true, p => p.Patient, p => p.Doctor, p => p.Medications);
+
+            var result = searchResults.Select(pr => new PrescriptionViewDTO()
+            {
+                PatientName = $"{pr.Patient.LastName} {pr.Patient.FirstName}",
+                DoctorName = $"{pr.Doctor.LastName} {pr.Doctor.FirstName}",
+                Id = pr.Id,
+                Date = pr.PrescriptionDate.ToString("dd/MM/yyyy"),
+                MedicationNames = string.Join(", ", pr.Medications?.Select(m => m.Name) ?? Enumerable.Empty<string>())
+
+
+        }).ToList();
+
+            return result;
+        }
     }
 }

@@ -11,5 +11,6 @@ namespace BL.Managers.Interfaces
 {
     public interface IPrescriptionManager : IGenericManager<Prescription>
     {
+        Task<List<PrescriptionViewDTO>> PrescriptionSearchAsync(PrescriptionSearchValuesDTO prescriptionQuery);
     }
 }

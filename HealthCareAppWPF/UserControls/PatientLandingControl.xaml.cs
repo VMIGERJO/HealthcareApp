@@ -1,4 +1,6 @@
-﻿using EFDal.Entities;
+﻿using BL.Managers.Interfaces;
+using BL.DTO;
+using EFDal.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -25,14 +27,26 @@ namespace HealthCareAppWPF
     {
         private Patient _patient;
         private MainWindow _mainWindow;
-        public PatientLandingControl(Patient patient, MainWindow mainWindow)
+        private IPatientManager _patientManager;
+        private IPrescriptionManager _prescriptionManager;
+        public PatientLandingControl(IPatientManager patientManager, IPrescriptionManager prescriptionManager, Patient patient, MainWindow mainWindow)
         {
             InitializeComponent();
             this._patient = patient;
             this._mainWindow = mainWindow;
-            TitleTextBlock.Text = $"Welcome {patient.FirstName} {patient.LastName}";
-            AddressTextBox.Text = patient.Address;
-            MedicalHistoryTextBox.Text = patient.MedicalHistory;
+            this._patientManager = patientManager;
+            this._prescriptionManager = prescriptionManager;
+            LoadPageInformation();
+
+            
+        }
+
+        private async Task LoadPageInformation()
+        {
+            TitleTextBlock.Text = $"Welcome {_patient.FirstName} {_patient.LastName}";
+            AddressTextBox.Text = _patient.Address;
+            MedicalHistoryTextBox.Text = _patient.MedicalHistory;
+            PrescriptionListView.ItemsSource = await _prescriptionManager.PrescriptionSearchAsync(new PrescriptionSearchValuesDTO() { PatientID = _patient.Id });
         }
 
         private void SearchDoctorButton_Click(object sender, RoutedEventArgs e)
@@ -44,6 +58,15 @@ namespace HealthCareAppWPF
 
         private void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
+            if (AddressTextBox.Text != _patient.Address)
+            {
+                _patient.Address = AddressTextBox.Text;
+                _patientManager.Update(_patient);
+            }
+            else
+            {
+                MessageBox.Show("No changes to update.");
+            }
 
         }
 
