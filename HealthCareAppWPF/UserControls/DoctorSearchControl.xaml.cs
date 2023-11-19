@@ -77,8 +77,8 @@ namespace HealthCareAppWPF
 
         private void UpdateSpecializationDropdown()
         {
-            List<string> displayedSpecializations = DisplayedDoctors.Select(d => d.Specialization).ToList();
-            SpecializationDropdown.ItemsSource = displayedSpecializations.Distinct().ToList();
+            List<string> displayedSpecializations = DisplayedDoctors.Select(d => d.Specialization).Distinct().ToList();
+            SpecializationDropdown.ItemsSource = displayedSpecializations;
         }
     }
 }
