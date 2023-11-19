@@ -1,4 +1,5 @@
-﻿using EFDal.Entities;
+﻿using BL.Managers.Interfaces;
+using EFDal.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -25,11 +26,13 @@ namespace HealthCareAppWPF
     {
         private Patient _patient;
         private MainWindow _mainWindow;
-        public PatientLandingControl(Patient patient, MainWindow mainWindow)
+        private IPatientManager _patientManager;
+        public PatientLandingControl(IPatientManager patientManager, Patient patient, MainWindow mainWindow)
         {
             InitializeComponent();
             this._patient = patient;
             this._mainWindow = mainWindow;
+            this._patientManager = patientManager;
             TitleTextBlock.Text = $"Welcome {patient.FirstName} {patient.LastName}";
             AddressTextBox.Text = patient.Address;
             MedicalHistoryTextBox.Text = patient.MedicalHistory;
@@ -44,6 +47,15 @@ namespace HealthCareAppWPF
 
         private void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
+            if (AddressTextBox.Text != _patient.Address)
+            {
+                _patient.Address = AddressTextBox.Text;
+                _patientManager.Update(_patient);
+            }
+            else
+            {
+                MessageBox.Show("No changes to update.");
+            }
 
         }
 
