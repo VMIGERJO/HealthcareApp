@@ -22,11 +22,6 @@ namespace EFDal.Data
         public DbSet<Doctor> Doctors { get; set; }
 
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Data Source=.\\SQLEXPRESS;" + "Initial Catalog=HealthcareDb;" + "Integrated Security=True;" + "Trusted_Connection=True;" + "TrustServerCertificate=True");
-
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
