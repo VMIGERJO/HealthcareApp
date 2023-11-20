@@ -11,12 +11,12 @@
         <TextBlock Text="Prescription History" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="24" Margin="10,20,10,0"/>
 
         <!-- Prescription ListView -->
-        <ListView Name="PrescriptionListView" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,60,10,0">
+        <ListView Name="PrescriptionListView" MaxHeight="250" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,60,10,0">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Date" Width="120" DisplayMemberBinding="{Binding Date}" />
-                    <GridViewColumn Header="Patient" Width="200" DisplayMemberBinding="{Binding Patient}" />
-                    <GridViewColumn Header="Medications" Width="300" DisplayMemberBinding="{Binding Medications}" />
+                    <GridViewColumn Header="Patient" Width="200" DisplayMemberBinding="{Binding PatientName}" />
+                    <GridViewColumn Header="Medications" Width="300" DisplayMemberBinding="{Binding MedicationNames}" />
                 </GridView>
             </ListView.View>
         </ListView>
@@ -24,7 +24,7 @@
         <!-- Actions StackPanel -->
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="39,366,0,0">
             <!-- Repeat Prescription Button -->
-            <Button Content="Repeat Prescription" x:Name="RepeatPrescriptionButton" Width="150" Height="31"/>
+            <Button Content="Repeat Prescription" Click="RepeatPrescriptionButton_Click" x:Name="RepeatPrescriptionButton" Width="150" Height="31"/>
             <!-- Repeat Prescription Button -->
         </StackPanel>
     </Grid>
