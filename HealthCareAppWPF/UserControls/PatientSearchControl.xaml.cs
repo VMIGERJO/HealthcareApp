@@ -37,12 +37,12 @@ namespace HealthCareAppWPF
             this._doctor = doctor;
         }
 
-        private void PatientSearchButton_Click(object sender, RoutedEventArgs e)
+        private async void PatientSearchButton_Click(object sender, RoutedEventArgs e)
         {
             PatientSearchValuesDTO patientQuery = new();
             patientQuery.FirstName = PatientFirstNameBox.Text;
             patientQuery.LastName = PatientLastNameBox.Text;
-            List<PatientBasicDTO> matchingPatients = _patientManager.PatientSearch(patientQuery);
+            List<PatientBasicDTO> matchingPatients = await _patientManager.PatientSearchAsync(patientQuery);
             PatientListView.ItemsSource = matchingPatients;
             PatientListView.SelectionChanged += PatientListView_SelectionChanged;
 

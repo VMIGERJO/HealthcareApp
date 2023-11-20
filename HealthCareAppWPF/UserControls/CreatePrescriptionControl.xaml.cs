@@ -71,11 +71,11 @@ namespace HealthCareAppWPF
             }
         }
 
-        private void FilterButton_Click(object sender, RoutedEventArgs e)
+        private async void FilterButton_Click(object sender, RoutedEventArgs e)
         {
             MedicationSearchValuesDTO medicationQuery = new();
             medicationQuery.Name = FilterByNameBox.Text;
-            List<MedicationBasicDTO> matchingMedications = _medicationManager.MedicationSearch(medicationQuery);
+            List<MedicationBasicDTO> matchingMedications = await _medicationManager.MedicationSearchAsync(medicationQuery);
             MedicationsListView.ItemsSource = matchingMedications;
         }
 

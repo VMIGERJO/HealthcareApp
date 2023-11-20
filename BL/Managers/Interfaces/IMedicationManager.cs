@@ -11,6 +11,6 @@ namespace BL.Managers.Interfaces
     public interface IMedicationManager : IGenericManager<Medication>
     {
         Task<List<MedicationBasicDTO>> GetAllMedicationsAsync();
-        List<MedicationBasicDTO> MedicationSearch(MedicationSearchValuesDTO medicationQuery);
+        Task<List<MedicationBasicDTO>> MedicationSearchAsync(MedicationSearchValuesDTO medicationQuery);
     }
 }
