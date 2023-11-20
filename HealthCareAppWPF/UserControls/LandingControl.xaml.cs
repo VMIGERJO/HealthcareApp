@@ -1,6 +1,7 @@
 ﻿using BL.DTO;
 using BL.Managers.Interfaces;
 using EFDal.Entities;
+using EFDal.Exceptions;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -152,12 +153,25 @@ namespace HealthCareAppWPF
         private void HandlePatientLogin()
         {
             PatientSearchValuesDTO patientQuery = new();
-            patientQuery.FirstName = DoctorLoginFirstNameBox.Text;
-            patientQuery.LastName = DoctorLoginLastNameBox.Text;
-            Patient loggedInPatient = _patientManager.UniquePatientSearch(patientQuery);
-            IPrescriptionManager prescriptionManager = App.ServiceProvider.GetService<IPrescriptionManager>();
-            PatientLandingControl patientLandingControl = new(_patientManager, prescriptionManager, loggedInPatient, _mainWindow);
-            _mainWindow.NavigateToView(patientLandingControl);
+            patientQuery.FirstName = DoctorLoginFirstNameBox.Text.Trim();
+            patientQuery.LastName = DoctorLoginLastNameBox.Text.Trim();
+            try
+            {
+                Patient loggedInPatient = _patientManager.UniquePatientSearch(patientQuery);
+                IPrescriptionManager prescriptionManager = App.ServiceProvider.GetService<IPrescriptionManager>();
+                PatientLandingControl patientLandingControl = new(_patientManager, prescriptionManager, loggedInPatient, _mainWindow);
+                _mainWindow.NavigateToView(patientLandingControl);
+            }
+            catch (NoResultsFoundException noResultsEx)
+            {
+
+                MessageBox.Show($"This Patient was not found, please create an account first.", "No results found", MessageBoxButton.OK, MessageBoxImage.Error);
+
+            } catch (NonUniqueQueryException)
+            {
+                MessageBox.Show($"Please review your input, too many results were found", "Too many results", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            
         }
 
         private void HandleDoctorLogin()
