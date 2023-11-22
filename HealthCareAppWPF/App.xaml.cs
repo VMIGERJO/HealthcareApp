@@ -10,6 +10,7 @@ using EFDal.Repositories;
 using BL.Managers;
 using EFDal.Data;
 using System.Windows.Controls;
+using HealthCareAppWPF.UserControls;
 
 namespace HealthCareAppWPF
 {
@@ -56,6 +57,7 @@ namespace HealthCareAppWPF
             services.AddTransient<PatientLandingControl>();
             services.AddTransient<DoctorSearchControl>();
             services.AddTransient<PastPrescriptionsControl>();
+            services.AddTransient<HealthAgencyDashboardControl>();
 
             // Build the service provider.
             ServiceProvider = services.BuildServiceProvider();

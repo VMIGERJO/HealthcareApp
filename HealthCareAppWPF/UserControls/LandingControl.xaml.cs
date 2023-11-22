@@ -2,6 +2,7 @@
 using BL.Managers.Interfaces;
 using EFDal.Entities;
 using EFDal.Exceptions;
+using HealthCareAppWPF.UserControls;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -73,8 +74,8 @@ namespace HealthCareAppWPF
 
         private void HandlePatientRegistration()
         {
-            string firstName = DoctorLoginFirstNameBox.Text;
-            string lastName = DoctorLoginLastNameBox.Text;
+            string firstName = LoginFirstNameBox.Text;
+            string lastName = LoginLastNameBox.Text;
             string address = AddressBox.Text;
             int age;
 
@@ -110,10 +111,10 @@ namespace HealthCareAppWPF
 
         private void HandleDoctorRegistration()
         {
-            string firstName = DoctorLoginFirstNameBox.Text;
-            string lastName = DoctorLoginLastNameBox.Text;
+            string firstName = LoginFirstNameBox.Text;
+            string lastName = LoginLastNameBox.Text;
             string specialization = SpecializationBox.Text;
-            
+
 
             Doctor newDoctor = new Doctor
             {
@@ -146,15 +147,23 @@ namespace HealthCareAppWPF
                 case "Doctor":
                     HandleDoctorLogin();
                     break;
+                case "Health Agency":
+                    HandleHealthAgencyLogin();
+                    break;
             }
         }
 
+        private void HandleHealthAgencyLogin()
+        {
+            HealthAgencyDashboardControl healthAgencyDashboardControl = App.ServiceProvider.GetService<HealthAgencyDashboardControl>();
+            _mainWindow.NavigateToView(healthAgencyDashboardControl);
+        }
 
         private void HandlePatientLogin()
         {
             PatientSearchValuesDTO patientQuery = new();
-            patientQuery.FirstName = DoctorLoginFirstNameBox.Text.Trim();
-            patientQuery.LastName = DoctorLoginLastNameBox.Text.Trim();
+            patientQuery.FirstName = LoginFirstNameBox.Text.Trim();
+            patientQuery.LastName = LoginLastNameBox.Text.Trim();
             try
             {
                 Patient loggedInPatient = _patientManager.UniquePatientSearch(patientQuery);
@@ -167,18 +176,19 @@ namespace HealthCareAppWPF
 
                 MessageBox.Show($"This Patient was not found, please create an account first.", "No results found", MessageBoxButton.OK, MessageBoxImage.Error);
 
-            } catch (NonUniqueQueryException)
+            }
+            catch (NonUniqueQueryException)
             {
                 MessageBox.Show($"Please review your input, too many results were found", "Too many results", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            
+
         }
 
         private void HandleDoctorLogin()
         {
             DoctorSearchValuesDTO doctorQuery = new();
-            doctorQuery.FirstName = DoctorLoginFirstNameBox.Text;
-            doctorQuery.LastName = DoctorLoginLastNameBox.Text;
+            doctorQuery.FirstName = LoginFirstNameBox.Text;
+            doctorQuery.LastName = LoginLastNameBox.Text;
             Doctor loggedInDoctor = _doctorManager.UniqueDoctorSearch(doctorQuery);
             DoctorLandingControl doctorLandingControl = new(_mainWindow, loggedInDoctor);
             _mainWindow.NavigateToView(doctorLandingControl);
@@ -205,10 +215,20 @@ namespace HealthCareAppWPF
 
             if (registrationModeActive)
             {
-                ToggleRegistrationFields(previousRole, false);
-                ToggleRegistrationFields(selectedRole, true);
+                ToggleFields("registration", false, previousRole);
+                ToggleFields("registration", true, selectedRole);
             }
-            
+            else
+            {
+                if (selectedRole == "Health Agency")
+                {
+                    ToggleFields("login", false);
+                }
+                else
+                {
+                    ToggleFields("login", true);
+                }
+            }
         }
 
         private void SwitchToRegistrationMode()
@@ -216,9 +236,10 @@ namespace HealthCareAppWPF
             RegistrationToggle.Content = "Switch to Login";
             SignInTitle.Content = "Create account as a:";
             RoleDropdown.Margin = new Thickness(340, 73, 0, 0);
+            HealthAgencyOption.Visibility = Visibility.Collapsed;
             SignInTitle.Margin = new Thickness(120, 65, 0, 0);
             SignInButton.Content = "Create account";
-            ToggleRegistrationFields(RoleDropdown.Text, true);
+            ToggleFields("registration", true, RoleDropdown.Text);
         }
 
         private void SwitchToLoginMode()
@@ -227,30 +248,37 @@ namespace HealthCareAppWPF
             SignInTitle.Content = "Log in as a: ";
             SignInTitle.Margin = new Thickness(180, 65, 0, 0);
             RoleDropdown.Margin = new Thickness(320, 73, 0, 0);
+            HealthAgencyOption.Visibility = Visibility.Visible;
             SignInButton.Content = "Login";
-            ToggleRegistrationFields(RoleDropdown.Text, false);
+            ToggleFields("registration", false, RoleDropdown.Text);
         }
 
-
-        private void ToggleRegistrationFields(string role, bool showFields)
+        private void ToggleFields(string fieldType, bool showFields, string role = "")
         {
-            if (role == "Doctor")
+            Visibility visibility = showFields ? Visibility.Visible : Visibility.Collapsed;
+
+            switch (fieldType)
             {
+                case "login":
+                    SetVisibility(visibility, RegistrationToggle, LoginFirstNameBox, LoginLastNameBox, LoginFirstNameLabel, LoginLastNameLabel);
+                    break;
 
-                SpecializationLabel.Visibility = showFields ? Visibility.Visible : Visibility.Hidden;
-                SpecializationBox.Visibility = showFields ? Visibility.Visible : Visibility.Hidden;
-            }
-
-            if (role == "Patient")
-            {
-                AgeLabel.Visibility = showFields ? Visibility.Visible : Visibility.Hidden;
-                AgeBox.Visibility = showFields ? Visibility.Visible : Visibility.Hidden;
-
-                AddressLabel.Visibility = showFields ? Visibility.Visible : Visibility.Hidden;
-                AddressBox.Visibility = showFields ? Visibility.Visible : Visibility.Hidden;
+                case "registration":
+                    SetVisibility(role == "Doctor" ? visibility : Visibility.Collapsed, SpecializationLabel, SpecializationBox);
+                    SetVisibility(role == "Patient" ? visibility : Visibility.Collapsed, AgeLabel, AgeBox, AddressLabel, AddressBox);
+                    break;
             }
         }
+
+        private void SetVisibility(Visibility visibility, params UIElement[] elements)
+        {
+            foreach (var element in elements)
+            {
+                element.Visibility = visibility;
+            }
+        }
+
+
+
     }
-
-
 }

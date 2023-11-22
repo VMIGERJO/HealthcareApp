@@ -44,8 +44,7 @@ namespace HealthCareAppWPF
             {
                 PrescriptionViewDTO? selectedPrescriptionDTO = PrescriptionListView.SelectedItem as PrescriptionViewDTO;
 
-                if (true)
-                {
+                
                     int prescriptionId = selectedPrescriptionDTO.Id;
 
                     // Get the original Prescription
@@ -59,7 +58,9 @@ namespace HealthCareAppWPF
                         PrescriptionDate = DateTime.Now,
                     };
                     repeatedPrescription.Medications.AddRange(originalPrescription.Medications);
-                    _prescriptionManager.Add(repeatedPrescription);
+                    bool addSuccesful = _prescriptionManager.Add(repeatedPrescription);
+                if (addSuccesful)
+                {
                     LoadPageInformation();
                     // Show a success message
                     MessageBox.Show("Prescription repeated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information); 

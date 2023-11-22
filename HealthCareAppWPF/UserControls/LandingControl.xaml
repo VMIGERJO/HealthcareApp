@@ -14,18 +14,19 @@
         <ComboBox Name="RoleDropdown" HorizontalAlignment="Left" FontSize="18" VerticalAlignment="Top" Width="150" Margin="320,73,0,0" SelectionChanged="RoleDropdown_SelectionChanged">
             <ComboBoxItem Content="Patient"/>
             <ComboBoxItem Content="Doctor"/>
+            <ComboBoxItem Name="HealthAgencyOption" Content="Health Agency"/>
         </ComboBox>
-        <Label Content="First Name:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="117,116,0,0"/>
-        <TextBox Name="DoctorLoginFirstNameBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="168" Margin="194,122,0,0" Height="20"/>
+        <Label Name="LoginFirstNameLabel"  Content="First Name:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="117,116,0,0"/>
+        <TextBox Name="LoginFirstNameBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="168" Margin="194,122,0,0" Height="20"/>
         <Label Content="Specialization:" Name="SpecializationLabel" Visibility="Hidden" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="102,188,0,0"/>
         <TextBox Name="SpecializationBox" Visibility="Hidden" HorizontalAlignment="Left" VerticalAlignment="Top" Width="169" Margin="194,188,0,0" Height="23"/>
-        <Label Content="Age:" Name="AgeLabel" Visibility="Hidden" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="33,188,0,0"/>
+        <Label   Content="Age:" Name="AgeLabel" Visibility="Hidden" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="33,188,0,0"/>
         <TextBox Name="AgeBox" Visibility="Hidden" HorizontalAlignment="Left" VerticalAlignment="Top" Width="169" Margin="70,191,0,0" Height="23"/>
 
         <Label Content="Address:" Name="AddressLabel" Visibility="Hidden" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,188,0,0"/>
         <TextBox Name="AddressBox" Visibility="Hidden" HorizontalAlignment="Left" VerticalAlignment="Top" Width="170" Margin="326,188,0,0" Height="62"/>
-        <Label Content="Last Name:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="117,152,0,0"/>
-        <TextBox Name="DoctorLoginLastNameBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="168" Margin="194,155,0,0" Height="20"/>
+        <Label Name="LoginLastNameLabel" Content="Last Name:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="117,152,0,0"/>
+        <TextBox Name="LoginLastNameBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="168" Margin="194,155,0,0" Height="20"/>
         <Button Content="Login" Name="SignInButton" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Height="40" Click="SignInButton_Click" Margin="223,257,0,0" />
     </Grid>
 </UserControl>
