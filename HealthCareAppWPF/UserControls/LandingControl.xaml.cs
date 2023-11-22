@@ -2,6 +2,7 @@
 using BL.Managers.Interfaces;
 using EFDal.Entities;
 using EFDal.Exceptions;
+using HealthCareAppWPF.UserControls;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -154,7 +155,8 @@ namespace HealthCareAppWPF
 
         private void HandleHealthAgencyLogin()
         {
-            throw new NotImplementedException();
+            HealthAgencyDashboardControl healthAgencyDashboardControl = App.ServiceProvider.GetService<HealthAgencyDashboardControl>();
+            _mainWindow.NavigateToView(healthAgencyDashboardControl);
         }
 
         private void HandlePatientLogin()

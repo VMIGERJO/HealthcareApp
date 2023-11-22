@@ -21,6 +21,22 @@ namespace BL.Managers
             _medicationRepository = medicationRepository;
         }
 
+        public bool Add(CreateMedicationDTO newMedicationDTO)
+        {
+            Medication medication = new()
+            {
+                Name = newMedicationDTO.Name ?? throw new ArgumentNullException(nameof(newMedicationDTO.Name), "The required field cannot be null."),
+                Dosage = newMedicationDTO.Dosage ?? throw new ArgumentNullException(nameof(newMedicationDTO.Name), "The required field cannot be null."),
+                Manufacturer = newMedicationDTO.Manufacturer,
+                ActiveSubstance = newMedicationDTO.ActiveSubstance
+
+            };
+
+            return base.Add(medication);
+
+        }
+    
+
         public async Task<List<MedicationBasicDTO>> GetAllMedicationsAsync()
         {
             var searchResults = await _medicationRepository.GetAllAsync();
