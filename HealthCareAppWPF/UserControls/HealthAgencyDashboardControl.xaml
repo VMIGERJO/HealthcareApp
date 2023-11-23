@@ -14,14 +14,14 @@
         </Grid.RowDefinitions>
 
         <!-- Title Section -->
-        <StackPanel Grid.Row="0" Background="#3498DB">
+        <StackPanel Grid.Row="0" Background="#003366">
             <TextBlock Text="Health Agency Dashboard" Foreground="White" FontSize="20" FontWeight="Bold"/>
         </StackPanel>
 
         <!-- Content Section -->
         <StackPanel Grid.Row="1" Margin="10">
             <!-- Medication Form -->
-            <Border BorderBrush="#3498DB" BorderThickness="2" Padding="10" CornerRadius="5" Margin="0,0,0,20">
+            <Border BorderBrush="#E6F7FF" BorderThickness="2" Padding="10" CornerRadius="5" Margin="0,0,0,20">
                 <StackPanel>
                     <TextBlock Text="Add a New Medication" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
 
