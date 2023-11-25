@@ -100,7 +100,7 @@ namespace HealthCareAppWPF
             {
                 FirstName = firstName,
                 LastName = lastName,
-               // Address = address,
+                Address = address,
                 Age = age
             };
 
