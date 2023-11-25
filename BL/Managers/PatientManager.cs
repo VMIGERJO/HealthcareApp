@@ -34,6 +34,11 @@ namespace BL.Managers
             base.Update(patient);
         }
 
+        public async Task<Patient> GetPatientByIdIncludingAddressAsync(int patientId)
+        {
+            return await _patientRepository.GetPatientByIdIncludingAddressAsync(patientId);
+        }
+
         public void ValidatePatient(Patient patient)
         {
             if (patient == null)

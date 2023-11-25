@@ -17,6 +17,13 @@ namespace EFDal.Repositories
         {
         }
 
+        public async Task<Patient> GetPatientByIdIncludingAddressAsync(int patientId)
+        {
+            return await _dbSet
+                .Include(p => p.Address)
+                .FirstOrDefaultAsync(p => p.Id == patientId);
+        }
+
         public async Task<Patient> SearchPatientWithAddressAsync(List<Expression<Func<Patient, bool>>> searchExpression)
         {
             return await base.SearchUniqueAsync(searchExpression, p => p.Address);

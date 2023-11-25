@@ -53,8 +53,8 @@ namespace HealthCareAppWPF
             if (PatientListView.SelectedItem != null)
             {
                 int patientId = ((PatientBasicDTO)PatientListView.SelectedItem).Id;
-                Patient selectedPatient = await _patientManager.GetById(patientId);
-                // AddressTextBox.Text = selectedPatient.Address;
+                Patient selectedPatient = await _patientManager.GetPatientByIdIncludingAddressAsync(patientId);
+                AddressTextBox.Text = selectedPatient.Address.ToString();
                 MedicalHistoryTextBox.Text = selectedPatient.MedicalHistory;
                 PatientDetailsContent.Visibility = Visibility.Visible;
             }
@@ -65,22 +65,21 @@ namespace HealthCareAppWPF
 
         }
 
-        private async void UpdatePatientDetailsButton_Click(object sender, RoutedEventArgs e)
+        private async void UpdateMedicalHistoryButton_Click(object sender, RoutedEventArgs e)
         {
             int patientId = ((PatientBasicDTO)PatientListView.SelectedItem).Id;
-            Patient selectedPatient = await _patientManager.GetById(patientId);
+            Patient selectedPatient = await _patientManager.GetByIdAsync(patientId);
             selectedPatient.MedicalHistory = MedicalHistoryTextBox.Text;
-            // selectedPatient.Address = AddressTextBox.Text;
-
+            
             try
             {
                 _patientManager.Update(selectedPatient);
-                MessageBox.Show("Patient details updated succesfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Patient medical history updated succesfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error updating patient details: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Error updating patient medical history: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             
         }
@@ -90,7 +89,7 @@ namespace HealthCareAppWPF
             if (PatientListView.SelectedItem != null)
             {
                 int patientId = ((PatientBasicDTO)PatientListView.SelectedItem).Id;
-                Patient selectedPatient = await _patientManager.GetById(patientId);
+                Patient selectedPatient = await _patientManager.GetByIdAsync(patientId);
                 IMedicationManager medicationManager = App.ServiceProvider.GetService<IMedicationManager>();
                 IPrescriptionManager prescriptionManager = App.ServiceProvider.GetService<IPrescriptionManager>();
                 CreatePrescriptionControl createPrescriptionControl = new(selectedPatient, _doctor, medicationManager, prescriptionManager);

@@ -26,7 +26,7 @@ namespace BL.Managers
         }
 
         // Returns an entity by id.
-        public virtual async Task<TEntity> GetById(int id)
+        public virtual async Task<TEntity> GetByIdAsync(int id)
         {
             return await _repository.GetByIdAsync(id);
         }
