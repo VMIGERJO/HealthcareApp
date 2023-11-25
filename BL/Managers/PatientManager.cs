@@ -42,7 +42,7 @@ namespace BL.Managers
             return result;
         }
 
-        public Patient UniquePatientSearch(PatientSearchValuesDTO patientQuery)
+        public async Task<Patient> UniquePatientSearchAsync(PatientSearchValuesDTO patientQuery)
         {
             List<Expression<Func<Patient, bool>>> searchExpression = new();
 
@@ -53,7 +53,7 @@ namespace BL.Managers
                 searchExpression.Add(p => p.FirstName.Contains(patientQuery.FirstName));
 
 
-            return _repository.UniqueSearch(searchExpression);
+            return await _repository.UniqueSearchAsync(searchExpression, p => p.Address);
         }
     }
 }

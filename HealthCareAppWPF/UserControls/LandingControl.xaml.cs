@@ -168,14 +168,14 @@ namespace HealthCareAppWPF
             _mainWindow.NavigateToView(healthAgencyDashboardControl);
         }
 
-        private void HandlePatientLogin()
+        private async Task HandlePatientLogin()
         {
             PatientSearchValuesDTO patientQuery = new();
             patientQuery.FirstName = LoginFirstNameBox.Text.Trim();
             patientQuery.LastName = LoginLastNameBox.Text.Trim();
             try
             {
-                Patient loggedInPatient = _patientManager.UniquePatientSearch(patientQuery);
+                Patient loggedInPatient = await _patientManager.UniquePatientSearchAsync(patientQuery);
                 IPrescriptionManager prescriptionManager = App.ServiceProvider.GetService<IPrescriptionManager>();
                 PatientLandingControl patientLandingControl = new(_patientManager, prescriptionManager, loggedInPatient, _mainWindow);
                 _mainWindow.NavigateToView(patientLandingControl);
@@ -193,12 +193,12 @@ namespace HealthCareAppWPF
 
         }
 
-        private void HandleDoctorLogin()
+        private async Task HandleDoctorLogin()
         {
             DoctorSearchValuesDTO doctorQuery = new();
             doctorQuery.FirstName = LoginFirstNameBox.Text;
             doctorQuery.LastName = LoginLastNameBox.Text;
-            Doctor loggedInDoctor = _doctorManager.UniqueDoctorSearch(doctorQuery);
+            Doctor loggedInDoctor = await _doctorManager.UniqueDoctorSearchAsync(doctorQuery);
             DoctorLandingControl doctorLandingControl = new(_mainWindow, loggedInDoctor);
             _mainWindow.NavigateToView(doctorLandingControl);
         }

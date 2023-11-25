@@ -76,7 +76,7 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
         return result;
     }
 
-    public virtual TEntity UniqueSearch(List<Expression<Func<TEntity, bool>>> filters)
+    public async virtual Task<TEntity> UniqueSearchAsync(List<Expression<Func<TEntity, bool>>> filters, params Expression<Func<TEntity, object>>[] includes)
     {
         IQueryable<TEntity> queryAble = _dbSet.AsQueryable();
 
@@ -89,7 +89,10 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
             queryAble = queryAble.Where(filter);
         }
 
-        List<TEntity> result = queryAble.ToList();
+        // Include related entities
+        queryAble = includes.Aggregate(queryAble, (current, include) => current.Include(include));
+
+        List<TEntity> result = await queryAble.ToListAsync();
 
         if (queryAble.Count() == 0)
         {

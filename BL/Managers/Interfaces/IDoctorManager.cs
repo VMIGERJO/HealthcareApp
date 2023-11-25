@@ -13,7 +13,7 @@ namespace BL.Managers.Interfaces
     {
         Task<List<DoctorBasicDTO>> DoctorSearchAsync(DoctorSearchValuesDTO doctorQuery);
         Task<List<DoctorBasicDTO>> GetAllDoctorsAsync();
-        Doctor UniqueDoctorSearch(DoctorSearchValuesDTO doctorQuery);
+        Task<Doctor> UniqueDoctorSearchAsync(DoctorSearchValuesDTO doctorQuery);
         
     }
 }
