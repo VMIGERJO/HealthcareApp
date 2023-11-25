@@ -175,7 +175,7 @@ namespace HealthCareAppWPF
             patientQuery.LastName = LoginLastNameBox.Text.Trim();
             try
             {
-                Patient loggedInPatient = await _patientManager.UniquePatientSearchAsync(patientQuery);
+                Patient loggedInPatient = await _patientManager.SearchPatientWithAdressAsync(patientQuery);
                 IPrescriptionManager prescriptionManager = App.ServiceProvider.GetService<IPrescriptionManager>();
                 PatientLandingControl patientLandingControl = new(_patientManager, prescriptionManager, loggedInPatient, _mainWindow);
                 _mainWindow.NavigateToView(patientLandingControl);

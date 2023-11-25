@@ -31,7 +31,7 @@ namespace BL.Managers
             if (prescriptionQuery?.DoctorID != null)
                 searchExpression.Add(p => p.DoctorID.Equals(prescriptionQuery.DoctorID));
 
-            List<Prescription> searchResults = await _repository.SearchAsync(searchExpression, p => p.PrescriptionDate, false, p => p.Patient, p => p.Doctor, p => p.Medications);
+            List<Prescription> searchResults = await _prescriptionRepository.SearchPrescriptionsIncludingDoctorPatientMedicationAsync(searchExpression, p => p.PrescriptionDate, false);
 
             var result = searchResults.Select(pr => new PrescriptionViewDTO()
             {

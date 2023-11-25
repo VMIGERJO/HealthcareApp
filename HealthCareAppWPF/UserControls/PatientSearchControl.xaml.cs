@@ -42,7 +42,7 @@ namespace HealthCareAppWPF
             PatientSearchValuesDTO patientQuery = new();
             patientQuery.FirstName = PatientFirstNameBox.Text;
             patientQuery.LastName = PatientLastNameBox.Text;
-            List<PatientBasicDTO> matchingPatients = await _patientManager.PatientSearchAsync(patientQuery);
+            List<PatientBasicDTO> matchingPatients = await _patientManager.SearchPatientsAsync(patientQuery);
             PatientListView.ItemsSource = matchingPatients;
             PatientListView.SelectionChanged += PatientListView_SelectionChanged;
 

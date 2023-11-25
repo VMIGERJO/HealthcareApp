@@ -11,7 +11,7 @@ namespace BL.Managers
     public class GenericManager<TEntity> : IGenericManager<TEntity>
     where TEntity : BaseEntity
     {
-        protected readonly IGenericRepository<TEntity> _repository;
+        private readonly IGenericRepository<TEntity> _repository;
 
         // Constructs a new instance of the Manager class.
         public GenericManager(IGenericRepository<TEntity> repository)

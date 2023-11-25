@@ -76,7 +76,7 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
         return result;
     }
 
-    public async virtual Task<TEntity> UniqueSearchAsync(List<Expression<Func<TEntity, bool>>> filters, params Expression<Func<TEntity, object>>[] includes)
+    public async virtual Task<TEntity> SearchUniqueAsync(List<Expression<Func<TEntity, bool>>> filters, params Expression<Func<TEntity, object>>[] includes)
     {
         IQueryable<TEntity> queryAble = _dbSet.AsQueryable();
 
