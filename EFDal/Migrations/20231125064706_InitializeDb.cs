@@ -3,14 +3,34 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace HealthcareApp.Migrations
+namespace EFDal.Migrations
 {
     /// <inheritdoc />
-    public partial class RefactoringConfiguration : Migration
+    public partial class InitializeDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Address",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Street = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
+                    HouseNumber = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    Appartment = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
+                    City = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    PostalCode = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Country = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Address", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Doctors",
                 columns: table => new
@@ -19,7 +39,9 @@ namespace HealthcareApp.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
-                    Specialization = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true)
+                    Specialization = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -34,8 +56,10 @@ namespace HealthcareApp.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ActiveSubstance = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: true),
                     Name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Dosage = table.Column<float>(type: "real", maxLength: 40, nullable: true),
-                    Manufacturer = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Dosage = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
+                    Manufacturer = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -51,12 +75,20 @@ namespace HealthcareApp.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     Age = table.Column<int>(type: "int", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
-                    MedicalHistory = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true)
+                    MedicalHistory = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
+                    AddressId = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Patients", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Patients_Address_AddressId",
+                        column: x => x.AddressId,
+                        principalTable: "Address",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -67,7 +99,9 @@ namespace HealthcareApp.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PatientID = table.Column<int>(type: "int", nullable: false),
                     DoctorID = table.Column<int>(type: "int", nullable: false),
-                    PrescriptionDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    PrescriptionDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -87,33 +121,38 @@ namespace HealthcareApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PrescriptionMedication",
+                name: "MedicationPrescription",
                 columns: table => new
                 {
-                    PrescriptionID = table.Column<int>(type: "int", nullable: false),
-                    MedicationID = table.Column<int>(type: "int", nullable: false)
+                    MedicationsId = table.Column<int>(type: "int", nullable: false),
+                    PrescriptionsId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PrescriptionMedication", x => new { x.PrescriptionID, x.MedicationID });
+                    table.PrimaryKey("PK_MedicationPrescription", x => new { x.MedicationsId, x.PrescriptionsId });
                     table.ForeignKey(
-                        name: "FK_PrescriptionMedication_Medications_MedicationID",
-                        column: x => x.MedicationID,
+                        name: "FK_MedicationPrescription_Medications_MedicationsId",
+                        column: x => x.MedicationsId,
                         principalTable: "Medications",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_PrescriptionMedication_Prescriptions_PrescriptionID",
-                        column: x => x.PrescriptionID,
+                        name: "FK_MedicationPrescription_Prescriptions_PrescriptionsId",
+                        column: x => x.PrescriptionsId,
                         principalTable: "Prescriptions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_PrescriptionMedication_MedicationID",
-                table: "PrescriptionMedication",
-                column: "MedicationID");
+                name: "IX_MedicationPrescription_PrescriptionsId",
+                table: "MedicationPrescription",
+                column: "PrescriptionsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Patients_AddressId",
+                table: "Patients",
+                column: "AddressId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Prescriptions_DoctorID",
@@ -130,7 +169,7 @@ namespace HealthcareApp.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "PrescriptionMedication");
+                name: "MedicationPrescription");
 
             migrationBuilder.DropTable(
                 name: "Medications");
@@ -143,6 +182,9 @@ namespace HealthcareApp.Migrations
 
             migrationBuilder.DropTable(
                 name: "Patients");
+
+            migrationBuilder.DropTable(
+                name: "Address");
         }
     }
 }

@@ -44,7 +44,7 @@ namespace HealthCareAppWPF
         private async Task LoadPageInformation()
         {
             TitleTextBlock.Text = $"Welcome {_patient.FirstName} {_patient.LastName}";
-            AddressTextBox.Text = _patient.Address;
+           // AddressTextBox.Text = _patient.Address;
             MedicalHistoryTextBox.Text = _patient.MedicalHistory;
             PrescriptionListView.ItemsSource = await _prescriptionManager.PrescriptionSearchAsync(new PrescriptionSearchValuesDTO() { PatientID = _patient.Id });
         }
@@ -58,15 +58,15 @@ namespace HealthCareAppWPF
 
         private void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
-            if (AddressTextBox.Text != _patient.Address)
-            {
-                _patient.Address = AddressTextBox.Text;
-                _patientManager.Update(_patient);
-            }
-            else
-            {
-                MessageBox.Show("No changes to update.");
-            }
+            //if (addresstextbox.text != _patient.address)
+            //{
+            //    _patient.address = addresstextbox.text;
+            //    _patientmanager.update(_patient);
+            //}
+            //else
+            //    {
+            //        messagebox.show("no changes to update.");
+            //    }
 
         }
 

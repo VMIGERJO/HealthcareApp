@@ -1,4 +1,4 @@
-﻿using HealthcareApp.Entities;
+﻿using EFDal.Entities;
 using System.Linq.Expressions;
 
 public interface IGenericRepository<TEntity> where TEntity : BaseEntity

@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using EFDal.Entities;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HealthcareApp.Entities
+namespace EFDal.Entities
 {
     public class BaseEntity
     {

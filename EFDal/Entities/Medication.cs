@@ -1,4 +1,4 @@
-﻿using HealthcareApp.Entities;
+﻿using EFDal.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +14,7 @@ namespace EFDal.Entities
         public String Dosage { get; set; }
         public string? Manufacturer { get; set; }
 
-        public List<Prescription> Prescriptions = new();
+        public List<Prescription> Prescriptions { get; } = new();
     }
 
 }

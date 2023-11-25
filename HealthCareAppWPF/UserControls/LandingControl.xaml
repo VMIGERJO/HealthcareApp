@@ -9,13 +9,13 @@
 
     <Grid>
         <!-- Title and Toggle Button -->
-        <Label Name="SignInTitle" Content="Log in as a:" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="24" Margin="182,65,0,0" Foreground="#003366"/>
+        <Label Name="SignInTitle" Content="Log in as a:" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="24" Margin="122,65,0,0" Foreground="#003366"/>
         <!-- Dark blue text -->
         <ToggleButton Content="Create account" Click="RegistrationToggle_Click" Name="RegistrationToggle" HorizontalAlignment="Left" VerticalAlignment="Top" Width="132" Height="31" Margin="27,23,0,0" Background="#003366" Foreground="White"/>
         <!-- Dark blue button with white text -->
 
         <!-- Role Dropdown -->
-        <ComboBox Name="RoleDropdown" HorizontalAlignment="Left" FontSize="18" VerticalAlignment="Top" Width="150" Margin="320,73,0,0" SelectionChanged="RoleDropdown_SelectionChanged" Background="White" Foreground="#003366">
+        <ComboBox Name="RoleDropdown" HorizontalAlignment="Left" FontSize="18" VerticalAlignment="Top" Width="150" Margin="260,73,0,0" SelectionChanged="RoleDropdown_SelectionChanged" Background="White" Foreground="#003366">
             <!-- White background with dark blue text -->
             <ComboBoxItem Content="Patient"/>
             <ComboBoxItem Content="Doctor"/>
@@ -23,21 +23,54 @@
         </ComboBox>
 
         <!-- First Name -->
-        <Label Name="LoginFirstNameLabel" Content="First Name:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="117,116,0,0" Foreground="#003366"/>
-        <TextBox Name="LoginFirstNameBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="168" Margin="194,122,0,0" Height="20"/>
+        <Label Name="LoginFirstNameLabel" Content="First Name:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="117,123,0,0" Foreground="#003366"/>
+        <TextBox Name="LoginFirstNameBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="168" Margin="194,125,0,0" Height="20"/>
 
         <!-- Specialization, Age, and Address -->
         <Label Content="Specialization:" Name="SpecializationLabel" Visibility="Hidden" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="102,188,0,0" Foreground="#003366"/>
         <TextBox Name="SpecializationBox" Visibility="Hidden" HorizontalAlignment="Left" VerticalAlignment="Top" Width="169" Margin="194,188,0,0" Height="23"/>
-        <Label Content="Age:" Name="AgeLabel" Visibility="Hidden" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="33,188,0,0" Foreground="#003366"/>
-        <TextBox Name="AgeBox" Visibility="Hidden" HorizontalAlignment="Left" VerticalAlignment="Top" Width="169" Margin="70,191,0,0" Height="23"/>
-        <Label Content="Address:" Name="AddressLabel" Visibility="Hidden" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,188,0,0" Foreground="#003366"/>
-        <TextBox Name="AddressBox" Visibility="Hidden" HorizontalAlignment="Left" VerticalAlignment="Top" Width="170" Margin="326,188,0,0" Height="62"/>
+        <Label Content="Age:" Name="AgeLabel" Visibility="Hidden" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="152,181,0,0" Foreground="#003366"/>
+        <TextBox Name="AgeBox" Visibility="Hidden" HorizontalAlignment="Left" VerticalAlignment="Top" Width="169" Margin="194,185,0,0" Height="20"/>
+        <!-- Address GroupBox -->
+        <GroupBox Name="AddressFields" Visibility="Hidden" HorizontalAlignment="Center" BorderBrush="Navy" BorderThickness="2" VerticalAlignment="Top" Margin="10,205,10,0">
+            <GroupBox.Header>
+                <TextBlock Text="Address" FontWeight="Bold"/>
+            </GroupBox.Header>
+            <Grid Margin="0,0,5,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="47*"/>
+                    <ColumnDefinition Width="223*"/>
+                </Grid.ColumnDefinitions>
+                <!-- Street -->
+                <Label Content="Street:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="16,10,0,0" Foreground="#003366"/>
+                <TextBox Name="StreetBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="169" Margin="2,10,0,0" Height="23" Grid.Column="1"/>
+
+                <!-- House Number -->
+                <Label Content="Number:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="216,10,0,0" Foreground="#003366" Grid.Column="1"/>
+                <TextBox Name="HouseNumberBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="168" Margin="276,11,0,0" Height="23" Grid.Column="1"/>
+
+                <!-- Apartment -->
+                <Label Content="Apartment:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="17,40,0,0" Foreground="#003366"/>
+                <TextBox Name="AppartmentBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="170" Margin="2,40,0,0" Height="23" Grid.Column="1"/>
+
+                <!-- City -->
+                <Label Content="City:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="216,40,0,0" Foreground="#003366" Grid.Column="1"/>
+                <TextBox Name="CityBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="169" Margin="276,41,0,0" Height="23" Grid.Column="1"/>
+
+                <!-- Postal Code -->
+                <Label Content="Postal Code:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="17,70,0,0" Foreground="#003366"/>
+                <TextBox Name="PostalCodeBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="169" Margin="2,70,0,0" Height="23" Grid.Column="1"/>
+
+                <!-- Country -->
+                <Label Content="Country:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="216,70,0,0" Foreground="#003366" Grid.Column="1"/>
+                <TextBox Name="CountryBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="170" Margin="276,71,0,0" Height="23" Grid.Column="1"/>
+            </Grid>
+        </GroupBox>
 
         <!-- Last Name and Sign In Button -->
         <Label Name="LoginLastNameLabel" Content="Last Name:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="117,152,0,0" Foreground="#003366"/>
         <TextBox Name="LoginLastNameBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="168" Margin="194,155,0,0" Height="20"/>
-        <Button Content="Login" Name="SignInButton" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Height="40" Click="SignInButton_Click" Margin="223,257,0,0" Background="#003366" Foreground="White"/>
+        <Button Content="Login" Name="SignInButton" HorizontalAlignment="Right" VerticalAlignment="Top" Click="SignInButton_Click" Width="84" Height="40" Margin="0,340,30,0" Background="#003366" Foreground="White"/>
         <!-- Dark blue button with white text -->
     </Grid>
 </UserControl>

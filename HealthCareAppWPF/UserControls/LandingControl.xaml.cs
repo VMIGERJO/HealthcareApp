@@ -76,7 +76,6 @@ namespace HealthCareAppWPF
         {
             string firstName = LoginFirstNameBox.Text;
             string lastName = LoginLastNameBox.Text;
-            string address = AddressBox.Text;
             int age;
 
             // Validate and parse age input
@@ -87,11 +86,21 @@ namespace HealthCareAppWPF
                 return;
             }
 
+            Address address = new()
+            {
+                Street = StreetBox.Text,
+                HouseNumber = HouseNumberBox.Text,
+                Appartment = AppartmentBox.Text,
+                City = CityBox.Text,
+                PostalCode = PostalCodeBox.Text,
+                Country = CountryBox.Text
+            };
+
             Patient newPatient = new Patient
             {
                 FirstName = firstName,
                 LastName = lastName,
-                Address = address,
+               // Address = address,
                 Age = age
             };
 
@@ -265,7 +274,7 @@ namespace HealthCareAppWPF
 
                 case "registration":
                     SetVisibility(role == "Doctor" ? visibility : Visibility.Collapsed, SpecializationLabel, SpecializationBox);
-                    SetVisibility(role == "Patient" ? visibility : Visibility.Collapsed, AgeLabel, AgeBox, AddressLabel, AddressBox);
+                    SetVisibility(role == "Patient" ? visibility : Visibility.Collapsed, AgeLabel, AgeBox, AddressFields);
                     break;
             }
         }

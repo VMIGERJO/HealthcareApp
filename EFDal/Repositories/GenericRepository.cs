@@ -1,7 +1,7 @@
 ﻿using EFDal.Data;
 using EFDal.Exceptions;
 using EFDal.Repositories.Interfaces;
-using HealthcareApp.Entities;
+using EFDal.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

@@ -54,7 +54,7 @@ namespace HealthCareAppWPF
             {
                 int patientId = ((PatientBasicDTO)PatientListView.SelectedItem).Id;
                 Patient selectedPatient = await _patientManager.GetById(patientId);
-                AddressTextBox.Text = selectedPatient.Address;
+                // AddressTextBox.Text = selectedPatient.Address;
                 MedicalHistoryTextBox.Text = selectedPatient.MedicalHistory;
                 PatientDetailsContent.Visibility = Visibility.Visible;
             }
@@ -70,7 +70,7 @@ namespace HealthCareAppWPF
             int patientId = ((PatientBasicDTO)PatientListView.SelectedItem).Id;
             Patient selectedPatient = await _patientManager.GetById(patientId);
             selectedPatient.MedicalHistory = MedicalHistoryTextBox.Text;
-            selectedPatient.Address = AddressTextBox.Text;
+            // selectedPatient.Address = AddressTextBox.Text;
 
             try
             {
