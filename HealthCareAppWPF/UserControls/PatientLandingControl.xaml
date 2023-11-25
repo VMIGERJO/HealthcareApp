@@ -38,7 +38,6 @@
             <TextBox Name="MedicalHistoryTextBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="365" Height="60" Margin="10,380,0,0" IsReadOnly="True"/>
 
             <Button Content="Search for a doctor" Name="SearchDoctorButton" HorizontalAlignment="Left" VerticalAlignment="Top"  Width="116" Height="40" Margin="395,320,0,0" Click="SearchDoctorButton_Click"/>
-            <Button Content="Update" x:Name="UpdateButton" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Margin="286,343,0,0" Visibility="Hidden" Click="UpdateButton_Click"/>
         </Grid>
     </Grid>
 </UserControl>

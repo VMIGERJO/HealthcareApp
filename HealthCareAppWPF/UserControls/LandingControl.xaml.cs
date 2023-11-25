@@ -104,7 +104,18 @@ namespace HealthCareAppWPF
                 Age = age
             };
 
-            bool registrationSuccess = _patientManager.Add(newPatient);
+            bool registrationSuccess = false;
+            try
+            {
+                registrationSuccess = _patientManager.Add(newPatient);
+            }
+            catch (ArgumentException invalidArgEx)
+            {
+
+                MessageBox.Show(invalidArgEx.Message);
+                return;
+            } 
+
 
             if (registrationSuccess)
             {
@@ -199,7 +210,7 @@ namespace HealthCareAppWPF
             doctorQuery.FirstName = LoginFirstNameBox.Text;
             doctorQuery.LastName = LoginLastNameBox.Text;
             Doctor loggedInDoctor = await _doctorManager.UniqueDoctorSearchAsync(doctorQuery);
-            DoctorLandingControl doctorLandingControl = new(_mainWindow, loggedInDoctor);
+            DoctorLandingControl doctorLandingControl = new(_mainWindow, _doctorManager, loggedInDoctor);
             _mainWindow.NavigateToView(doctorLandingControl);
         }
 

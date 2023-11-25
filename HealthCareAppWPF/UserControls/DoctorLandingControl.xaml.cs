@@ -1,4 +1,5 @@
-﻿using BL.Managers.Interfaces;
+﻿using BL.Managers;
+using BL.Managers.Interfaces;
 using EFDal.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -25,19 +26,17 @@ namespace HealthCareAppWPF
     {
         private Doctor _doctor;
         private MainWindow _mainWindow;
-        public DoctorLandingControl(MainWindow mainWindow, Doctor doctor)
+        private IDoctorManager _doctorManager;
+        public DoctorLandingControl(MainWindow mainWindow, IDoctorManager doctorManager, Doctor doctor)
         {
             InitializeComponent();
             this._mainWindow = mainWindow;
             this._doctor = doctor;
+            this._doctorManager = doctorManager;
             TitleTextBlock.Text = $"Welcome Dr. {doctor.FirstName} {doctor.LastName}";
             SpecializationTextBox.Text = $"{doctor.Specialization}";
         }
 
-        private void UpdateButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
 
         private void PrescriptionsHistoryButton_Click(object sender, RoutedEventArgs e)
         {
@@ -52,6 +51,25 @@ namespace HealthCareAppWPF
             IPatientManager patientManager = App.ServiceProvider.GetService<IPatientManager>();
             PatientSearchControl patientSearchControl = new(patientManager, _mainWindow, _doctor);
             _mainWindow.NavigateToView(patientSearchControl);
+        }
+
+        private void UpdateButton_Click(object sender, RoutedEventArgs e)
+        {
+            _doctor.Specialization = SpecializationTextBox.Text;
+
+            try
+            {
+                _doctorManager.Update(_doctor);
+                MessageBox.Show("Specialization updated succesfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error updating specialization: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
+            }
+
         }
     }
 }

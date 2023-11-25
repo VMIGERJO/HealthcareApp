@@ -59,24 +59,10 @@ namespace HealthCareAppWPF
             
         }
 
-        private void UpdateButton_Click(object sender, RoutedEventArgs e)
-        {
-            //if (addresstextbox.text != _patient.address)
-            //{
-            //    _patient.address = addresstextbox.text;
-            //    _patientmanager.update(_patient);
-            //}
-            //else
-            //    {
-            //        messagebox.show("no changes to update.");
-            //    }
-
-        }
-
         private void EditAddressButton_Click(object sender, RoutedEventArgs e)
         {
-            AddressTextBox.IsReadOnly = !AddressTextBox.IsReadOnly;
-            UpdateButton.Visibility = UpdateButton.Visibility == Visibility.Visible ? Visibility.Hidden : Visibility.Visible;
+            EditAddressWindow editAddressWindow = new(_patientManager, _patient);
+            editAddressWindow.Show();
         }
     }
 }
