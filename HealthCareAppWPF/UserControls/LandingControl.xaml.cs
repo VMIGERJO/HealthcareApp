@@ -273,8 +273,14 @@ namespace HealthCareAppWPF
                     break;
 
                 case "registration":
-                    SetVisibility(role == "Doctor" ? visibility : Visibility.Collapsed, SpecializationLabel, SpecializationBox);
-                    SetVisibility(role == "Patient" ? visibility : Visibility.Collapsed, AgeLabel, AgeBox, AddressFields);
+                    if (role == "Doctor")
+                    {
+                        SetVisibility(visibility, SpecializationLabel, SpecializationBox);
+
+                    } else if (role == "Patient")
+                    {
+                        SetVisibility(visibility, AgeLabel, AgeBox, AddressFields);
+                    }
                     break;
             }
         }
