@@ -1,4 +1,4 @@
-﻿using HealthcareApp.Entities;
+﻿using EFDal.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

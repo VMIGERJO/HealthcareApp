@@ -11,7 +11,8 @@ namespace BL.Managers.Interfaces
 {
     public interface IPatientManager : IGenericManager<Patient>
     {
-        public Task<List<PatientBasicDTO>> PatientSearchAsync(PatientSearchValuesDTO patientQuery);
-        Patient UniquePatientSearch(PatientSearchValuesDTO patientQuery);
+        Task<Patient> GetPatientByIdIncludingAddressAsync(int patientId);
+        public Task<List<PatientBasicDTO>> SearchPatientsAsync(PatientSearchValuesDTO patientQuery);
+        Task<Patient> SearchPatientWithAdressAsync(PatientSearchValuesDTO patientQuery);
     }
 }

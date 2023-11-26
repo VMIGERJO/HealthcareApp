@@ -76,7 +76,6 @@ namespace HealthCareAppWPF
         {
             string firstName = LoginFirstNameBox.Text;
             string lastName = LoginLastNameBox.Text;
-            string address = AddressBox.Text;
             int age;
 
             // Validate and parse age input
@@ -87,6 +86,16 @@ namespace HealthCareAppWPF
                 return;
             }
 
+            Address address = new()
+            {
+                Street = StreetBox.Text,
+                HouseNumber = HouseNumberBox.Text,
+                Appartment = AppartmentBox.Text,
+                City = CityBox.Text,
+                PostalCode = PostalCodeBox.Text,
+                Country = CountryBox.Text
+            };
+
             Patient newPatient = new Patient
             {
                 FirstName = firstName,
@@ -95,7 +104,18 @@ namespace HealthCareAppWPF
                 Age = age
             };
 
-            bool registrationSuccess = _patientManager.Add(newPatient);
+            bool registrationSuccess = false;
+            try
+            {
+                registrationSuccess = _patientManager.Add(newPatient);
+            }
+            catch (ArgumentException invalidArgEx)
+            {
+
+                MessageBox.Show(invalidArgEx.Message);
+                return;
+            } 
+
 
             if (registrationSuccess)
             {
@@ -159,14 +179,14 @@ namespace HealthCareAppWPF
             _mainWindow.NavigateToView(healthAgencyDashboardControl);
         }
 
-        private void HandlePatientLogin()
+        private async Task HandlePatientLogin()
         {
             PatientSearchValuesDTO patientQuery = new();
             patientQuery.FirstName = LoginFirstNameBox.Text.Trim();
             patientQuery.LastName = LoginLastNameBox.Text.Trim();
             try
             {
-                Patient loggedInPatient = _patientManager.UniquePatientSearch(patientQuery);
+                Patient loggedInPatient = await _patientManager.SearchPatientWithAdressAsync(patientQuery);
                 IPrescriptionManager prescriptionManager = App.ServiceProvider.GetService<IPrescriptionManager>();
                 PatientLandingControl patientLandingControl = new(_patientManager, prescriptionManager, loggedInPatient, _mainWindow);
                 _mainWindow.NavigateToView(patientLandingControl);
@@ -184,13 +204,13 @@ namespace HealthCareAppWPF
 
         }
 
-        private void HandleDoctorLogin()
+        private async Task HandleDoctorLogin()
         {
             DoctorSearchValuesDTO doctorQuery = new();
             doctorQuery.FirstName = LoginFirstNameBox.Text;
             doctorQuery.LastName = LoginLastNameBox.Text;
-            Doctor loggedInDoctor = _doctorManager.UniqueDoctorSearch(doctorQuery);
-            DoctorLandingControl doctorLandingControl = new(_mainWindow, loggedInDoctor);
+            Doctor loggedInDoctor = await _doctorManager.UniqueDoctorSearchAsync(doctorQuery);
+            DoctorLandingControl doctorLandingControl = new(_mainWindow, _doctorManager, loggedInDoctor);
             _mainWindow.NavigateToView(doctorLandingControl);
         }
 
@@ -264,8 +284,14 @@ namespace HealthCareAppWPF
                     break;
 
                 case "registration":
-                    SetVisibility(role == "Doctor" ? visibility : Visibility.Collapsed, SpecializationLabel, SpecializationBox);
-                    SetVisibility(role == "Patient" ? visibility : Visibility.Collapsed, AgeLabel, AgeBox, AddressLabel, AddressBox);
+                    if (role == "Doctor")
+                    {
+                        SetVisibility(visibility, SpecializationLabel, SpecializationBox);
+
+                    } else if (role == "Patient")
+                    {
+                        SetVisibility(visibility, AgeLabel, AgeBox, AddressFields);
+                    }
                     break;
             }
         }

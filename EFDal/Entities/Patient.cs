@@ -1,4 +1,4 @@
-﻿using HealthcareApp.Entities;
+﻿using EFDal.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +12,11 @@ namespace EFDal.Entities
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public int Age { get; set; }
-        public string Address { get; set; }
         public string? MedicalHistory { get; set; }
 
+        public Address Address { get; set; }
+
         public ICollection<Prescription> Prescriptions { get; set; }
+
     }
 }

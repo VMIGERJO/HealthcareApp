@@ -1,0 +1,55 @@
+﻿<Window x:Class="HealthCareAppWPF.EditAddressWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HealthCareAppWPF"
+        mc:Ignorable="d"
+        Title="Edit Address" Height="Auto" Width="Auto">
+    <Grid>
+        <GroupBox Name="AddressFields" Visibility="Visible"  BorderBrush="Navy" BorderThickness="2" >
+            <GroupBox.Header>
+                <TextBlock Text="Address" FontWeight="Bold"/>
+            </GroupBox.Header>
+            <Grid Margin="0,0,5,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="47*"/>
+                    <ColumnDefinition Width="223*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Street -->
+                <Label Content="Street:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="16,10,0,0" Foreground="#003366"/>
+                <TextBox Name="StreetBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="169" Margin="2,10,0,0" Height="23" Grid.Column="1"/>
+
+                <!-- House Number -->
+                <Label Content="Number:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="216,10,0,0" Foreground="#003366" Grid.Column="1"/>
+                <TextBox Name="HouseNumberBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="168" Margin="276,11,0,0" Height="23" Grid.Column="1"/>
+
+                <!-- Apartment -->
+                <Label Content="Apartment:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="17,40,0,0" Foreground="#003366"/>
+                <TextBox Name="AppartmentBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="170" Margin="2,40,0,0" Height="23" Grid.Column="1"/>
+
+                <!-- City -->
+                <Label Content="City:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="216,40,0,0" Foreground="#003366" Grid.Column="1"/>
+                <TextBox Name="CityBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="169" Margin="276,41,0,0" Height="23" Grid.Column="1"/>
+
+                <!-- Postal Code -->
+                <Label Content="Postal Code:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="17,70,0,0" Foreground="#003366"/>
+                <TextBox Name="PostalCodeBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="169" Margin="2,70,0,0" Height="23" Grid.Column="1"/>
+
+                <!-- Country -->
+                <Label Content="Country:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="216,70,0,0" Foreground="#003366" Grid.Column="1"/>
+                <TextBox Name="CountryBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="170" Margin="276,71,0,0" Height="23" Grid.Column="1"/>
+
+                
+            </Grid>
+        </GroupBox>
+        <!-- Button Group -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10,130,10,10" VerticalAlignment="Top">
+            <!-- Save Button -->
+            <Button Content="Save" Name="SaveButton" Click="SaveButton_Click" Width="80" Height="30" Margin="0,0,10,0" Background="#003366" Foreground="White"/>
+            <!-- Cancel Button -->
+            <Button Content="Cancel" Name="CancelButton" Click="CancelButton_Click" Width="80" Height="30" Background="#003366" Foreground="White"/>
+        </StackPanel>
+    </Grid>
+</Window>

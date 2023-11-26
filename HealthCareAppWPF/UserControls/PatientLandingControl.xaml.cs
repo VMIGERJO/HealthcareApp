@@ -26,6 +26,7 @@ namespace HealthCareAppWPF
     public partial class PatientLandingControl : UserControl
     {
         private Patient _patient;
+        private Address _address;
         private MainWindow _mainWindow;
         private IPatientManager _patientManager;
         private IPrescriptionManager _prescriptionManager;
@@ -33,6 +34,7 @@ namespace HealthCareAppWPF
         {
             InitializeComponent();
             this._patient = patient;
+            this._address = patient.Address;
             this._mainWindow = mainWindow;
             this._patientManager = patientManager;
             this._prescriptionManager = prescriptionManager;
@@ -44,10 +46,11 @@ namespace HealthCareAppWPF
         private async Task LoadPageInformation()
         {
             TitleTextBlock.Text = $"Welcome {_patient.FirstName} {_patient.LastName}";
-            AddressTextBox.Text = _patient.Address;
+            AddressTextBox.Text = _address.ToString();
             MedicalHistoryTextBox.Text = _patient.MedicalHistory;
             PrescriptionListView.ItemsSource = await _prescriptionManager.PrescriptionSearchAsync(new PrescriptionSearchValuesDTO() { PatientID = _patient.Id });
         }
+
 
         private void SearchDoctorButton_Click(object sender, RoutedEventArgs e)
         {
@@ -56,24 +59,10 @@ namespace HealthCareAppWPF
             
         }
 
-        private void UpdateButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (AddressTextBox.Text != _patient.Address)
-            {
-                _patient.Address = AddressTextBox.Text;
-                _patientManager.Update(_patient);
-            }
-            else
-            {
-                MessageBox.Show("No changes to update.");
-            }
-
-        }
-
         private void EditAddressButton_Click(object sender, RoutedEventArgs e)
         {
-            AddressTextBox.IsReadOnly = !AddressTextBox.IsReadOnly;
-            UpdateButton.Visibility = UpdateButton.Visibility == Visibility.Visible ? Visibility.Hidden : Visibility.Visible;
+            EditAddressWindow editAddressWindow = new(_patientManager, _patient);
+            editAddressWindow.Show();
         }
     }
 }

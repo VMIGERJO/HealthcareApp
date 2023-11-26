@@ -29,16 +29,15 @@
             <TextBlock Text="My Information" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="18" Margin="10,274,0,0" />
 
             <!-- Address Label and Field -->
-            <TextBlock Text="Address:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,320,0,0"/>
-            <TextBox Name="AddressTextBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Margin="72,319,0,0" IsReadOnly="True" Height="36"/>
-            <Button Content="Edit" Name="EditAddressButton" HorizontalAlignment="Left" Click="EditAddressButton_Click" VerticalAlignment="Top" Width="80" Margin="286,319,0,0"/>
+            <TextBlock Text="Address:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,304,0,0"/>
+            <TextBox Name="AddressTextBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="50" Margin="72,303,0,0" IsReadOnly="True"/>
+            <Button Content="Edit" Name="EditAddressButton" HorizontalAlignment="Left" Click="EditAddressButton_Click" VerticalAlignment="Top" Width="80" Margin="286,309,0,0"/>
 
             <!-- Medical History Label and Field -->
             <TextBlock Text="Medical History:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,360,0,0"/>
             <TextBox Name="MedicalHistoryTextBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="365" Height="60" Margin="10,380,0,0" IsReadOnly="True"/>
 
             <Button Content="Search for a doctor" Name="SearchDoctorButton" HorizontalAlignment="Left" VerticalAlignment="Top"  Width="116" Height="40" Margin="395,320,0,0" Click="SearchDoctorButton_Click"/>
-            <Button Content="Update" x:Name="UpdateButton" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Margin="286,343,0,0" Visibility="Hidden" Click="UpdateButton_Click"/>
         </Grid>
     </Grid>
 </UserControl>

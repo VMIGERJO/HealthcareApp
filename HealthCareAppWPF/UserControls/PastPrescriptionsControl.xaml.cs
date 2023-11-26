@@ -48,7 +48,7 @@ namespace HealthCareAppWPF
                     int prescriptionId = selectedPrescriptionDTO.Id;
 
                     // Get the original Prescription
-                    Prescription originalPrescription = await _prescriptionManager.GetById(prescriptionId);
+                    Prescription originalPrescription = await _prescriptionManager.GetByIdAsync(prescriptionId);
 
                     // Create a copy of the original prescription and update PrescriptionDate to the current date
                     Prescription repeatedPrescription = new Prescription

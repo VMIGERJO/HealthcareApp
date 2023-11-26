@@ -1,5 +1,5 @@
 ﻿using BL.Managers.Interfaces;
-using HealthcareApp.Entities;
+using EFDal.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +11,7 @@ namespace BL.Managers
     public class GenericManager<TEntity> : IGenericManager<TEntity>
     where TEntity : BaseEntity
     {
-        protected readonly IGenericRepository<TEntity> _repository;
+        private readonly IGenericRepository<TEntity> _repository;
 
         // Constructs a new instance of the Manager class.
         public GenericManager(IGenericRepository<TEntity> repository)
@@ -26,7 +26,7 @@ namespace BL.Managers
         }
 
         // Returns an entity by id.
-        public virtual async Task<TEntity> GetById(int id)
+        public virtual async Task<TEntity> GetByIdAsync(int id)
         {
             return await _repository.GetByIdAsync(id);
         }

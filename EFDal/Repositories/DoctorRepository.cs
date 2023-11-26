@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EFDal.Data;
+using System.Linq.Expressions;
 
 namespace EFDal.Repositories
 {
@@ -15,5 +16,6 @@ namespace EFDal.Repositories
         public DoctorRepository(HealthcareDbContext context) : base(context)
         {
         }
+
     }
 }

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using EFDal.Data;
 using EFDal.ExtensionMethods;
+using System.Linq.Expressions;
 
 namespace EFDal.Repositories
 {
@@ -26,5 +27,9 @@ namespace EFDal.Repositories
             return base.Insert(prescription);
         }
 
+        public async Task<List<Prescription>> SearchPrescriptionsIncludingDoctorPatientMedicationAsync(List<Expression<Func<Prescription, bool>>> searchExpression, Expression<Func<Prescription, object>> orderExpression, bool orderAsc)
+        {
+            return await base.SearchAsync(searchExpression, orderExpression, orderAsc, p => p.Doctor, p => p.Patient, p => p.Medications);
+        }
     }
 }

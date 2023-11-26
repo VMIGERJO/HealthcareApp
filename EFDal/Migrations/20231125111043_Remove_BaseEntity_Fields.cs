@@ -3,101 +3,122 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace HealthcareApp.Migrations
+namespace EFDal.Migrations
 {
     /// <inheritdoc />
-    public partial class AddBaseEntity : Migration
+    public partial class Remove_BaseEntity_Fields : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<DateTime>(
+            migrationBuilder.DropColumn(
                 name: "CreatedAt",
-                table: "Prescriptions",
-                type: "datetime2",
-                nullable: false,
-                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
+                table: "Prescriptions");
 
-            migrationBuilder.AddColumn<DateTime>(
+            migrationBuilder.DropColumn(
                 name: "UpdatedAt",
-                table: "Prescriptions",
-                type: "datetime2",
-                nullable: true);
+                table: "Prescriptions");
 
-            migrationBuilder.AddColumn<DateTime>(
+            migrationBuilder.DropColumn(
                 name: "CreatedAt",
-                table: "Patients",
-                type: "datetime2",
-                nullable: false,
-                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
+                table: "Patients");
 
-            migrationBuilder.AddColumn<DateTime>(
+            migrationBuilder.DropColumn(
                 name: "UpdatedAt",
-                table: "Patients",
-                type: "datetime2",
-                nullable: true);
+                table: "Patients");
 
-            migrationBuilder.AddColumn<DateTime>(
+            migrationBuilder.DropColumn(
                 name: "CreatedAt",
-                table: "Medications",
-                type: "datetime2",
-                nullable: false,
-                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
+                table: "Medications");
 
-            migrationBuilder.AddColumn<DateTime>(
+            migrationBuilder.DropColumn(
                 name: "UpdatedAt",
-                table: "Medications",
-                type: "datetime2",
-                nullable: true);
+                table: "Medications");
 
-            migrationBuilder.AddColumn<DateTime>(
+            migrationBuilder.DropColumn(
                 name: "CreatedAt",
-                table: "Doctors",
-                type: "datetime2",
-                nullable: false,
-                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
+                table: "Doctors");
 
-            migrationBuilder.AddColumn<DateTime>(
+            migrationBuilder.DropColumn(
                 name: "UpdatedAt",
-                table: "Doctors",
-                type: "datetime2",
-                nullable: true);
+                table: "Doctors");
+
+            migrationBuilder.DropColumn(
+                name: "CreatedAt",
+                table: "Address");
+
+            migrationBuilder.DropColumn(
+                name: "UpdatedAt",
+                table: "Address");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
+            migrationBuilder.AddColumn<DateTime>(
                 name: "CreatedAt",
-                table: "Prescriptions");
+                table: "Prescriptions",
+                type: "datetime2",
+                nullable: false,
+                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
-            migrationBuilder.DropColumn(
+            migrationBuilder.AddColumn<DateTime>(
                 name: "UpdatedAt",
-                table: "Prescriptions");
+                table: "Prescriptions",
+                type: "datetime2",
+                nullable: true);
 
-            migrationBuilder.DropColumn(
+            migrationBuilder.AddColumn<DateTime>(
                 name: "CreatedAt",
-                table: "Patients");
+                table: "Patients",
+                type: "datetime2",
+                nullable: false,
+                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
-            migrationBuilder.DropColumn(
+            migrationBuilder.AddColumn<DateTime>(
                 name: "UpdatedAt",
-                table: "Patients");
+                table: "Patients",
+                type: "datetime2",
+                nullable: true);
 
-            migrationBuilder.DropColumn(
+            migrationBuilder.AddColumn<DateTime>(
                 name: "CreatedAt",
-                table: "Medications");
+                table: "Medications",
+                type: "datetime2",
+                nullable: false,
+                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
-            migrationBuilder.DropColumn(
+            migrationBuilder.AddColumn<DateTime>(
                 name: "UpdatedAt",
-                table: "Medications");
+                table: "Medications",
+                type: "datetime2",
+                nullable: true);
 
-            migrationBuilder.DropColumn(
+            migrationBuilder.AddColumn<DateTime>(
                 name: "CreatedAt",
-                table: "Doctors");
+                table: "Doctors",
+                type: "datetime2",
+                nullable: false,
+                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
-            migrationBuilder.DropColumn(
+            migrationBuilder.AddColumn<DateTime>(
                 name: "UpdatedAt",
-                table: "Doctors");
+                table: "Doctors",
+                type: "datetime2",
+                nullable: true);
+
+            migrationBuilder.AddColumn<DateTime>(
+                name: "CreatedAt",
+                table: "Address",
+                type: "datetime2",
+                nullable: false,
+                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
+
+            migrationBuilder.AddColumn<DateTime>(
+                name: "UpdatedAt",
+                table: "Address",
+                type: "datetime2",
+                nullable: true);
         }
     }
 }

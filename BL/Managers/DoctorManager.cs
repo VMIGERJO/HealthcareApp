@@ -30,7 +30,7 @@ namespace BL.Managers
             if (doctorQuery?.Specialization != null)
                 searchExpression.Add(p => p.Specialization.Equals(doctorQuery.Specialization));
 
-            var searchResults = await _repository.SearchAsync(searchExpression, p => p.LastName);
+            var searchResults = await _doctorRepository.SearchAsync(searchExpression, p => p.LastName);
 
             var result = searchResults.Select(pt => new DoctorBasicDTO()
             {
@@ -56,7 +56,7 @@ namespace BL.Managers
             return result;
         }
 
-        public Doctor UniqueDoctorSearch(DoctorSearchValuesDTO doctorQuery)
+        public async Task<Doctor> UniqueDoctorSearchAsync(DoctorSearchValuesDTO doctorQuery)
         {
             List<Expression<Func<Doctor, bool>>> searchExpression = new();
 
@@ -67,7 +67,7 @@ namespace BL.Managers
                 searchExpression.Add(p => p.FirstName.Contains(doctorQuery.FirstName));
             
             
-            return _repository.UniqueSearch(searchExpression);
+            return await _doctorRepository.SearchUniqueAsync(searchExpression);
         }
     }
 }

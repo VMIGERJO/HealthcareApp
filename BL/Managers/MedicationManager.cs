@@ -58,7 +58,7 @@ namespace BL.Managers
             if (medicationQuery?.Name != null)
                 searchExpression.Add(m => m.Name.Contains(medicationQuery.Name));
 
-            List<Medication> searchResults = await _repository.SearchAsync(searchExpression, m => m.Name);
+            List<Medication> searchResults = await _medicationRepository.SearchAsync(searchExpression, m => m.Name);
 
             List<MedicationBasicDTO> result = searchResults.Select(m => new MedicationBasicDTO()
             {

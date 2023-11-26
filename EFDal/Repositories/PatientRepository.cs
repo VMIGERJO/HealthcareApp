@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EFDal.Data;
+using System.Linq.Expressions;
 
 namespace EFDal.Repositories
 {
@@ -16,11 +17,16 @@ namespace EFDal.Repositories
         {
         }
 
-        public Patient GetByName(string firstName, string lastName)
+        public async Task<Patient> GetPatientByIdIncludingAddressAsync(int patientId)
         {
-            Patient result = _dbSet.Where(p => p.FirstName == firstName && p.LastName == lastName).FirstOrDefault();
+            return await _dbSet
+                .Include(p => p.Address)
+                .FirstOrDefaultAsync(p => p.Id == patientId);
+        }
 
-            return result;
+        public async Task<Patient> SearchPatientWithAddressAsync(List<Expression<Func<Patient, bool>>> searchExpression)
+        {
+            return await base.SearchUniqueAsync(searchExpression, p => p.Address);
         }
     }
 }

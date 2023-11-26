@@ -25,9 +25,7 @@ namespace EFDal.Data.EntityConfiguration
             .HasMaxLength(40);
 
             builder
-               .Property(p => p.Address)
-               .IsRequired()
-            .HasMaxLength(40);
+               .HasOne(p => p.Address).WithMany(a => a.Patients);
 
             builder
                .Property(p => p.Age)
