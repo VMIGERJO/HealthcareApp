@@ -17,6 +17,7 @@ namespace BL.MappingProfiles
             CreateMap<Medication, MedicationDTO>();
             CreateMap<Medication, MedicationSearchValuesDTO>();
             CreateMap<Medication, MedicationBasicDTO>();
+            CreateMap<CreateMedicationDTO, Medication>();
         }
 
     }

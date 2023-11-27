@@ -43,6 +43,9 @@ namespace HealthCareAppWPF
                 cfg.AddProfile<MedicationMappingProfile>();
             });
 
+            IMapper mapper = new Mapper(mapperConfig);
+
+
             // Create a service collection and register your dependencies.
             var services = new ServiceCollection();
 
@@ -68,6 +71,7 @@ namespace HealthCareAppWPF
             services.AddTransient<DoctorSearchControl>();
             services.AddTransient<PastPrescriptionsControl>();
             services.AddTransient<HealthAgencyDashboardControl>();
+            services.AddSingleton(mapper);
 
             // Build the service provider.
             ServiceProvider = services.BuildServiceProvider();

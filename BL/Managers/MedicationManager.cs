@@ -10,30 +10,22 @@ using BL.DTO;
 using EFDal.Repositories;
 using HealthCareAppWPF.DTO;
 using System.Linq.Expressions;
+using AutoMapper;
 
 namespace BL.Managers
 {
     public class MedicationManager : GenericManager<Medication>, IMedicationManager
     {
         internal readonly IMedicationRepository _medicationRepository;
-        public MedicationManager(IMedicationRepository medicationRepository) : base(medicationRepository)
+        public MedicationManager(IMapper mapper, IMedicationRepository medicationRepository) : base(mapper, medicationRepository)
         {
             _medicationRepository = medicationRepository;
         }
 
         public bool Add(CreateMedicationDTO newMedicationDTO)
         {
-            Medication medication = new()
-            {
-                Name = newMedicationDTO.Name ?? throw new ArgumentNullException(nameof(newMedicationDTO.Name), "The required field cannot be null."),
-                Dosage = newMedicationDTO.Dosage ?? throw new ArgumentNullException(nameof(newMedicationDTO.Name), "The required field cannot be null."),
-                Manufacturer = newMedicationDTO.Manufacturer,
-                ActiveSubstance = newMedicationDTO.ActiveSubstance
-
-            };
-
+            Medication medication = Mapper.Map<Medication>(newMedicationDTO);
             return base.Add(medication);
-
         }
     
 
@@ -46,6 +38,7 @@ namespace BL.Managers
                 MedicationName = md.Name,
                 Dose = md.Dosage,
                 Id = md.Id
+
             }).ToList();
 
             return result;

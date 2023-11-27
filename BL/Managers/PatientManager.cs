@@ -9,13 +9,14 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 
 namespace BL.Managers
 {
     public class PatientManager : GenericManager<Patient>, IPatientManager
     {
         internal readonly IPatientRepository _patientRepository;
-        public PatientManager(IPatientRepository patientRepository) : base(patientRepository)
+        public PatientManager(IMapper mapper, IPatientRepository patientRepository) : base(mapper, patientRepository)
         {
             this._patientRepository = patientRepository;
         }

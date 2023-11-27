@@ -1,4 +1,5 @@
-﻿using BL.Managers.Interfaces;
+﻿using AutoMapper;
+using BL.Managers.Interfaces;
 using EFDal.Entities;
 using System;
 using System.Collections.Generic;
@@ -12,11 +13,13 @@ namespace BL.Managers
     where TEntity : BaseEntity
     {
         private readonly IGenericRepository<TEntity> _repository;
+        protected IMapper Mapper { get; }
 
         // Constructs a new instance of the Manager class.
-        public GenericManager(IGenericRepository<TEntity> repository)
+        public GenericManager(IMapper mapper, IGenericRepository<TEntity> repository)
         {
-            _repository = repository;
+            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            Mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         // Returns all entities.

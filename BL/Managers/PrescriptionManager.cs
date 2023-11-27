@@ -10,13 +10,14 @@ using BL.DTO;
 using EFDal.Repositories;
 using HealthCareAppWPF.DTO;
 using System.Linq.Expressions;
+using AutoMapper;
 
 namespace BL.Managers
 {
     public class PrescriptionManager : GenericManager<Prescription>, IPrescriptionManager
     {
         internal readonly IPrescriptionRepository _prescriptionRepository;
-        public PrescriptionManager(IPrescriptionRepository prescriptionRepository) : base(prescriptionRepository)
+        public PrescriptionManager(IMapper mapper, IPrescriptionRepository prescriptionRepository) : base(mapper, prescriptionRepository)
         {
             _prescriptionRepository = prescriptionRepository;
         }

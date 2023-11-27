@@ -6,13 +6,14 @@ using HealthCareAppWPF.DTO;
 using BL.DTO;
 using System.Linq.Expressions;
 using System.Runtime.ExceptionServices;
+using AutoMapper;
 
 namespace BL.Managers
 {
     public class DoctorManager : GenericManager<Doctor>, IDoctorManager
     {
         internal readonly IDoctorRepository _doctorRepository;
-        public DoctorManager(IDoctorRepository doctorRepository) : base(doctorRepository)
+        public DoctorManager(IMapper mapper, IDoctorRepository doctorRepository) : base(mapper, doctorRepository)
         {
             this._doctorRepository = doctorRepository;
         }
