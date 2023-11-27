@@ -20,7 +20,7 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
         _dbSet = _context.Set<TEntity>();
     }
 
-    public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
+    public virtual async Task<List<TEntity>> GetAllAsync()
     {
         return await _dbSet.AsNoTracking().ToListAsync();
     }

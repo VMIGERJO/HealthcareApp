@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 public interface IGenericRepository<TEntity> where TEntity : BaseEntity
 {
     void Delete(int id);
-    Task<IEnumerable<TEntity>> GetAllAsync();
+    Task<List<TEntity>> GetAllAsync();
     Task<TEntity> GetByIdAsync(object id);
     int Insert(TEntity entity);
     void Update(TEntity entity);

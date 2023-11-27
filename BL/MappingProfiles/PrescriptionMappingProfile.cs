@@ -16,7 +16,7 @@ namespace BL.MappingProfiles
             CreateMap<Prescription, PrescriptionDTO>()
             .ForMember(dest => dest.Medications, opt => opt.MapFrom(src => src.Medications));
 
-            CreateMap<Medication, MedicationDTO>();
+            /// CreateMap<Medication, MedicationDTO>();
             CreateMap<Prescription, PrescriptionSearchValuesDTO>();
             CreateMap<Prescription, PrescriptionViewDTO>();
 

@@ -31,17 +31,10 @@ namespace BL.Managers
 
         public async Task<List<MedicationBasicDTO>> GetAllMedicationsAsync()
         {
-            var searchResults = await _medicationRepository.GetAllAsync();
+            List<Medication> medications = await _medicationRepository.GetAllAsync();
 
-            var result = searchResults.Select(md => new MedicationBasicDTO()
-            {
-                MedicationName = md.Name,
-                Dose = md.Dosage,
-                Id = md.Id
-
-            }).ToList();
-
-            return result;
+            List<MedicationBasicDTO> medicationBasicDTOs = Mapper.Map<List<MedicationBasicDTO>>(medications);
+            return medicationBasicDTOs;
         }
 
         public async Task<List<MedicationBasicDTO>> MedicationSearchAsync(MedicationSearchValuesDTO medicationQuery)
@@ -53,12 +46,7 @@ namespace BL.Managers
 
             List<Medication> searchResults = await _medicationRepository.SearchAsync(searchExpression, m => m.Name);
 
-            List<MedicationBasicDTO> result = searchResults.Select(m => new MedicationBasicDTO()
-            {
-                MedicationName = m.Name,
-                Id = m.Id,
-                Dose = m.Dosage
-            }).ToList();
+            List<MedicationBasicDTO> result = Mapper.Map<List<MedicationBasicDTO>>(searchResults);
 
             return result;
         }

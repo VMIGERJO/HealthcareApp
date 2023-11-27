@@ -8,8 +8,8 @@ namespace BL.DTO
 {
     public class MedicationBasicDTO
     {
-        public string MedicationName { get; set; }
-        public string Dose { get; set; }
+        public string Name { get; set; }
+        public string Dosage { get; set; }
         public int Id { get; set; }
     }
 }
