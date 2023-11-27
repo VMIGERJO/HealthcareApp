@@ -11,6 +11,8 @@ using BL.Managers;
 using EFDal.Data;
 using System.Windows.Controls;
 using HealthCareAppWPF.UserControls;
+using AutoMapper;
+using BL.MappingProfiles;
 
 namespace HealthCareAppWPF
 {
@@ -32,6 +34,14 @@ namespace HealthCareAppWPF
         public void Application_Startup(object sender, StartupEventArgs e)
         {
             // base.OnStartup(e);
+
+            var mapperConfig = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<PatientMappingProfile>();
+                cfg.AddProfile<DoctorMappingProfile>();
+                cfg.AddProfile<PrescriptionMappingProfile>();
+                cfg.AddProfile<MedicationMappingProfile>();
+            });
 
             // Create a service collection and register your dependencies.
             var services = new ServiceCollection();
