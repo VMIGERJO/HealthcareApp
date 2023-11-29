@@ -28,11 +28,11 @@ namespace HealthCareAppWPF
     public partial class CreatePrescriptionControl : UserControl
     {
         private Patient _patient;
-        private Doctor _doctor;
+        private DoctorDTO _doctor;
         private IMedicationManager _medicationManager;
         private IPrescriptionManager _prescriptionManager;
         private ObservableCollection<MedicationBasicDTO> _currentPrescriptionMedications = new();
-        public CreatePrescriptionControl(Patient patient, Doctor doctor, IMedicationManager medicationManager, IPrescriptionManager prescriptionManager)
+        public CreatePrescriptionControl(Patient patient, DoctorDTO doctor, IMedicationManager medicationManager, IPrescriptionManager prescriptionManager)
         {
             InitializeComponent();
             this._patient = patient;

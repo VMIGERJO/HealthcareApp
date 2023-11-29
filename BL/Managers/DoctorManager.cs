@@ -18,6 +18,17 @@ namespace BL.Managers
             this._doctorRepository = doctorRepository;
         }
 
+        public void Update(DoctorDTO doctorDTO)
+        {
+            base.Update(Mapper.Map<Doctor>(doctorDTO));
+        }
+
+        public bool Add(DoctorDTO doctorDTO)
+        {
+            return base.Add(Mapper.Map<Doctor>(doctorDTO));
+        }
+
+
         public async Task<List<DoctorBasicDTO>> DoctorSearchAsync(DoctorSearchValuesDTO doctorQuery)
         {
             List<Expression<Func<Doctor, bool>>> searchExpression = new();
@@ -33,12 +44,7 @@ namespace BL.Managers
 
             var searchResults = await _doctorRepository.SearchAsync(searchExpression, p => p.LastName);
 
-            var result = searchResults.Select(pt => new DoctorBasicDTO()
-            {
-                Name = $"{pt.LastName} {pt.FirstName}",
-                Id = pt.Id,
-                Specialization = $"{pt.Specialization}"
-            }).ToList();
+            List<DoctorBasicDTO> result = Mapper.Map<List<DoctorBasicDTO>>(searchResults);
 
             return result;
         }
@@ -47,17 +53,12 @@ namespace BL.Managers
         {
             var searchResults = await _doctorRepository.GetAllAsync();
 
-            var result = searchResults.Select(pt => new DoctorBasicDTO()
-            {
-                Name = $"{pt.LastName} {pt.FirstName}",
-                Id = pt.Id,
-                Specialization = $"{pt.Specialization}"
-            }).ToList();
+            List<DoctorBasicDTO> result = Mapper.Map<List<DoctorBasicDTO>>(searchResults);
 
             return result;
         }
 
-        public async Task<Doctor> UniqueDoctorSearchAsync(DoctorSearchValuesDTO doctorQuery)
+        public async Task<DoctorDTO> UniqueDoctorSearchAsync(DoctorSearchValuesDTO doctorQuery)
         {
             List<Expression<Func<Doctor, bool>>> searchExpression = new();
 
@@ -66,9 +67,9 @@ namespace BL.Managers
 
             if (doctorQuery?.FirstName != null)
                 searchExpression.Add(p => p.FirstName.Contains(doctorQuery.FirstName));
-            
-            
-            return await _doctorRepository.SearchUniqueAsync(searchExpression);
+            Doctor doctorSearchResult = await _doctorRepository.SearchUniqueAsync(searchExpression);
+
+            return Mapper.Map<DoctorDTO>(doctorSearchResult);
         }
     }
 }

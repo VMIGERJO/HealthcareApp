@@ -136,7 +136,7 @@ namespace HealthCareAppWPF
             string specialization = SpecializationBox.Text;
 
 
-            Doctor newDoctor = new Doctor
+            DoctorDTO newDoctor = new DoctorDTO
             {
                 FirstName = firstName,
                 LastName = lastName,
@@ -209,7 +209,7 @@ namespace HealthCareAppWPF
             DoctorSearchValuesDTO doctorQuery = new();
             doctorQuery.FirstName = LoginFirstNameBox.Text;
             doctorQuery.LastName = LoginLastNameBox.Text;
-            Doctor loggedInDoctor = await _doctorManager.UniqueDoctorSearchAsync(doctorQuery);
+            DoctorDTO loggedInDoctor = await _doctorManager.UniqueDoctorSearchAsync(doctorQuery);
             DoctorLandingControl doctorLandingControl = new(_mainWindow, _doctorManager, loggedInDoctor);
             _mainWindow.NavigateToView(doctorLandingControl);
         }

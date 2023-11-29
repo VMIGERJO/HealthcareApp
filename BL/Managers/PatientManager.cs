@@ -40,7 +40,7 @@ namespace BL.Managers
             return await _patientRepository.GetPatientByIdIncludingAddressAsync(patientId);
         }
 
-        public void ValidatePatient(Patient patient)
+        private void ValidatePatient(Patient patient)
         {
             if (patient == null)
             {
@@ -67,7 +67,7 @@ namespace BL.Managers
             ValidateAddress(patient.Address);
         }
 
-        public void ValidateAddress(Address address)
+        private void ValidateAddress(Address address)
         {
             if (address == null)
             {

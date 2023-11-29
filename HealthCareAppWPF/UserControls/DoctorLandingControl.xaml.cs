@@ -1,4 +1,5 @@
-﻿using BL.Managers;
+﻿using BL.DTO;
+using BL.Managers;
 using BL.Managers.Interfaces;
 using EFDal.Entities;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,10 +25,10 @@ namespace HealthCareAppWPF
     /// </summary>
     public partial class DoctorLandingControl : UserControl
     {
-        private Doctor _doctor;
+        private DoctorDTO _doctor;
         private MainWindow _mainWindow;
         private IDoctorManager _doctorManager;
-        public DoctorLandingControl(MainWindow mainWindow, IDoctorManager doctorManager, Doctor doctor)
+        public DoctorLandingControl(MainWindow mainWindow, IDoctorManager doctorManager, DoctorDTO doctor)
         {
             InitializeComponent();
             this._mainWindow = mainWindow;

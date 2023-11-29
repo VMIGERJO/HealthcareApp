@@ -28,8 +28,8 @@ namespace HealthCareAppWPF
     {
         private IPatientManager _patientManager;
         private MainWindow _mainWindow;
-        private Doctor _doctor;
-        public PatientSearchControl(IPatientManager patientManager, MainWindow mainWindow, Doctor doctor)
+        private DoctorDTO _doctor;
+        public PatientSearchControl(IPatientManager patientManager, MainWindow mainWindow, DoctorDTO doctor)
         {
             InitializeComponent();
             this._patientManager = patientManager;
