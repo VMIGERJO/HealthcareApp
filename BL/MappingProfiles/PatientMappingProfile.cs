@@ -13,12 +13,11 @@ namespace BL.MappingProfiles
     {
         public PatientMappingProfile()
         {
-            CreateMap<Patient, PatientDTO>().ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.Address)).ForMember(dest => dest.Prescriptions, opt => opt.MapFrom(src => src.Prescriptions));
+            CreateMap<Address, AddressDTO>().ReverseMap();
+            CreateMap<Patient, PatientDTO>()
+                .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.Address))
+                .ForMember(dest => dest.Prescriptions, opt => opt.MapFrom(src => src.Prescriptions)).ReverseMap();
             CreateMap<Patient, PatientSearchValuesDTO>();
-
-            CreateMap<Address, AddressDTO>();
-            // CreateMap<Prescription, PrescriptionDTO>();
-            // CreateMap<Medication, MedicationDTO>();
         }
     }
 }

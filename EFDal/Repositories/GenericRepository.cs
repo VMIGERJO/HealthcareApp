@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using EFDal.ExtensionMethods;
 
 public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : BaseEntity
 {
@@ -25,14 +26,10 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
         return await _dbSet.AsNoTracking().ToListAsync();
     }
 
-    //public virtual async Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> filter)
-    //{
-    //    return await _dbSet.Where(filter).ToListAsync();
-    //}
 
-    public virtual async Task<TEntity> GetByIdAsync(object id)
+    public virtual async Task<TEntity> GetByIdAsync(int id)
     {
-        return await _dbSet.FindAsync(id);
+        return await _dbSet.FirstOrDefaultAsync(e => e.Id == id);
     }
 
     public virtual int Insert(TEntity entity)
@@ -68,6 +65,9 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
 
         queryAble = orderAsc ? queryAble.OrderBy(orderExpression) : queryAble.OrderByDescending(orderExpression);
 
+        // Ensure no - tracking behavior
+        queryAble = queryAble.AsNoTracking();
+
         // Include related entities
         queryAble = includes.Aggregate(queryAble, (current, include) => current.Include(include));
 
@@ -88,6 +88,9 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
                 continue;
             queryAble = queryAble.Where(filter);
         }
+
+        // Ensure no - tracking behavior
+        queryAble = queryAble.AsNoTracking();
 
         // Include related entities
         queryAble = includes.Aggregate(queryAble, (current, include) => current.Include(include));
@@ -123,7 +126,11 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
 
         queryAble = orderAsc ? queryAble.OrderBy(orderExpression) : queryAble.OrderByDescending(orderExpression);
 
+        // Ensure no - tracking behavior
+        queryAble = queryAble.AsNoTracking();
+
         List<TEntity> result = queryAble.ToList();
+
 
         return result;
     }

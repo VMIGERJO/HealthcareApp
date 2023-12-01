@@ -21,24 +21,6 @@ namespace BL.Managers
             this._patientRepository = patientRepository;
         }
 
-        public override bool Add(Patient patient)
-        {
-            ValidatePatient(patient);
-            ValidateAddress(patient.Address);
-            return base.Add(patient);
-        }
-
-        public override void Update(Patient patient)
-        {
-            ValidatePatient(patient);
-            ValidateAddress(patient.Address);
-            base.Update(patient);
-        }
-
-        public async Task<Patient> GetPatientByIdIncludingAddressAsync(int patientId)
-        {
-            return await _patientRepository.GetPatientByIdIncludingAddressAsync(patientId);
-        }
 
         private void ValidatePatient(Patient patient)
         {
@@ -128,7 +110,7 @@ namespace BL.Managers
             return result;
         }
 
-        public async Task<Patient> SearchPatientWithAdressAsync(PatientSearchValuesDTO patientQuery)
+        public async Task<PatientDTO> SearchPatientWithAdressAsync(PatientSearchValuesDTO patientQuery)
         {
             List<Expression<Func<Patient, bool>>> searchExpression = new();
 
@@ -138,8 +120,36 @@ namespace BL.Managers
             if (patientQuery?.FirstName != null)
                 searchExpression.Add(p => p.FirstName.Contains(patientQuery.FirstName));
 
+            Patient patient = await _patientRepository.SearchPatientWithAddressAsync(searchExpression);
 
-            return await _patientRepository.SearchPatientWithAddressAsync(searchExpression);
+            return Mapper.Map<PatientDTO>(patient);
+        }
+
+        public async Task<PatientDTO> GetPatientByIdIncludingAddressAsync(int patientId)
+        {
+            Patient patient =  await _patientRepository.GetPatientByIdIncludingAddressAsync(patientId);
+            return Mapper.Map<PatientDTO>(patient);
+        }
+
+
+        public void Update(PatientDTO patientDTO)
+        {
+            Patient updatedPatient = Mapper.Map<Patient>(patientDTO);
+            ValidatePatient(updatedPatient);
+            base.Update(updatedPatient);
+        }
+
+        public bool Add(PatientDTO patientDTO)
+        {
+            Patient newPatient = Mapper.Map<Patient>(patientDTO);
+            ValidatePatient(newPatient);
+            return base.Add(newPatient);
+        }
+
+        public async Task<PatientDTO> GetByIdAsync(int patientId)
+        {
+            Patient patient = await base.GetByIdAsync(patientId);
+            return Mapper.Map<PatientDTO>(patient);
         }
     }
 }

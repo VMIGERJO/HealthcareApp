@@ -10,7 +10,7 @@ namespace EFDal.ExtensionMethods
 {
     public static class DbContextExtensions
     {
-        public static TEntity ToTracked<TEntity>(this DbContext context, TEntity stubEntity) where TEntity : BaseEntity
+        public static TEntity trackStub<TEntity>(this DbContext context, TEntity stubEntity) where TEntity : BaseEntity
         {
             // Check if there is already an entity tracked with the ID of the stub
             TEntity? trackedEntity = context.Set<TEntity>().Local.FirstOrDefault(e => e.Id == stubEntity.Id);

@@ -86,7 +86,7 @@ namespace HealthCareAppWPF
                 return;
             }
 
-            Address address = new()
+            AddressDTO address = new()
             {
                 Street = StreetBox.Text,
                 HouseNumber = HouseNumberBox.Text,
@@ -96,7 +96,7 @@ namespace HealthCareAppWPF
                 Country = CountryBox.Text
             };
 
-            Patient newPatient = new Patient
+            PatientDTO newPatient = new PatientDTO
             {
                 FirstName = firstName,
                 LastName = lastName,
@@ -186,9 +186,10 @@ namespace HealthCareAppWPF
             patientQuery.LastName = LoginLastNameBox.Text.Trim();
             try
             {
-                Patient loggedInPatient = await _patientManager.SearchPatientWithAdressAsync(patientQuery);
+                PatientDTO loggedInPatient = await _patientManager.SearchPatientWithAdressAsync(patientQuery);
                 IPrescriptionManager prescriptionManager = App.ServiceProvider.GetService<IPrescriptionManager>();
-                PatientLandingControl patientLandingControl = new(_patientManager, prescriptionManager, loggedInPatient, _mainWindow);
+                IPatientManager patientManager = App.ServiceProvider.GetService<IPatientManager>();
+                PatientLandingControl patientLandingControl = new(patientManager, prescriptionManager, loggedInPatient.Id, _mainWindow);
                 _mainWindow.NavigateToView(patientLandingControl);
             }
             catch (NoResultsFoundException noResultsEx)
@@ -201,7 +202,11 @@ namespace HealthCareAppWPF
             {
                 MessageBox.Show($"Please review your input, too many results were found", "Too many results", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-
+            catch (Exception ex)
+            {
+                // Handle other exceptions
+                throw ex; // or log, rethrow, etc.
+            }
         }
 
         private async Task HandleDoctorLogin()
@@ -210,7 +215,8 @@ namespace HealthCareAppWPF
             doctorQuery.FirstName = LoginFirstNameBox.Text;
             doctorQuery.LastName = LoginLastNameBox.Text;
             DoctorDTO loggedInDoctor = await _doctorManager.UniqueDoctorSearchAsync(doctorQuery);
-            DoctorLandingControl doctorLandingControl = new(_mainWindow, _doctorManager, loggedInDoctor);
+            IDoctorManager doctorManager = App.ServiceProvider.GetService<IDoctorManager>();
+            DoctorLandingControl doctorLandingControl = new(_mainWindow, doctorManager, loggedInDoctor);
             _mainWindow.NavigateToView(doctorLandingControl);
         }
 

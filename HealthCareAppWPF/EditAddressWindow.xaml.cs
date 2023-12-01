@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using BL.DTO;
 using BL.Managers.Interfaces;
 using EFDal.Entities;
 
@@ -22,12 +23,14 @@ namespace HealthCareAppWPF
     public partial class EditAddressWindow : Window
     {
         private IPatientManager _patientManager;
-        private Patient _currentPatient;
-        public EditAddressWindow(IPatientManager patientManager, Patient currentPatient)
+        private PatientDTO _currentPatient;
+        private PatientLandingControl _patientLandingControl;
+        public EditAddressWindow(IPatientManager patientManager, PatientDTO currentPatient, PatientLandingControl patientLandingControl)
         {
             InitializeComponent();
             this._patientManager = patientManager;
             this._currentPatient = currentPatient;
+            this._patientLandingControl = patientLandingControl;
 
         }
 
@@ -38,7 +41,7 @@ namespace HealthCareAppWPF
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            Address address = new()
+            AddressDTO address = new()
             {
                 Street = StreetBox.Text,
                 HouseNumber = HouseNumberBox.Text,
@@ -53,6 +56,7 @@ namespace HealthCareAppWPF
             {
                 _patientManager.Update(_currentPatient);
                 MessageBox.Show("Address updated succesfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                _patientLandingControl.RefreshPageInformation(_currentPatient.Id);
             }
             catch (Exception ex)
             {

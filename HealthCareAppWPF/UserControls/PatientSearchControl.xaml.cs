@@ -53,7 +53,7 @@ namespace HealthCareAppWPF
             if (PatientListView.SelectedItem != null)
             {
                 int patientId = ((PatientBasicDTO)PatientListView.SelectedItem).Id;
-                Patient selectedPatient = await _patientManager.GetPatientByIdIncludingAddressAsync(patientId);
+                PatientDTO selectedPatient = await _patientManager.GetPatientByIdIncludingAddressAsync(patientId);
                 AddressTextBox.Text = selectedPatient.Address.ToString();
                 MedicalHistoryTextBox.Text = selectedPatient.MedicalHistory;
                 PatientDetailsContent.Visibility = Visibility.Visible;
@@ -68,7 +68,7 @@ namespace HealthCareAppWPF
         private async void UpdateMedicalHistoryButton_Click(object sender, RoutedEventArgs e)
         {
             int patientId = ((PatientBasicDTO)PatientListView.SelectedItem).Id;
-            Patient selectedPatient = await _patientManager.GetByIdAsync(patientId);
+            PatientDTO selectedPatient = await _patientManager.GetPatientByIdIncludingAddressAsync(patientId);
             selectedPatient.MedicalHistory = MedicalHistoryTextBox.Text;
             
             try
@@ -89,7 +89,7 @@ namespace HealthCareAppWPF
             if (PatientListView.SelectedItem != null)
             {
                 int patientId = ((PatientBasicDTO)PatientListView.SelectedItem).Id;
-                Patient selectedPatient = await _patientManager.GetByIdAsync(patientId);
+                PatientDTO selectedPatient = await _patientManager.GetByIdAsync(patientId);
                 IMedicationManager medicationManager = App.ServiceProvider.GetService<IMedicationManager>();
                 IPrescriptionManager prescriptionManager = App.ServiceProvider.GetService<IPrescriptionManager>();
                 CreatePrescriptionControl createPrescriptionControl = new(selectedPatient, _doctor, medicationManager, prescriptionManager);

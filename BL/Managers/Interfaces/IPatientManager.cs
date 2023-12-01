@@ -11,8 +11,11 @@ namespace BL.Managers.Interfaces
 {
     public interface IPatientManager : IGenericManager<Patient>
     {
-        Task<Patient> GetPatientByIdIncludingAddressAsync(int patientId);
+        Task<PatientDTO> GetPatientByIdIncludingAddressAsync(int patientId);
+        Task<PatientDTO> GetByIdAsync(int patientId);
         public Task<List<PatientBasicDTO>> SearchPatientsAsync(PatientSearchValuesDTO patientQuery);
-        Task<Patient> SearchPatientWithAdressAsync(PatientSearchValuesDTO patientQuery);
+        Task<PatientDTO> SearchPatientWithAdressAsync(PatientSearchValuesDTO patientQuery);
+        void Update(PatientDTO patientDTO);
+        bool Add(PatientDTO patientDTO);
     }
 }

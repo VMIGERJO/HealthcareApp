@@ -5,7 +5,7 @@ public interface IGenericRepository<TEntity> where TEntity : BaseEntity
 {
     void Delete(int id);
     Task<List<TEntity>> GetAllAsync();
-    Task<TEntity> GetByIdAsync(object id);
+    Task<TEntity> GetByIdAsync(int id);
     int Insert(TEntity entity);
     void Update(TEntity entity);
     List<TEntity> Search(List<Expression<Func<TEntity, bool>>> filters, Expression<Func<TEntity, object>> orderExpression, bool orderAsc=true);
