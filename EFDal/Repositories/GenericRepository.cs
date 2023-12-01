@@ -27,9 +27,13 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
     }
 
 
-    public virtual async Task<TEntity> GetByIdAsync(int id)
+    public virtual async Task<TEntity> GetByIdAsync(int id, params Expression<Func<TEntity, object>>[] includes)
     {
-        return await _dbSet.FirstOrDefaultAsync(e => e.Id == id);
+        IQueryable<TEntity> queryAble = _dbSet.AsQueryable();
+        // Include related entities
+        queryAble = includes.Aggregate(queryAble, (current, include) => current.Include(include));
+        return await queryAble.FirstOrDefaultAsync(e => e.Id == id);
+
     }
 
     public virtual int Insert(TEntity entity)
@@ -111,27 +115,5 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
 
     }
 
-    public List<TEntity> Search(List<Expression<Func<TEntity, bool>>> filters, Expression<Func<TEntity, object>> orderExpression, bool orderAsc = true)
-    {
-        IQueryable<TEntity> queryAble = _dbSet.AsQueryable();
-
-        filters ??= new();
-
-        foreach (Expression<Func<TEntity, bool>> filter in filters)
-        {
-            if (filter == null)
-                continue;
-            queryAble = queryAble.Where(filter);
-        }
-
-        queryAble = orderAsc ? queryAble.OrderBy(orderExpression) : queryAble.OrderByDescending(orderExpression);
-
-        // Ensure no - tracking behavior
-        queryAble = queryAble.AsNoTracking();
-
-        List<TEntity> result = queryAble.ToList();
-
-
-        return result;
-    }
+    
 }

@@ -12,6 +12,6 @@ namespace BL.DTO
         public int PatientId { get; set; }
         public int DoctorId { get; set; }
         public DateTime PrescriptionDate { get; set; }
-        public List<MedicationDTO> Medications { get; set; }
+        public List<MedicationDTO> Medications  { get; set; } = new();
     }
 }

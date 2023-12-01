@@ -4,6 +4,7 @@ using EFDal.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -29,9 +30,9 @@ namespace BL.Managers
         }
 
         // Returns an entity by id.
-        public virtual async Task<TEntity> GetByIdAsync(int id)
+        public virtual async Task<TEntity> GetByIdAsync(int id, params Expression<Func<TEntity, object>>[] includes)
         {
-            return await _repository.GetByIdAsync(id);
+            return await _repository.GetByIdAsync(id, includes);
         }
 
         // Adds an entity.

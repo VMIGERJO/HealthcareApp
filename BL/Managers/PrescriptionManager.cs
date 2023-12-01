@@ -22,6 +22,13 @@ namespace BL.Managers
             _prescriptionRepository = prescriptionRepository;
         }
 
+        public bool Add(PrescriptionDTO prescriptionDTO)
+        {
+            Prescription newPrescription = Mapper.Map<Prescription>(prescriptionDTO);
+            return base.Add(newPrescription);
+
+        }
+
         public async Task<List<PrescriptionViewDTO>> PrescriptionSearchAsync(PrescriptionSearchValuesDTO prescriptionQuery)
         {
             List<Expression<Func<Prescription, bool>>> searchExpression = new();
@@ -46,6 +53,12 @@ namespace BL.Managers
         }).ToList();
 
             return result;
+        }
+
+        public async Task<PrescriptionDTO> GetPrescriptionByIdIncludingMedicationsAsync(int patientId)
+        {
+            Prescription prescription = await base.GetByIdAsync(patientId, p => p.Medications);
+            return Mapper.Map<PrescriptionDTO>(prescription);
         }
     }
 }

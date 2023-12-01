@@ -14,11 +14,16 @@ namespace BL.MappingProfiles
         public PrescriptionMappingProfile()
         {
             CreateMap<Prescription, PrescriptionDTO>()
-            .ForMember(dest => dest.Medications, opt => opt.MapFrom(src => src.Medications));
+            .ForMember(dest => dest.Medications, opt => opt.MapFrom(src => src.Medications))
+            .ReverseMap();
 
-            /// CreateMap<Medication, MedicationDTO>();
+            CreateMap<Medication, MedicationBasicDTO>().ReverseMap();
             CreateMap<Prescription, PrescriptionSearchValuesDTO>();
             CreateMap<Prescription, PrescriptionViewDTO>();
+
+            CreateMap<Medication, MedicationDTO>()
+                .ForMember(dest => dest.Prescriptions, opt => opt.MapFrom(src => src.Prescriptions))
+                .ReverseMap();
 
         }
     }

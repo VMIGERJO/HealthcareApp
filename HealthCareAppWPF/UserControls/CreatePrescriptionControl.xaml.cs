@@ -83,21 +83,21 @@ namespace HealthCareAppWPF
         {
             List<int> medicationIds = new();
 
-            Prescription newPrescription = new()
+            PrescriptionDTO newPrescriptionDTO = new()
             {
-                PatientID = _patient.Id,
-                DoctorID = _doctor.Id,
+                PatientId = _patient.Id,
+                DoctorId = _doctor.Id,
                 PrescriptionDate = DateTime.Now
             };
 
             foreach (MedicationBasicDTO medicationDTO in _currentPrescriptionMedications)
             {
-                newPrescription.Medications.Add(new Medication() { Id = medicationDTO.Id });
+                newPrescriptionDTO.Medications.Add(new MedicationDTO() { Id = medicationDTO.Id });
 
             }
             try
             {
-                _prescriptionManager.Add(newPrescription);
+                _prescriptionManager.Add(newPrescriptionDTO);
                 MessageBox.Show("Prescription created successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
             }
