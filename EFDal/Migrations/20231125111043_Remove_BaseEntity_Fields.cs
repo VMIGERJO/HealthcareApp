@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace EFDal.Migrations
+namespace DAL.Migrations
 {
     /// <inheritdoc />
     public partial class Remove_BaseEntity_Fields : Migration

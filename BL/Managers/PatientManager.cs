@@ -1,8 +1,8 @@
 ﻿using BL.DTO;
 using BL.Managers.Interfaces;
-using EFDal.Repositories.Interfaces;
+using DAL.Repositories.Interfaces;
 using HealthCareAppWPF.DTO;
-using EFDal.Entities;
+using DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

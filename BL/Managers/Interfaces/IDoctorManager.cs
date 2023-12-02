@@ -1,5 +1,5 @@
 ﻿using BL.DTO;
-using EFDal.Entities;
+using DAL.Entities;
 using HealthCareAppWPF.DTO;
 using System;
 using System.Collections.Generic;

@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using BL.DTO;
 using BL.Managers.Interfaces;
-using EFDal.Entities;
+using DAL.Entities;
 
 namespace HealthCareAppWPF
 {

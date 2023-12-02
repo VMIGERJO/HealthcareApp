@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using EFDal.Entities;
+using DAL.Entities;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EFDal.Entities
+namespace DAL.Entities
 {
     public class BaseEntity
     {

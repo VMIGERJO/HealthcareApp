@@ -1,6 +1,6 @@
 ﻿using BL.Managers.Interfaces;
 using BL.DTO;
-using EFDal.Entities;
+using DAL.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;

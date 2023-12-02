@@ -1,7 +1,7 @@
-﻿using EFDal.Entities;
+﻿using DAL.Entities;
 using System.Linq.Expressions;
 
-namespace EFDal.Repositories.Interfaces
+namespace DAL.Repositories.Interfaces
 {
     public interface IPatientRepository : IGenericRepository<Patient>
     {

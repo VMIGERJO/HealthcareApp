@@ -1,4 +1,4 @@
-﻿using EFDal.Entities;
+﻿using DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -8,7 +8,7 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EFDal.Data.EntityConfiguration
+namespace DAL.Data.EntityConfiguration
 {
     public class PatientEntityTypeConfiguration : IEntityTypeConfiguration<Patient>
     {

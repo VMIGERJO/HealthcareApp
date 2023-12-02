@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace EFDal.Entities
+namespace DAL.Entities
 {
     
         public class Address : BaseEntity

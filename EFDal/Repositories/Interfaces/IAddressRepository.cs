@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using EFDal.Entities;
+using DAL.Entities;
 
-namespace EFDal.Repositories.Interfaces
+namespace DAL.Repositories.Interfaces
 {
     public interface IAddressRepository : IGenericRepository<Address>
     {

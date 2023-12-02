@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EFDal.Data
+namespace DAL.Data
 {
-    using EFDal.Data.EntityConfiguration;
-    using EFDal.Entities;
-    using EFDal.EntityConfiguration;
+    using DAL.Data.EntityConfiguration;
+    using DAL.Entities;
+    using DAL.EntityConfiguration;
     using Microsoft.EntityFrameworkCore;
 
     public class HealthcareDbContext : DbContext
@@ -26,7 +26,7 @@ namespace EFDal.Data
             // Needed to add this to add migrations... Add migrations only works with empty constructor, but then complains it doesnt get any options
             // Entity Framework doesn't recognize the WPF Dependency Injection -> keeps looking for static method 'CreateHostBuilder(string[])'
             // -> only exists in ASP.NET Core
-            // Yes hardcoded, but alternative is referencing my WPF project settings from the EFDal project...
+            // Yes hardcoded, but alternative is referencing my WPF project settings from the DAL project...
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESS;Database=HealthcareDb;Integrated Security=True;TrustServerCertificate=True;");

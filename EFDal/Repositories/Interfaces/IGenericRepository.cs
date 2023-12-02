@@ -1,4 +1,4 @@
-﻿using EFDal.Entities;
+﻿using DAL.Entities;
 using System.Linq.Expressions;
 
 public interface IGenericRepository<TEntity> where TEntity : BaseEntity

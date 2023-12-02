@@ -1,7 +1,7 @@
 ﻿using BL.Managers.Interfaces;
-using EFDal.Repositories.Interfaces;
-using EFDal.Entities;
-using EFDal.Exceptions;
+using DAL.Repositories.Interfaces;
+using DAL.Entities;
+using DAL.Exceptions;
 using HealthCareAppWPF.DTO;
 using BL.DTO;
 using System.Linq.Expressions;

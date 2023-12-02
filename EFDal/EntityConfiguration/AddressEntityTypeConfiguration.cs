@@ -1,4 +1,4 @@
-﻿using EFDal.Entities;
+﻿using DAL.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EFDal.EntityConfiguration
+namespace DAL.EntityConfiguration
 {
     internal class AddressEntityTypeConfiguration
     {

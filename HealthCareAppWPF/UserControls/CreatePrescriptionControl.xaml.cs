@@ -1,5 +1,5 @@
 ﻿using BL.Managers.Interfaces;
-using EFDal.Entities;
+using DAL.Entities;
 using BL.DTO;
 using System;
 using System.Collections.Generic;
