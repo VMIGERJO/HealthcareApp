@@ -19,8 +19,8 @@
         <ListView Name="MedicationsListView" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,80,10,0" Height="200">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Medication" Width="300" DisplayMemberBinding="{Binding MedicationName}" />
-                    <GridViewColumn Header="Dose" Width="100" DisplayMemberBinding="{Binding Dose}" />
+                    <GridViewColumn Header="Medication" Width="300" DisplayMemberBinding="{Binding Name}" />
+                    <GridViewColumn Header="Dose" Width="100" DisplayMemberBinding="{Binding Dosage}" />
                 </GridView>
             </ListView.View>
         </ListView>
@@ -32,8 +32,8 @@
         <ListView Name="PrescriptionListView" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,318,0,0" Height="100" Width="410">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Medication" Width="300" DisplayMemberBinding="{Binding MedicationName}" />
-                    <GridViewColumn Header="Dose" Width="100" DisplayMemberBinding="{Binding Dose}" />
+                    <GridViewColumn Header="Medication" Width="300" DisplayMemberBinding="{Binding Name}" />
+                    <GridViewColumn Header="Dose" Width="100" DisplayMemberBinding="{Binding Dosage}" />
                 </GridView>
             </ListView.View>
         </ListView>

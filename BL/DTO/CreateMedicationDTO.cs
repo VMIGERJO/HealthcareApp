@@ -11,7 +11,7 @@ namespace BL.DTO
     {
         public string? ActiveSubstance { get; set; }
         public string Name { get; set; }
-        public String Dosage { get; set; }
+        public string Dosage { get; set; }
         public string? Manufacturer { get; set; }
     }
 }

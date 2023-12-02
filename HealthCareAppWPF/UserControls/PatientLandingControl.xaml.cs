@@ -25,28 +25,30 @@ namespace HealthCareAppWPF
     /// </summary>
     public partial class PatientLandingControl : UserControl
     {
-        private Patient _patient;
-        private Address _address;
+        private PatientDTO _patient;
         private MainWindow _mainWindow;
         private IPatientManager _patientManager;
         private IPrescriptionManager _prescriptionManager;
-        public PatientLandingControl(IPatientManager patientManager, IPrescriptionManager prescriptionManager, Patient patient, MainWindow mainWindow)
+        public PatientLandingControl(IPatientManager patientManager, IPrescriptionManager prescriptionManager, int patientId, MainWindow mainWindow)
         {
             InitializeComponent();
-            this._patient = patient;
-            this._address = patient.Address;
+
             this._mainWindow = mainWindow;
             this._patientManager = patientManager;
             this._prescriptionManager = prescriptionManager;
-            LoadPageInformation();
+            RefreshPageInformation(patientId);
 
-            
         }
 
-        private async Task LoadPageInformation()
+        public async Task RefreshPageInformation(int patientId) {
+            this._patient = await _patientManager.GetPatientByIdIncludingAddressAsync(patientId);
+            LoadPageInformation();
+        }
+
+        public async Task LoadPageInformation()
         {
             TitleTextBlock.Text = $"Welcome {_patient.FirstName} {_patient.LastName}";
-            AddressTextBox.Text = _address.ToString();
+            AddressTextBox.Text = _patient.Address.ToString();
             MedicalHistoryTextBox.Text = _patient.MedicalHistory;
             PrescriptionListView.ItemsSource = await _prescriptionManager.PrescriptionSearchAsync(new PrescriptionSearchValuesDTO() { PatientID = _patient.Id });
         }
@@ -61,7 +63,8 @@ namespace HealthCareAppWPF
 
         private void EditAddressButton_Click(object sender, RoutedEventArgs e)
         {
-            EditAddressWindow editAddressWindow = new(_patientManager, _patient);
+            IPatientManager patientManager = App.ServiceProvider.GetService<IPatientManager>();
+            EditAddressWindow editAddressWindow = new(patientManager, _patient, this);
             editAddressWindow.Show();
         }
     }

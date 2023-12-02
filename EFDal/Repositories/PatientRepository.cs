@@ -19,7 +19,7 @@ namespace EFDal.Repositories
 
         public async Task<Patient> GetPatientByIdIncludingAddressAsync(int patientId)
         {
-            return await _dbSet
+            return await _dbSet.AsNoTracking()
                 .Include(p => p.Address)
                 .FirstOrDefaultAsync(p => p.Id == patientId);
         }

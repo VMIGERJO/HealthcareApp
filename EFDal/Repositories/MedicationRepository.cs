@@ -16,11 +16,5 @@ namespace EFDal.Repositories
         {
         }
 
-        public Medication GetByTradeNameAndDosage(string tradeName, string dosage)
-        {
-            Medication result = _dbSet.Where(m => m.Name == tradeName && m.Dosage == dosage).FirstOrDefault();
-
-            return result;
-        }
     }
 }

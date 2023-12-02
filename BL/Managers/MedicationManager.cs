@@ -10,45 +10,31 @@ using BL.DTO;
 using EFDal.Repositories;
 using HealthCareAppWPF.DTO;
 using System.Linq.Expressions;
+using AutoMapper;
 
 namespace BL.Managers
 {
     public class MedicationManager : GenericManager<Medication>, IMedicationManager
     {
         internal readonly IMedicationRepository _medicationRepository;
-        public MedicationManager(IMedicationRepository medicationRepository) : base(medicationRepository)
+        public MedicationManager(IMapper mapper, IMedicationRepository medicationRepository) : base(mapper, medicationRepository)
         {
             _medicationRepository = medicationRepository;
         }
 
         public bool Add(CreateMedicationDTO newMedicationDTO)
         {
-            Medication medication = new()
-            {
-                Name = newMedicationDTO.Name ?? throw new ArgumentNullException(nameof(newMedicationDTO.Name), "The required field cannot be null."),
-                Dosage = newMedicationDTO.Dosage ?? throw new ArgumentNullException(nameof(newMedicationDTO.Name), "The required field cannot be null."),
-                Manufacturer = newMedicationDTO.Manufacturer,
-                ActiveSubstance = newMedicationDTO.ActiveSubstance
-
-            };
-
+            Medication medication = Mapper.Map<Medication>(newMedicationDTO);
             return base.Add(medication);
-
         }
     
 
         public async Task<List<MedicationBasicDTO>> GetAllMedicationsAsync()
         {
-            var searchResults = await _medicationRepository.GetAllAsync();
+            List<Medication> medications = await _medicationRepository.GetAllAsync();
 
-            var result = searchResults.Select(md => new MedicationBasicDTO()
-            {
-                MedicationName = md.Name,
-                Dose = md.Dosage,
-                Id = md.Id
-            }).ToList();
-
-            return result;
+            List<MedicationBasicDTO> medicationBasicDTOs = Mapper.Map<List<MedicationBasicDTO>>(medications);
+            return medicationBasicDTOs;
         }
 
         public async Task<List<MedicationBasicDTO>> MedicationSearchAsync(MedicationSearchValuesDTO medicationQuery)
@@ -60,12 +46,7 @@ namespace BL.Managers
 
             List<Medication> searchResults = await _medicationRepository.SearchAsync(searchExpression, m => m.Name);
 
-            List<MedicationBasicDTO> result = searchResults.Select(m => new MedicationBasicDTO()
-            {
-                MedicationName = m.Name,
-                Id = m.Id,
-                Dose = m.Dosage
-            }).ToList();
+            List<MedicationBasicDTO> result = Mapper.Map<List<MedicationBasicDTO>>(searchResults);
 
             return result;
         }

@@ -18,23 +18,7 @@ namespace EFDal.Entities
             public string Country { get; set; }
             public List<Patient> Patients = new();
 
-        public override string ToString()
-        {
-            string addressString = $"{Street} {HouseNumber}";
-
-            if (!string.IsNullOrEmpty(Appartment))
-            {
-                addressString += $" Appartment {Appartment}" + Environment.NewLine;
-            }
-            else
-            {
-                addressString += Environment.NewLine;
-            }
-
-            addressString += $"{PostalCode} {City}" + Environment.NewLine + $"{Country}";
-
-            return addressString;
-        }
+        
     }
 
     

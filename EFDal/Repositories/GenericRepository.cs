@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using EFDal.ExtensionMethods;
 
 public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : BaseEntity
 {
@@ -20,19 +21,19 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
         _dbSet = _context.Set<TEntity>();
     }
 
-    public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
+    public virtual async Task<List<TEntity>> GetAllAsync()
     {
         return await _dbSet.AsNoTracking().ToListAsync();
     }
 
-    //public virtual async Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> filter)
-    //{
-    //    return await _dbSet.Where(filter).ToListAsync();
-    //}
 
-    public virtual async Task<TEntity> GetByIdAsync(object id)
+    public virtual async Task<TEntity> GetByIdAsync(int id, params Expression<Func<TEntity, object>>[] includes)
     {
-        return await _dbSet.FindAsync(id);
+        IQueryable<TEntity> queryAble = _dbSet.AsQueryable();
+        // Include related entities
+        queryAble = includes.Aggregate(queryAble, (current, include) => current.Include(include));
+        return await queryAble.FirstOrDefaultAsync(e => e.Id == id);
+
     }
 
     public virtual int Insert(TEntity entity)
@@ -68,6 +69,9 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
 
         queryAble = orderAsc ? queryAble.OrderBy(orderExpression) : queryAble.OrderByDescending(orderExpression);
 
+        // Ensure no - tracking behavior
+        queryAble = queryAble.AsNoTracking();
+
         // Include related entities
         queryAble = includes.Aggregate(queryAble, (current, include) => current.Include(include));
 
@@ -89,6 +93,9 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
             queryAble = queryAble.Where(filter);
         }
 
+        // Ensure no - tracking behavior
+        queryAble = queryAble.AsNoTracking();
+
         // Include related entities
         queryAble = includes.Aggregate(queryAble, (current, include) => current.Include(include));
 
@@ -108,23 +115,5 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
 
     }
 
-    public List<TEntity> Search(List<Expression<Func<TEntity, bool>>> filters, Expression<Func<TEntity, object>> orderExpression, bool orderAsc = true)
-    {
-        IQueryable<TEntity> queryAble = _dbSet.AsQueryable();
-
-        filters ??= new();
-
-        foreach (Expression<Func<TEntity, bool>> filter in filters)
-        {
-            if (filter == null)
-                continue;
-            queryAble = queryAble.Where(filter);
-        }
-
-        queryAble = orderAsc ? queryAble.OrderBy(orderExpression) : queryAble.OrderByDescending(orderExpression);
-
-        List<TEntity> result = queryAble.ToList();
-
-        return result;
-    }
+    
 }

@@ -1,8 +1,10 @@
-﻿using BL.Managers.Interfaces;
+﻿using AutoMapper;
+using BL.Managers.Interfaces;
 using EFDal.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,11 +14,13 @@ namespace BL.Managers
     where TEntity : BaseEntity
     {
         private readonly IGenericRepository<TEntity> _repository;
+        protected IMapper Mapper { get; }
 
         // Constructs a new instance of the Manager class.
-        public GenericManager(IGenericRepository<TEntity> repository)
+        public GenericManager(IMapper mapper, IGenericRepository<TEntity> repository)
         {
-            _repository = repository;
+            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            Mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         // Returns all entities.
@@ -26,9 +30,9 @@ namespace BL.Managers
         }
 
         // Returns an entity by id.
-        public virtual async Task<TEntity> GetByIdAsync(int id)
+        public virtual async Task<TEntity> GetByIdAsync(int id, params Expression<Func<TEntity, object>>[] includes)
         {
-            return await _repository.GetByIdAsync(id);
+            return await _repository.GetByIdAsync(id, includes);
         }
 
         // Adds an entity.

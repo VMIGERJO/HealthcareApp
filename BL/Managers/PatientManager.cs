@@ -9,37 +9,20 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 
 namespace BL.Managers
 {
     public class PatientManager : GenericManager<Patient>, IPatientManager
     {
         internal readonly IPatientRepository _patientRepository;
-        public PatientManager(IPatientRepository patientRepository) : base(patientRepository)
+        public PatientManager(IMapper mapper, IPatientRepository patientRepository) : base(mapper, patientRepository)
         {
             this._patientRepository = patientRepository;
         }
 
-        public override bool Add(Patient patient)
-        {
-            ValidatePatient(patient);
-            ValidateAddress(patient.Address);
-            return base.Add(patient);
-        }
 
-        public override void Update(Patient patient)
-        {
-            ValidatePatient(patient);
-            ValidateAddress(patient.Address);
-            base.Update(patient);
-        }
-
-        public async Task<Patient> GetPatientByIdIncludingAddressAsync(int patientId)
-        {
-            return await _patientRepository.GetPatientByIdIncludingAddressAsync(patientId);
-        }
-
-        public void ValidatePatient(Patient patient)
+        private void ValidatePatient(Patient patient)
         {
             if (patient == null)
             {
@@ -66,7 +49,7 @@ namespace BL.Managers
             ValidateAddress(patient.Address);
         }
 
-        public void ValidateAddress(Address address)
+        private void ValidateAddress(Address address)
         {
             if (address == null)
             {
@@ -127,7 +110,7 @@ namespace BL.Managers
             return result;
         }
 
-        public async Task<Patient> SearchPatientWithAdressAsync(PatientSearchValuesDTO patientQuery)
+        public async Task<PatientDTO> SearchPatientWithAdressAsync(PatientSearchValuesDTO patientQuery)
         {
             List<Expression<Func<Patient, bool>>> searchExpression = new();
 
@@ -137,8 +120,36 @@ namespace BL.Managers
             if (patientQuery?.FirstName != null)
                 searchExpression.Add(p => p.FirstName.Contains(patientQuery.FirstName));
 
+            Patient patient = await _patientRepository.SearchPatientWithAddressAsync(searchExpression);
 
-            return await _patientRepository.SearchPatientWithAddressAsync(searchExpression);
+            return Mapper.Map<PatientDTO>(patient);
+        }
+
+        public async Task<PatientDTO> GetPatientByIdIncludingAddressAsync(int patientId)
+        {
+            Patient patient =  await _patientRepository.GetPatientByIdIncludingAddressAsync(patientId);
+            return Mapper.Map<PatientDTO>(patient);
+        }
+
+
+        public void Update(PatientDTO patientDTO)
+        {
+            Patient updatedPatient = Mapper.Map<Patient>(patientDTO);
+            ValidatePatient(updatedPatient);
+            base.Update(updatedPatient);
+        }
+
+        public bool Add(PatientDTO patientDTO)
+        {
+            Patient newPatient = Mapper.Map<Patient>(patientDTO);
+            ValidatePatient(newPatient);
+            return base.Add(newPatient);
+        }
+
+        public async Task<PatientDTO> GetByIdAsync(int patientId)
+        {
+            Patient patient = await base.GetByIdAsync(patientId);
+            return Mapper.Map<PatientDTO>(patient);
         }
     }
 }

@@ -13,7 +13,9 @@ namespace BL.Managers.Interfaces
     {
         Task<List<DoctorBasicDTO>> DoctorSearchAsync(DoctorSearchValuesDTO doctorQuery);
         Task<List<DoctorBasicDTO>> GetAllDoctorsAsync();
-        Task<Doctor> UniqueDoctorSearchAsync(DoctorSearchValuesDTO doctorQuery);
+        Task<DoctorDTO> UniqueDoctorSearchAsync(DoctorSearchValuesDTO doctorQuery);
+        void Update(DoctorDTO doctorDTO);
+        bool Add(DoctorDTO doctorDTO);
         
     }
 }

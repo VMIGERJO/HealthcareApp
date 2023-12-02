@@ -27,12 +27,12 @@ namespace HealthCareAppWPF
     /// </summary>
     public partial class CreatePrescriptionControl : UserControl
     {
-        private Patient _patient;
-        private Doctor _doctor;
+        private PatientDTO _patient;
+        private DoctorDTO _doctor;
         private IMedicationManager _medicationManager;
         private IPrescriptionManager _prescriptionManager;
         private ObservableCollection<MedicationBasicDTO> _currentPrescriptionMedications = new();
-        public CreatePrescriptionControl(Patient patient, Doctor doctor, IMedicationManager medicationManager, IPrescriptionManager prescriptionManager)
+        public CreatePrescriptionControl(PatientDTO patient, DoctorDTO doctor, IMedicationManager medicationManager, IPrescriptionManager prescriptionManager)
         {
             InitializeComponent();
             this._patient = patient;
@@ -83,21 +83,21 @@ namespace HealthCareAppWPF
         {
             List<int> medicationIds = new();
 
-            Prescription newPrescription = new()
+            PrescriptionDTO newPrescriptionDTO = new()
             {
-                PatientID = _patient.Id,
-                DoctorID = _doctor.Id,
+                PatientId = _patient.Id,
+                DoctorId = _doctor.Id,
                 PrescriptionDate = DateTime.Now
             };
 
             foreach (MedicationBasicDTO medicationDTO in _currentPrescriptionMedications)
             {
-                newPrescription.Medications.Add(new Medication() { Id = medicationDTO.Id });
+                newPrescriptionDTO.Medications.Add(new MedicationDTO() { Id = medicationDTO.Id });
 
             }
             try
             {
-                _prescriptionManager.Add(newPrescription);
+                _prescriptionManager.Add(newPrescriptionDTO);
                 MessageBox.Show("Prescription created successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
             }
