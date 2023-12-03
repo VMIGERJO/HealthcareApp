@@ -12,34 +12,49 @@ namespace DAL.Repositories.DapperRepositories
 {
     public class DapperGenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : BaseEntity
     {
-        private readonly DbConnectionFactory _dbConnectionFactory;
+        internal readonly DbConnectionFactory _dbConnectionFactory;
 
         public DapperGenericRepository(DbConnectionFactory dbConnectionFactory)
         {
             _dbConnectionFactory = dbConnectionFactory;
         }
 
-        public async Task<List<TEntity>> SearchAsync(List<Expression<Func<TEntity, bool>>> filters, Expression<Func<TEntity, object>> orderExpression, bool orderDesc = false, params Expression<Func<TEntity, object>>[] includes)
+        public async Task<List<TEntity>> SearchAsync(List<Expression<Func<TEntity, bool>>> filters, Expression<Func<TEntity, object>> orderExpression, bool orderAsc = false, params Expression<Func<TEntity, object>>[] includes)
         {
             string tableName = GetTableName().ToLower();
-            StringBuilder query = new StringBuilder($"SELECT * FROM {tableName} WHERE 1=1");
+            StringBuilder query = new StringBuilder($"SELECT * FROM {tableName} ");
 
             DynamicParameters parameters = new DynamicParameters();
+            if (includes.Any())
+            {
+                IncludeRelatedEntities(includes, query, tableName);
+            }
+            else
+            {
+                query.Append("WHERE 1 = 1");
+            }
 
             ApplyFilters(filters, query, parameters);
-            IncludeRelatedEntities(includes, query, tableName);
-            ApplyOrder(orderExpression, orderDesc, query, tableName);
+            ApplyOrder(orderExpression, orderAsc, query, tableName);
 
             return await ExecuteQueryListAsync(query.ToString(), parameters);
         }
 
-        private void ApplyOrder<TEntity>(Expression<Func<TEntity, object>> orderExpression, bool orderDesc, StringBuilder query, string tableName)
+        protected void ApplyOrder<TEntity>(Expression<Func<TEntity, object>> orderExpression, bool orderAsc, StringBuilder query, string tableName)
         {
             var columnName = GetColumnName(orderExpression);
-            query.Append(orderDesc ? $" ORDER BY {columnName} DESC" : $" ORDER BY {columnName}");
+            if (orderAsc)
+            {
+                query.Append(orderAsc ? $" ORDER BY {columnName} ASC" : $" ORDER BY {columnName}");
+            }
+            else
+            {
+                query.Append(orderAsc ? $" ORDER BY {columnName} DESC" : $" ORDER BY {columnName}");
+            }
+            
         }
 
-        private async Task<List<TEntity>> ExecuteQueryListAsync(string query, DynamicParameters parameters)
+        protected async Task<List<TEntity>> ExecuteQueryListAsync(string query, DynamicParameters parameters)
         {
             using (var connection = _dbConnectionFactory.CreateConnection())
             {
@@ -48,7 +63,7 @@ namespace DAL.Repositories.DapperRepositories
             }
         }
 
-        private string GetTableName()
+        protected string GetTableName()
         {
             if (typeof(TEntity) == typeof(Address))
             {
@@ -57,7 +72,7 @@ namespace DAL.Repositories.DapperRepositories
             return typeof(TEntity).Name.ToLower() + "s";
         }
 
-        private string GetTableName(Type entityType)
+        protected string GetTableName(Type entityType)
         {
             if (entityType == typeof(Address))
             {
@@ -66,7 +81,7 @@ namespace DAL.Repositories.DapperRepositories
             return entityType.Name.ToLower() + "s";
         }
 
-        private string GetColumnName(Expression expression)
+        protected string GetColumnName(Expression expression)
         {
             switch (expression)
             {
@@ -86,8 +101,11 @@ namespace DAL.Repositories.DapperRepositories
                 case LambdaExpression lambdaExpression when lambdaExpression.Body is MemberExpression memberExpression:
                     return memberExpression?.Member.Name.ToLower() ?? string.Empty;
 
-                case UnaryExpression unaryExpression when unaryExpression.Operand is MemberExpression operand:
-                    return operand.Member.Name.ToLower();
+                case LambdaExpression lambdaExpression when lambdaExpression.Body is UnaryExpression unaryExpression:
+                    {
+                        MemberExpression operandExpression = unaryExpression.Operand as MemberExpression;
+                        return operandExpression?.Member.Name.ToLower() ?? string.Empty;
+                    }
 
                 default:
                     throw new ArgumentException("Invalid expression type for GetColumnName");
@@ -95,7 +113,7 @@ namespace DAL.Repositories.DapperRepositories
         }
 
 
-        private DynamicParameters GetParameters<TEntity>(List<Expression<Func<TEntity, bool>>> filters)
+        protected DynamicParameters GetParameters<TEntity>(List<Expression<Func<TEntity, bool>>> filters)
         {
             var parameters = new DynamicParameters();
 
@@ -157,15 +175,15 @@ namespace DAL.Repositories.DapperRepositories
             IEnumerable<string> navigationPropertyNames = GetNavigationPropertyNames();
             IEnumerable<string> propertyNames = GetPropertyNames(entity).Where(p => p != "Id" && !navigationPropertyNames.Contains(p)).ToList();
 
-            string query = $"INSERT INTO {tableName} ({string.Join(", ", propertyNames)}) VALUES ({string.Join(", ", propertyNames.Select(p => "@" + p))})";
+            string query = $"INSERT INTO {tableName} ({string.Join(", ", propertyNames)}) VALUES ({string.Join(", ", propertyNames.Select(p => "@" + p))}) SELECT SCOPE_IDENTITY()";
 
             using (var connection = _dbConnectionFactory.CreateConnection())
             {
-                return connection.Execute(query, entity);
+                return connection.QuerySingle<int>(query, entity);
             }
         }
 
-        private IEnumerable<string> GetNavigationPropertyNames()
+        protected IEnumerable<string> GetNavigationPropertyNames()
         {
             var entityType = typeof(TEntity);
 
@@ -177,7 +195,7 @@ namespace DAL.Repositories.DapperRepositories
             return foreignKeyProperties;
         }
 
-        private IEnumerable<string> GetPropertyNames(TEntity entity)
+        protected IEnumerable<string> GetPropertyNames(TEntity entity)
         {
             return typeof(TEntity).GetProperties().Select(property => property.Name);
         }
@@ -223,7 +241,7 @@ namespace DAL.Repositories.DapperRepositories
             return await ExecuteQueryAsync(query.ToString(), parameters);
         }
 
-        private void ApplyFilters(List<Expression<Func<TEntity, bool>>> filters, StringBuilder query, DynamicParameters parameters)
+        protected void ApplyFilters(List<Expression<Func<TEntity, bool>>> filters, StringBuilder query, DynamicParameters parameters)
         {
             foreach (var filter in filters)
             {
@@ -241,7 +259,7 @@ namespace DAL.Repositories.DapperRepositories
             }
         }
 
-        private void ApplyBinaryExpressionFilter(BinaryExpression binaryExpression, Expression<Func<TEntity, bool>> filter, StringBuilder query, DynamicParameters parameters)
+        protected void ApplyBinaryExpressionFilter(BinaryExpression binaryExpression, Expression<Func<TEntity, bool>> filter, StringBuilder query, DynamicParameters parameters)
         {
             // Handle BinaryExpression (e.g., ==)
             MemberExpression left = binaryExpression.Left as MemberExpression;
@@ -272,7 +290,7 @@ namespace DAL.Repositories.DapperRepositories
             }
         }
 
-        private void ApplyContainsFilter(MethodCallExpression methodCallExpression, Expression<Func<TEntity, bool>> filter, StringBuilder query, DynamicParameters parameters)
+        protected void ApplyContainsFilter(MethodCallExpression methodCallExpression, Expression<Func<TEntity, bool>> filter, StringBuilder query, DynamicParameters parameters)
         {
             var columnName = GetColumnName(filter);
             query.Append($" AND {columnName} LIKE @{columnName}");
@@ -291,17 +309,18 @@ namespace DAL.Repositories.DapperRepositories
             parameters.Add($"@{columnName}", $"%{argument.Trim('"')}%");
         }
 
-        private void IncludeRelatedEntities(Expression<Func<TEntity, object>>[] includes, StringBuilder query, string tableName)
+        protected void IncludeRelatedEntities(Expression<Func<TEntity, object>>[] includes, StringBuilder query, string tableName)
         {
             foreach (var include in includes)
             {
-                var joinTableName = GetTableName(include.ReturnType).ToLower();
-                var joinColumnName = include.Body.ToString().Split('.')[1];
-                query.Append($" LEFT JOIN {joinTableName} ON {tableName}.{joinColumnName} = {joinTableName}.Id");
+                MemberExpression joinExpression = include.Body as MemberExpression;
+                var joinTableName = GetTableName(joinExpression.Type).ToLower();
+                var joinColumnName = include.Body.ToString().Split('.')[1] + "id";
+                query.Append($" LEFT JOIN {joinTableName} ON {tableName}.{joinColumnName} = {joinTableName}.Id WHERE 1 = 1 ");
             }
         }
 
-        private async Task<TEntity> ExecuteQueryAsync(string query, DynamicParameters parameters, bool unique = true)
+        protected async Task<TEntity> ExecuteQueryAsync(string query, DynamicParameters parameters, bool unique = true)
         {
             using (var connection = _dbConnectionFactory.CreateConnection())
             {
@@ -319,12 +338,12 @@ namespace DAL.Repositories.DapperRepositories
                 return results.First();
             }
         }
-        private string GetPropertyValue(MemberExpression memberExpression)
+        protected object GetPropertyValue(MemberExpression memberExpression)
         {
             // Compile and invoke the expression to get the actual value
             var lambda = Expression.Lambda(memberExpression);
             var compiledLambda = lambda.Compile();
-            return (string)compiledLambda.DynamicInvoke();
+            return compiledLambda.DynamicInvoke();
         }
 
     }

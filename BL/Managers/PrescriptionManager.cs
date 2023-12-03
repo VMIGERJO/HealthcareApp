@@ -34,25 +34,21 @@ namespace BL.Managers
             List<Expression<Func<Prescription, bool>>> searchExpression = new();
 
             if (prescriptionQuery?.PatientID != null)
-                searchExpression.Add(p => p.PatientID.Equals(prescriptionQuery.PatientID));
+            {
+                int patientFilter = (int)prescriptionQuery.PatientID; 
+                searchExpression.Add(p => p.PatientId == patientFilter);
+            }
 
             if (prescriptionQuery?.DoctorID != null)
-                searchExpression.Add(p => p.DoctorID.Equals(prescriptionQuery.DoctorID));
-
+            {
+                int doctorFilter = (int)prescriptionQuery.DoctorID;
+                searchExpression.Add(p => p.DoctorId == doctorFilter);
+            }
             List<Prescription> searchResults = await _prescriptionRepository.SearchPrescriptionsIncludingDoctorPatientMedicationAsync(searchExpression, p => p.PrescriptionDate, false);
 
-            var result = searchResults.Select(pr => new PrescriptionViewDTO()
-            {
-                PatientName = $"{pr.Patient.LastName} {pr.Patient.FirstName}",
-                DoctorName = $"{pr.Doctor.LastName} {pr.Doctor.FirstName}",
-                Id = pr.Id,
-                Date = pr.PrescriptionDate.ToString("dd/MM/yyyy"),
-                MedicationNames = string.Join(", ", pr.Medications?.Select(m => m.Name) ?? Enumerable.Empty<string>())
+            List <PrescriptionViewDTO> prescriptionViewDTOs = Mapper.Map<List<PrescriptionViewDTO>>(searchResults);
 
-
-        }).ToList();
-
-            return result;
+            return prescriptionViewDTOs;
         }
 
         public async Task<PrescriptionDTO> GetPrescriptionByIdIncludingMedicationsAsync(int patientId)

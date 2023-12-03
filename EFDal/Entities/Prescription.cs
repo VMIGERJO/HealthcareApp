@@ -10,9 +10,11 @@ namespace DAL.Entities
 {
     public class Prescription : BaseEntity
     {
-        public int PatientID { get; set; }
+        public int PatientId { get; set; }
+        [Navigation]
         public Patient Patient { get; set; }
-        public int DoctorID { get; set; }
+        public int DoctorId { get; set; }
+        [Navigation]
         public Doctor Doctor { get; set; }
         public DateTime PrescriptionDate { get; set; }
         [Navigation]

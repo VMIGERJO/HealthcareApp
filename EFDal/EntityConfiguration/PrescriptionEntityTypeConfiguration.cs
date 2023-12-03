@@ -17,12 +17,12 @@ namespace DAL.Data.EntityConfiguration
             builder
                 .HasOne(p => p.Doctor)
                 .WithMany(d => d.Prescriptions)
-                .HasForeignKey(p => p.DoctorID);
+                .HasForeignKey(p => p.DoctorId);
 
             builder
                 .HasOne(p => p.Patient)
                 .WithMany(pt => pt.Prescriptions)
-                .HasForeignKey(p => p.PatientID);
+                .HasForeignKey(p => p.PatientId);
 
             builder
                 .HasMany(p => p.Medications)
