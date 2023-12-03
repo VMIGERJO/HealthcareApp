@@ -1,4 +1,5 @@
-﻿using DAL.Entities;
+﻿using DAL.DapperAttributes;
+using DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace DAL.Entities
         public int DoctorID { get; set; }
         public Doctor Doctor { get; set; }
         public DateTime PrescriptionDate { get; set; }
+        [Navigation]
         public List<Medication> Medications { get; } = new();
     }
 

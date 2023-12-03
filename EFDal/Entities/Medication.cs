@@ -1,4 +1,5 @@
-﻿using DAL.Entities;
+﻿using DAL.DapperAttributes;
+using DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace DAL.Entities
         public string Name { get; set; }
         public String Dosage { get; set; }
         public string? Manufacturer { get; set; }
-
+        [Navigation]
         public List<Prescription> Prescriptions { get; } = new();
     }
 

@@ -1,8 +1,11 @@
-﻿using DAL.Entities;
+﻿using DAL.DapperAttributes;
+using DAL.Entities;
 using DAL.Exceptions;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 
 namespace DAL.Repositories.DapperRepositories
@@ -76,12 +79,11 @@ namespace DAL.Repositories.DapperRepositories
                     // Handle MethodCallExpression (e.g., .Contains)
                     if (lambdaMethodCallExpression.Object is MemberExpression propertyExpression)
                     {
-                        var memberExpression = propertyExpression as MemberExpression;
-                        return memberExpression?.Member.Name.ToLower() ?? string.Empty;
+                        return propertyExpression?.Member.Name.ToLower() ?? string.Empty;
                     }
                     return string.Empty;
 
-                case MemberExpression memberExpression:
+                case LambdaExpression lambdaExpression when lambdaExpression.Body is MemberExpression memberExpression:
                     return memberExpression?.Member.Name.ToLower() ?? string.Empty;
 
                 case UnaryExpression unaryExpression when unaryExpression.Operand is MemberExpression operand:
@@ -151,15 +153,28 @@ namespace DAL.Repositories.DapperRepositories
 
         public virtual int Insert(TEntity entity)
         {
-            var tableName = GetTableName().ToLower();
-            var propertyNames = GetPropertyNames(entity);
+            string tableName = GetTableName().ToLower();
+            IEnumerable<string> navigationPropertyNames = GetNavigationPropertyNames();
+            IEnumerable<string> propertyNames = GetPropertyNames(entity).Where(p => p != "Id" && !navigationPropertyNames.Contains(p)).ToList();
 
-            var query = $"INSERT INTO {tableName} ({string.Join(", ", propertyNames)}) VALUES ({string.Join(", ", propertyNames.Select(p => "@" + p))})";
+            string query = $"INSERT INTO {tableName} ({string.Join(", ", propertyNames)}) VALUES ({string.Join(", ", propertyNames.Select(p => "@" + p))})";
 
             using (var connection = _dbConnectionFactory.CreateConnection())
             {
                 return connection.Execute(query, entity);
             }
+        }
+
+        private IEnumerable<string> GetNavigationPropertyNames()
+        {
+            var entityType = typeof(TEntity);
+
+            var foreignKeyProperties = entityType.GetProperties()
+                .Where(property =>
+                    property.GetCustomAttribute<NavigationAttribute>() != null)
+                .Select(property => property.Name);
+
+            return foreignKeyProperties;
         }
 
         private IEnumerable<string> GetPropertyNames(TEntity entity)

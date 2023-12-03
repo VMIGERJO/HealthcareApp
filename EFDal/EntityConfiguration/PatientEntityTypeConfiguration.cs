@@ -25,7 +25,7 @@ namespace DAL.Data.EntityConfiguration
             .HasMaxLength(40);
 
             builder
-               .HasOne(p => p.Address).WithMany(a => a.Patients);
+               .HasOne(p => p.Address).WithMany(a => a.Patients).HasForeignKey(p => p.AddressId);
 
             builder
                .Property(p => p.Age)
