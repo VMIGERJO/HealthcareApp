@@ -54,6 +54,9 @@ namespace HealthCareAppWPF
 
             services.AddDbContext<HealthcareDbContext>(opt => opt.UseSqlServer(connectionString)
                                                     , ServiceLifetime.Transient);
+
+            //services.AddAutoMapper(typeof(DtoMappers).Assembly);
+
             services.AddTransient<IPatientManager, PatientManager>();
             services.AddTransient<IMedicationManager, MedicationManager>();
             services.AddTransient<IDoctorManager, DoctorManager>();

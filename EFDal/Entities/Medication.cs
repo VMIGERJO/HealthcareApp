@@ -12,6 +12,7 @@ namespace EFDal.Entities
         public string? ActiveSubstance { get; set; }
         public string Name { get; set; }
         public String Dosage { get; set; }
+        //todo eric: varchar max
         public string? Manufacturer { get; set; }
 
         public List<Prescription> Prescriptions { get; } = new();

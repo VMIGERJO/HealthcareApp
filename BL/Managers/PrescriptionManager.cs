@@ -48,9 +48,7 @@ namespace BL.Managers
                 Id = pr.Id,
                 Date = pr.PrescriptionDate.ToString("dd/MM/yyyy"),
                 MedicationNames = string.Join(", ", pr.Medications?.Select(m => m.Name) ?? Enumerable.Empty<string>())
-
-
-        }).ToList();
+            }).ToList();
 
             return result;
         }
