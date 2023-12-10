@@ -1,4 +1,4 @@
-﻿using EFDal.Entities;
+﻿using DAL.Entities;
 using System.Linq.Expressions;
 
 public interface IGenericRepository<TEntity> where TEntity : BaseEntity
@@ -8,7 +8,7 @@ public interface IGenericRepository<TEntity> where TEntity : BaseEntity
     Task<TEntity> GetByIdAsync(int id, params Expression<Func<TEntity, object>>[] includes);
     int Insert(TEntity entity);
     void Update(TEntity entity);
-    Task<List<TEntity>> SearchAsync(List<Expression<Func<TEntity, bool>>> filters, Expression<Func<TEntity, object>> orderExpression, bool orderAsc = true, params Expression<Func<TEntity, object>>[] includes);
+    Task<List<TEntity>> SearchAsync(List<Expression<Func<TEntity, bool>>> filters, Expression<Func<TEntity, object>> orderExpression, bool orderDesc = false, params Expression<Func<TEntity, object>>[] includes);
 
     Task<TEntity> SearchUniqueAsync(List<Expression<Func<TEntity, bool>>> filters, params Expression<Func<TEntity, object>>[] includes);
 

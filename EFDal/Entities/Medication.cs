@@ -1,11 +1,12 @@
-﻿using EFDal.Entities;
+﻿using DAL.DapperAttributes;
+using DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EFDal.Entities
+namespace DAL.Entities
 {
     public class Medication : BaseEntity
     {
@@ -14,7 +15,7 @@ namespace EFDal.Entities
         public String Dosage { get; set; }
         //todo eric: varchar max
         public string? Manufacturer { get; set; }
-
+        [Navigation]
         public List<Prescription> Prescriptions { get; } = new();
     }
 

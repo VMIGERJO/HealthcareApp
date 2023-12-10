@@ -1,4 +1,4 @@
-﻿using EFDal.Entities;
+﻿using DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -8,7 +8,7 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EFDal.Data.EntityConfiguration
+namespace DAL.Data.EntityConfiguration
 {
     public class PrescriptionEntityTypeConfiguration : IEntityTypeConfiguration<Prescription>
     {
@@ -17,12 +17,12 @@ namespace EFDal.Data.EntityConfiguration
             builder
                 .HasOne(p => p.Doctor)
                 .WithMany(d => d.Prescriptions)
-                .HasForeignKey(p => p.DoctorID);
+                .HasForeignKey(p => p.DoctorId);
 
             builder
                 .HasOne(p => p.Patient)
                 .WithMany(pt => pt.Prescriptions)
-                .HasForeignKey(p => p.PatientID);
+                .HasForeignKey(p => p.PatientId);
 
             builder
                 .HasMany(p => p.Medications)

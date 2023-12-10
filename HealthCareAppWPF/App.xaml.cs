@@ -5,14 +5,18 @@ using System.Windows;
 using System;
 using HealthCareAppWPF.Properties;
 using BL.Managers.Interfaces;
-using EFDal.Repositories.Interfaces;
-using EFDal.Repositories;
+using DAL.Repositories.Interfaces;
+using DAL.Repositories;
 using BL.Managers;
-using EFDal.Data;
+using DAL.Data;
+using DAL;
 using System.Windows.Controls;
 using HealthCareAppWPF.UserControls;
 using AutoMapper;
 using BL.MappingProfiles;
+using DAL.Repositories.EFRepositories;
+using DAL.Repositories.DapperRepositories;
+using Dapper;
 
 namespace HealthCareAppWPF
 {
@@ -52,20 +56,23 @@ namespace HealthCareAppWPF
             // Register your services and dependencies.
             var connectionString = Settings.Default.ConnectionString;
 
+            // Register Dapper
+            services.AddSingleton<DbConnectionFactory>(provider => new DbConnectionFactory(connectionString));
+
+            // Register EF
             services.AddDbContext<HealthcareDbContext>(opt => opt.UseSqlServer(connectionString)
                                                     , ServiceLifetime.Transient);
 
-            //services.AddAutoMapper(typeof(DtoMappers).Assembly);
-
+            // Register other Services
             services.AddTransient<IPatientManager, PatientManager>();
             services.AddTransient<IMedicationManager, MedicationManager>();
             services.AddTransient<IDoctorManager, DoctorManager>();
             services.AddTransient<IPrescriptionManager, PrescriptionManager>();
             services.AddTransient<IPatientRepository, PatientRepository>();
-            services.AddTransient<IPrescriptionRepository, PrescriptionRepository>();
-            services.AddTransient<IMedicationRepository, MedicationRepository>();
-            services.AddTransient<IDoctorRepository, DoctorRepository>();
-            services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddTransient<IPrescriptionRepository, DapperPrescriptionRepository>();
+            services.AddTransient<IMedicationRepository, DapperMedicationRepository>();
+            services.AddTransient<IDoctorRepository, DapperDoctorRepository>();
+            services.AddTransient(typeof(IGenericRepository<>), typeof(DapperGenericRepository<>));
             services.AddSingleton<MainWindow>();
             services.AddTransient<LandingControl>();
             services.AddTransient<DoctorLandingControl>();

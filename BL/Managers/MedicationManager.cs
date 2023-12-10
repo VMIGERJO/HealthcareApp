@@ -1,13 +1,13 @@
 ﻿using BL.Managers.Interfaces;
-using EFDal.Repositories.Interfaces;
-using EFDal.Entities;
+using DAL.Repositories.Interfaces;
+using DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BL.DTO;
-using EFDal.Repositories;
+using DAL.Repositories;
 using HealthCareAppWPF.DTO;
 using System.Linq.Expressions;
 using AutoMapper;

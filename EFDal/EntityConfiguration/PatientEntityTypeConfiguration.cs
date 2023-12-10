@@ -1,4 +1,4 @@
-﻿using EFDal.Entities;
+﻿using DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -8,7 +8,7 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EFDal.Data.EntityConfiguration
+namespace DAL.Data.EntityConfiguration
 {
     public class PatientEntityTypeConfiguration : IEntityTypeConfiguration<Patient>
     {
@@ -25,7 +25,7 @@ namespace EFDal.Data.EntityConfiguration
             .HasMaxLength(40);
 
             builder
-               .HasOne(p => p.Address).WithMany(a => a.Patients);
+               .HasOne(p => p.Address).WithMany(a => a.Patients).HasForeignKey(p => p.AddressId);
 
             builder
                .Property(p => p.Age)

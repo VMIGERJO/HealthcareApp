@@ -1,7 +1,7 @@
 ﻿using BL.DTO;
 using BL.Managers.Interfaces;
-using EFDal.Entities;
-using EFDal.Exceptions;
+using DAL.Entities;
+using DAL.Exceptions;
 using HealthCareAppWPF.UserControls;
 using Microsoft.Extensions.DependencyInjection;
 using System;

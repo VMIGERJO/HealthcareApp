@@ -1,13 +1,13 @@
 ﻿using BL.Managers.Interfaces;
-using EFDal.Repositories.Interfaces;
-using EFDal.Entities;
+using DAL.Repositories.Interfaces;
+using DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BL.DTO;
-using EFDal.Repositories;
+using DAL.Repositories;
 using HealthCareAppWPF.DTO;
 using System.Linq.Expressions;
 using AutoMapper;
@@ -34,23 +34,21 @@ namespace BL.Managers
             List<Expression<Func<Prescription, bool>>> searchExpression = new();
 
             if (prescriptionQuery?.PatientID != null)
-                searchExpression.Add(p => p.PatientID.Equals(prescriptionQuery.PatientID));
+            {
+                int patientFilter = (int)prescriptionQuery.PatientID; 
+                searchExpression.Add(p => p.PatientId == patientFilter);
+            }
 
             if (prescriptionQuery?.DoctorID != null)
-                searchExpression.Add(p => p.DoctorID.Equals(prescriptionQuery.DoctorID));
-
+            {
+                int doctorFilter = (int)prescriptionQuery.DoctorID;
+                searchExpression.Add(p => p.DoctorId == doctorFilter);
+            }
             List<Prescription> searchResults = await _prescriptionRepository.SearchPrescriptionsIncludingDoctorPatientMedicationAsync(searchExpression, p => p.PrescriptionDate, false);
 
-            var result = searchResults.Select(pr => new PrescriptionViewDTO()
-            {
-                PatientName = $"{pr.Patient.LastName} {pr.Patient.FirstName}",
-                DoctorName = $"{pr.Doctor.LastName} {pr.Doctor.FirstName}",
-                Id = pr.Id,
-                Date = pr.PrescriptionDate.ToString("dd/MM/yyyy"),
-                MedicationNames = string.Join(", ", pr.Medications?.Select(m => m.Name) ?? Enumerable.Empty<string>())
-            }).ToList();
+            List <PrescriptionViewDTO> prescriptionViewDTOs = Mapper.Map<List<PrescriptionViewDTO>>(searchResults);
 
-            return result;
+            return prescriptionViewDTOs;
         }
 
         public async Task<PrescriptionDTO> GetPrescriptionByIdIncludingMedicationsAsync(int patientId)
