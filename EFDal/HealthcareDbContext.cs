@@ -10,6 +10,7 @@ namespace DAL.Data
     using DAL.Entities;
     using DAL.EntityConfiguration;
     using Microsoft.EntityFrameworkCore;
+    using System.Reflection;
 
     public class HealthcareDbContext : DbContext
     {
@@ -29,6 +30,7 @@ namespace DAL.Data
             // Yes hardcoded, but alternative is referencing my WPF project settings from the DAL project...
             if (!optionsBuilder.IsConfigured)
             {
+                //optionsBuilder.UseSqlServer("Server=.;Database=HealthcareDb;Integrated Security=True;TrustServerCertificate=True;");
                 optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESS;Database=HealthcareDb;Integrated Security=True;TrustServerCertificate=True;");
             }
         }
@@ -45,6 +47,12 @@ namespace DAL.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //todo eric: 
+            //modelBuilder.ApplyConfiguration(new DoctorEntityTypeConfiguration());
+            //modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            //modelBuilder.ApplyConfigurationsFromAssembly(typeof(DoctorEntityTypeConfiguration).Assembly);
+
+
             new DoctorEntityTypeConfiguration().Configure(modelBuilder.Entity<Doctor>());
             new PatientEntityTypeConfiguration().Configure(modelBuilder.Entity<Patient>());
             new PrescriptionEntityTypeConfiguration().Configure(modelBuilder.Entity<Prescription>());

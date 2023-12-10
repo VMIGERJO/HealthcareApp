@@ -99,7 +99,9 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
         // Include related entities
         queryAble = includes.Aggregate(queryAble, (current, include) => current.Include(include));
 
+        //todo eric: .singleordef
         List<TEntity> result = await queryAble.ToListAsync();
+        //var result2 = await queryAble.SingleOrDefaultAsync();
 
         if (queryAble.Count() == 0)
         {

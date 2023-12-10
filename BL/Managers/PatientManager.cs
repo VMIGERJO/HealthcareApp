@@ -24,6 +24,7 @@ namespace BL.Managers
 
         private void ValidatePatient(Patient patient)
         {
+            //todo eric: validatie zonder ex
             if (patient == null)
             {
                 throw new ArgumentNullException(nameof(patient), "Patient object cannot be null.");
