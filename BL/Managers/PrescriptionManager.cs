@@ -35,14 +35,12 @@ namespace BL.Managers
 
             if (prescriptionQuery?.PatientID != null)
             {
-                int patientFilter = (int)prescriptionQuery.PatientID; 
-                searchExpression.Add(p => p.PatientId == patientFilter);
+                searchExpression.Add(p => p.PatientId == prescriptionQuery.PatientID);
             }
 
             if (prescriptionQuery?.DoctorID != null)
             {
-                int doctorFilter = (int)prescriptionQuery.DoctorID;
-                searchExpression.Add(p => p.DoctorId == doctorFilter);
+                searchExpression.Add(p => p.DoctorId == prescriptionQuery.DoctorID);
             }
             List<Prescription> searchResults = await _prescriptionRepository.SearchPrescriptionsIncludingDoctorPatientMedicationAsync(searchExpression, p => p.PrescriptionDate, false);
 

@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace TestProject
+namespace TestProject.MappingTests
 {
 
     [TestClass]
@@ -32,7 +32,7 @@ namespace TestProject
         public void ShouldMapPrescriptionToPrescriptionDTO()
         {
             // Arrange
-           Prescription prescription = _entityFactory.CreatePopulatedPrescription();
+            Prescription prescription = _entityFactory.CreatePopulatedPrescription(1);
 
             // Act
             var prescriptionDto = _mapper.Map<PrescriptionDTO>(prescription);
@@ -52,7 +52,7 @@ namespace TestProject
         public void ShouldMapPrescriptionDTOToPrescription()
         {
             // Arrange
-            var prescriptionDto = _dtoFactory.CreatePopulatedPrescriptionDTO();
+            var prescriptionDto = _dtoFactory.CreatePopulatedPrescriptionDTO(1);
 
             // Act
             var prescription = _mapper.Map<Prescription>(prescriptionDto);
@@ -82,7 +82,7 @@ namespace TestProject
         public void ShouldMapPrescriptionToPrescriptionViewDTO()
         {
             // Arrange
-            Prescription prescription = _entityFactory.CreatePopulatedPrescription();
+            Prescription prescription = _entityFactory.CreatePopulatedPrescription(1);
 
             // Act
             var prescriptionViewDto = _mapper.Map<PrescriptionViewDTO>(prescription);
@@ -108,7 +108,7 @@ namespace TestProject
         public void ShouldMapPrescriptionToPrescriptionSearchValuesDTO()
         {
             // Arrange
-            Prescription prescription = _entityFactory.CreatePopulatedPrescription();
+            Prescription prescription = _entityFactory.CreatePopulatedPrescription(1);
 
             // Act
             var searchValuesDto = _mapper.Map<PrescriptionSearchValuesDTO>(prescription);
