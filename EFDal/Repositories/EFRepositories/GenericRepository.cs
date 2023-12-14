@@ -38,15 +38,31 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
 
     public virtual int Insert(TEntity entity)
     {
-        _dbSet.Update(entity);
+        _dbSet.Add(entity);
         _context.SaveChanges();
         return entity.Id;
     }
 
     public void Update(TEntity entity)
     {
-        _dbSet.Update(entity);
+
+        // Check if the entity is already tracked by the context
+        var existingEntity = _context.Set<TEntity>().Local.FirstOrDefault(e => e.Id == entity.Id);
+
+        if (existingEntity != null)
+        {
+            // Update the existing tracked entity with the values from the new entity
+            _context.Entry(existingEntity).CurrentValues.SetValues(entity);
+        }
+        else
+        {
+            // Attach the entity to the context if it's not already tracked
+            _dbSet.Attach(entity);
+            _context.Entry(entity).State = EntityState.Modified;
+        }
+
         _context.SaveChanges();
+
     }
 
     public void Delete(int id)
