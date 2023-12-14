@@ -40,7 +40,7 @@ namespace BL.Managers
                 searchExpression.Add(p => p.FirstName.Contains(doctorQuery.FirstName));
 
             if (doctorQuery?.Specialization != null)
-                searchExpression.Add(p => p.Specialization.Equals(doctorQuery.Specialization));
+                searchExpression.Add(p => p.Specialization == doctorQuery.Specialization);
 
             var searchResults = await _doctorRepository.SearchAsync(searchExpression, p => p.LastName);
 
