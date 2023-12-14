@@ -41,18 +41,18 @@ namespace TestProject.UnitTests
         }
 
         [TestMethod]
-public async Task GetAllAsync_ShouldReturnAllEntities()
-{
-    // Act
-    var result = await _repository.GetAllAsync();
+        public async Task GetAllAsync_ShouldReturnAllEntities()
+        {
+            // Act
+            var result = await _repository.GetAllAsync();
 
-    // Assert
-    Assert.IsNotNull(result);
-    Assert.AreEqual(2, result.Count); // Adjust based on your actual data
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(2, result.Count); // Adjust based on your actual data
 
-    Assert.IsTrue(result.Any(prescription => prescription.Id == 1));
-    Assert.IsTrue(result.Any(prescription => prescription.Id == 2));
-}
+            Assert.IsTrue(result.Any(prescription => prescription.Id == 1));
+            Assert.IsTrue(result.Any(prescription => prescription.Id == 2));
+        }
 
 
         [TestMethod]
@@ -103,13 +103,14 @@ public async Task GetAllAsync_ShouldReturnAllEntities()
             Assert.AreEqual("UpdatedName", updatedEntity.Doctor.FirstName);
         }
 
-        // Doesn't work. According to stackoverflow: These new extensions only work on relational providers. And InMemory is not a relational provider
+        // The method below doesn't work. According to stackoverflow: These new extensions only work on relational providers. And InMemory is not a relational provider
         // Referring to ExecuteDelete().
+
         //[TestMethod]
         //public void Delete_ShouldDeleteEntity()
         //{
         //    // Arrange
-        //    int entityId = 1; // Change with an existing entity id
+        //    int entityId = 1; 
 
         //    // Act
         //    _repository.Delete(entityId);
@@ -124,9 +125,11 @@ public async Task GetAllAsync_ShouldReturnAllEntities()
         public async Task SearchAsync_ShouldReturnFilteredEntities()
         {
             // Arrange
+            var prescription = new EntityFactory().CreatePopulatedPrescription(1);
+            string exampleDoctorFirstName = prescription.Doctor.FirstName;
             var filters = new List<Expression<Func<Prescription, bool>>>
             {
-                p => p.Doctor.FirstName == "Jake"
+                p => p.Doctor.FirstName == exampleDoctorFirstName
             };
 
             // Act
@@ -135,8 +138,7 @@ public async Task GetAllAsync_ShouldReturnAllEntities()
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(1, result.Count);
-            Assert.AreEqual("Jake", result[0].Doctor.FirstName);
-            // Add more assertions based on your entity structure
+            Assert.AreEqual(exampleDoctorFirstName, result[0].Doctor.FirstName);
         }
 
         [TestMethod]
