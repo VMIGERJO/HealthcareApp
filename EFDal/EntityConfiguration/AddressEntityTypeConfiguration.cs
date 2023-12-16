@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DAL.EntityConfiguration
 {
-    internal class AddressEntityTypeConfiguration
+    internal class AddressEntityTypeConfiguration : IEntityTypeConfiguration<Address>
     {
             public void Configure(EntityTypeBuilder<Address> builder)
             {

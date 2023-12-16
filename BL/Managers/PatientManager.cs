@@ -27,7 +27,8 @@ namespace BL.Managers
         {
             List<string> validationErrors = new List<string>();
 
-            // Validate name and age
+            //todo eric: validatie zonder ex -> done
+
             if (patientDTO == null)
             {
                 validationErrors.Add("Patient object cannot be null.");

@@ -46,17 +46,8 @@ namespace DAL.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //todo eric: 
-            //modelBuilder.ApplyConfiguration(new DoctorEntityTypeConfiguration());
-            //modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-            //modelBuilder.ApplyConfigurationsFromAssembly(typeof(DoctorEntityTypeConfiguration).Assembly);
-
-
-            new DoctorEntityTypeConfiguration().Configure(modelBuilder.Entity<Doctor>());
-            new PatientEntityTypeConfiguration().Configure(modelBuilder.Entity<Patient>());
-            new PrescriptionEntityTypeConfiguration().Configure(modelBuilder.Entity<Prescription>());
-            new MedicationEntityTypeConfiguration().Configure(modelBuilder.Entity<Medication>());
-            new AddressEntityTypeConfiguration().Configure(modelBuilder.Entity<Address>());
+            //todo  -> done
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
     }
 
