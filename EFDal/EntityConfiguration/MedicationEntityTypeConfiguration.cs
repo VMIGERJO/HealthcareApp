@@ -26,6 +26,10 @@ namespace DAL.Data.EntityConfiguration
             builder
                 .Property(m => m.Dosage)
                 .HasMaxLength(40);
+
+            builder
+                .Property(m => m.Manufacturer)
+                .HasMaxLength(40);
         }
     }
 }
