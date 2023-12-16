@@ -10,6 +10,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using Azure;
 
 namespace BL.Managers
 {
@@ -22,71 +23,82 @@ namespace BL.Managers
         }
 
 
-        private void ValidatePatient(Patient patient)
+        public List<string> ValidatePatient(PatientDTO patientDTO)
         {
-            //todo eric: validatie zonder ex
-            if (patient == null)
-            {
-                throw new ArgumentNullException(nameof(patient), "Patient object cannot be null.");
-            }
+            List<string> validationErrors = new List<string>();
 
             // Validate name and age
-            if (string.IsNullOrWhiteSpace(patient.FirstName))
+            if (patientDTO == null)
             {
-                throw new ArgumentException("First name must be filled in.", nameof(patient.FirstName));
+                validationErrors.Add("Patient object cannot be null.");
+            }
+            else
+            {
+                if (string.IsNullOrWhiteSpace(patientDTO.FirstName))
+                {
+                    validationErrors.Add("First name must be filled in.");
+                }
+
+                if (string.IsNullOrWhiteSpace(patientDTO.LastName))
+                {
+                    validationErrors.Add("Last name must be filled in.");
+                }
+
+                if (patientDTO.Age <= 0 || patientDTO.Age >= 120)
+                {
+                    validationErrors.Add("Age must be greater than 0 and less than 120.");
+                }
+
+                // Validate address
+                validationErrors.AddRange(ValidateAddress(patientDTO.Address));
             }
 
-            if (string.IsNullOrWhiteSpace(patient.LastName))
-            {
-                throw new ArgumentException("Last name must be filled in.", nameof(patient.LastName));
-            }
-
-            if (patient.Age <= 0 || patient.Age >= 120)
-            {
-                throw new ArgumentOutOfRangeException(nameof(patient.Age), "Age must be greater than 0 and less than 120.");
-            }
-
-            // Validate address
-            ValidateAddress(patient.Address);
+            return validationErrors;
         }
 
-        private void ValidateAddress(Address address)
+        private List<string> ValidateAddress(AddressDTO addressDTO)
         {
-            if (address == null)
+            List<string> validationErrors = new List<string>();
+
+            if (addressDTO == null)
             {
-                throw new ArgumentNullException(nameof(address), "Address object cannot be null.");
+                validationErrors.Add("Address object cannot be null.");
+            }
+            else
+            {
+                // Validate each field
+                if (string.IsNullOrWhiteSpace(addressDTO.Street))
+                {
+                    validationErrors.Add("Street must be filled in.");
+                }
+
+                if (string.IsNullOrWhiteSpace(addressDTO.HouseNumber))
+                {
+                    validationErrors.Add("House number must be filled in.");
+                }
+
+                if (string.IsNullOrWhiteSpace(addressDTO.City))
+                {
+                    validationErrors.Add("City must be filled in.");
+                }
+
+                if (string.IsNullOrWhiteSpace(addressDTO.PostalCode))
+                {
+                    validationErrors.Add("Postal code must be filled in.");
+                }
+
+                if (string.IsNullOrWhiteSpace(addressDTO.Country))
+                {
+                    validationErrors.Add("Country must be filled in.");
+                }
+
+                // Appartment can be empty, so we don't check it for null or whitespace
+
+                // Convert empty Appartment to null
+                addressDTO.Appartment = string.IsNullOrWhiteSpace(addressDTO.Appartment) ? null : addressDTO.Appartment;
             }
 
-            // Validate each field
-            if (string.IsNullOrWhiteSpace(address.Street))
-            {
-                throw new ArgumentException("Street must be filled in.", nameof(address.Street));
-            }
-
-            if (string.IsNullOrWhiteSpace(address.HouseNumber))
-            {
-                throw new ArgumentException("House number must be filled in.", nameof(address.HouseNumber));
-            }
-
-            if (string.IsNullOrWhiteSpace(address.City))
-            {
-                throw new ArgumentException("City must be filled in.", nameof(address.City));
-            }
-
-            if (string.IsNullOrWhiteSpace(address.PostalCode))
-            {
-                throw new ArgumentException("Postal code must be filled in.", nameof(address.PostalCode));
-            }
-
-            if (string.IsNullOrWhiteSpace(address.Country))
-            {
-                throw new ArgumentException("Country must be filled in.", nameof(address.Country));
-            }
-
-            // Appartment can be empty, so we don't check it for null or whitespace
-
-            // Convert empty Appartment to null
-            address.Appartment = string.IsNullOrWhiteSpace(address.Appartment) ? null : address.Appartment;
+            return validationErrors;
         }
 
         public async Task<List<PatientBasicDTO>> SearchPatientsAsync(PatientSearchValuesDTO patientQuery)
@@ -135,16 +147,43 @@ namespace BL.Managers
 
         public void Update(PatientDTO patientDTO)
         {
+            List<String> validationErrors = ValidatePatient(patientDTO);
             Patient updatedPatient = Mapper.Map<Patient>(patientDTO);
-            ValidatePatient(updatedPatient);
-            base.Update(updatedPatient);
+
+            if (validationErrors.Count == 0)
+            {
+                // Update the patient if there are no validation errors
+                base.Update(updatedPatient);
+            }
+            else
+            {
+                // Throw an exception if validation fails.
+                // I don't use this exception to steer the normal program logic, as I also validate in the frontend
+                // So this exception should never occur, unless the normal frontend validation is somehow bypassed.
+                throw new ArgumentException("Patient did not pass validation");
+            }
+            
+            
         }
 
         public bool Add(PatientDTO patientDTO)
         {
+            List<String> validationErrors = ValidatePatient(patientDTO);
             Patient newPatient = Mapper.Map<Patient>(patientDTO);
-            ValidatePatient(newPatient);
-            return base.Add(newPatient);
+
+            if (validationErrors.Count == 0)
+            {
+                // Add the patient if there are no validation errors
+                return base.Add(newPatient);
+            }
+            else
+            {
+                // Throw an exception if validation fails.
+                // I don't use this exception to steer the normal program logic, as I also validate in the frontend
+                // So this exception should never occur, unless the normal frontend validation is somehow bypassed.
+                throw new ArgumentException("Patient did not pass validation:\n" + string.Join("\n", validationErrors));
+            }
+            
         }
 
         public async Task<PatientDTO> GetByIdAsync(int patientId)

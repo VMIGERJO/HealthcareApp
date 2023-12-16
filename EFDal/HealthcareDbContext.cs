@@ -26,8 +26,7 @@ namespace DAL.Data
         {
             // Needed to add this to add migrations... Add migrations only works with empty constructor, but then complains it doesnt get any options
             // Entity Framework doesn't recognize the WPF Dependency Injection -> keeps looking for static method 'CreateHostBuilder(string[])'
-            // -> only exists in ASP.NET Core
-            // Yes hardcoded, but alternative is referencing my WPF project settings from the DAL project...
+            // -> only exists in ASP.NET Core.
             if (!optionsBuilder.IsConfigured)
             {
                 //optionsBuilder.UseSqlServer("Server=.;Database=HealthcareDb;Integrated Security=True;TrustServerCertificate=True;");

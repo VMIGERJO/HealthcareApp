@@ -104,18 +104,16 @@ namespace HealthCareAppWPF
                 Age = age
             };
 
-            bool registrationSuccess = false;
-            try
-            {
-                registrationSuccess = _patientManager.Add(newPatient);
-            }
-            catch (ArgumentException invalidArgEx)
-            {
+            List<string> validationErrors = _patientManager.ValidatePatient(newPatient);
 
-                MessageBox.Show(invalidArgEx.Message);
+            if (validationErrors.Count > 0)
+            {
+                // Display all validation errors to the user
+                MessageBox.Show(string.Join("\n", validationErrors));
                 return;
-            } 
+            }
 
+            bool registrationSuccess = _patientManager.Add(newPatient);
 
             if (registrationSuccess)
             {
