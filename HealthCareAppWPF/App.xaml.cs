@@ -45,8 +45,8 @@ namespace HealthCareAppWPF
             // Create a service collection and register your dependencies.
             var services = new ServiceCollection();
 
-            // Add AutoMapper configuration using extension method
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            // Add AutoMapper configuration using extension method, based on feedback
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies()); 
 
             // Register your services and dependencies.
             var connectionString = Settings.Default.ConnectionString;
