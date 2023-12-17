@@ -57,4 +57,5 @@ The __Health Agency__ can:
 - add a new type of medication
 
 
+__If any issues occur, you can inform me using Teams or e-mail.__
   
