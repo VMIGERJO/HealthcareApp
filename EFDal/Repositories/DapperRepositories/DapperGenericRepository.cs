@@ -1,6 +1,5 @@
 ﻿using DAL.DapperAttributes;
 using DAL.Entities;
-using DAL.Exceptions;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -238,8 +237,14 @@ namespace DAL.Repositories.DapperRepositories
 
             IncludeRelatedEntities(includes, query, tableName);
 
-            return await ExecuteQueryAsync(query.ToString(), parameters);
+            using (var connection = _dbConnectionFactory.CreateConnection())
+            {
+                var results = await connection.QueryAsync<TEntity>(query.ToString(), parameters);
+
+                return results.SingleOrDefault();
+            }
         }
+
 
         protected void ApplyFilters(List<Expression<Func<TEntity, bool>>> filters, StringBuilder query, DynamicParameters parameters)
         {
@@ -320,22 +325,12 @@ namespace DAL.Repositories.DapperRepositories
             }
         }
 
-        protected async Task<TEntity> ExecuteQueryAsync(string query, DynamicParameters parameters, bool unique = true)
+        protected async Task<TEntity> ExecuteQueryAsync(string query, DynamicParameters parameters)
         {
             using (var connection = _dbConnectionFactory.CreateConnection())
             {
-                var results = await connection.QueryAsync<TEntity>(query, parameters);
-
-                if (!results.Any())
-                {
-                    throw new NoResultsFoundException();
-                }
-                else if (unique && results.Count() > 1)
-                {
-                    throw new NonUniqueQueryException();
-                }
-
-                return results.First();
+                var result = await connection.QueryAsync<TEntity>(query, parameters);
+                return result.First();
             }
         }
         protected object GetPropertyValue(MemberExpression memberExpression)
