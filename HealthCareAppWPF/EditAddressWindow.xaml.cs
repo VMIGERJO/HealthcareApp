@@ -52,6 +52,14 @@ namespace HealthCareAppWPF
             };
 
             _currentPatient.Address = address;
+            List<string> validationErrors = _patientManager.ValidatePatient(_currentPatient);
+
+            if (validationErrors.Count > 0)
+            {
+                // Display all validation errors to the user
+                MessageBox.Show(string.Join("\n", validationErrors));
+                return;
+            }
             try
             {
                 _patientManager.Update(_currentPatient);
@@ -60,7 +68,7 @@ namespace HealthCareAppWPF
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error updating address: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Error updating address: {string.Join("\n", validationErrors)}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 
             }
             this.Close();
