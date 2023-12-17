@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using BL.DTO;
 using DAL.Data;
 using DAL.Entities;
-using DAL.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -151,7 +150,7 @@ namespace TestProject.UnitTests
             };
 
             // Act & Assert
-            await Assert.ThrowsExceptionAsync<NonUniqueQueryException>(() => _repository.SearchUniqueAsync(filters));
+            await Assert.ThrowsExceptionAsync<InvalidOperationException>(() => _repository.SearchUniqueAsync(filters));
         }
 
         [TestCleanup]

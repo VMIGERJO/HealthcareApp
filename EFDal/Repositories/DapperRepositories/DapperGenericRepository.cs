@@ -1,5 +1,6 @@
 ﻿using DAL.DapperAttributes;
 using DAL.Entities;
+
 using Dapper;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -171,8 +172,7 @@ namespace DAL.Repositories.DapperRepositories
         public virtual int Insert(TEntity entity)
         {
             string tableName = GetTableName().ToLower();
-            IEnumerable<string> navigationPropertyNames = GetNavigationPropertyNames();
-            IEnumerable<string> propertyNames = GetPropertyNames(entity).Where(p => p != "Id" && !navigationPropertyNames.Contains(p)).ToList();
+            IEnumerable<string> propertyNames = GetPropertyNames(entity);
 
             string query = $"INSERT INTO {tableName} ({string.Join(", ", propertyNames)}) VALUES ({string.Join(", ", propertyNames.Select(p => "@" + p))}) SELECT SCOPE_IDENTITY()";
 
@@ -196,7 +196,9 @@ namespace DAL.Repositories.DapperRepositories
 
         protected IEnumerable<string> GetPropertyNames(TEntity entity)
         {
-            return typeof(TEntity).GetProperties().Select(property => property.Name);
+            var propertyNames = typeof(TEntity).GetProperties().Select(property => property.Name);
+            IEnumerable<string> navigationPropertyNames = GetNavigationPropertyNames();
+            return propertyNames.Where(p => p != "Id" && !navigationPropertyNames.Contains(p)).ToList();
         }
 
         public void Update(TEntity entity)
