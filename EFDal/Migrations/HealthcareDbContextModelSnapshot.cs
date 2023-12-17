@@ -109,7 +109,8 @@ namespace DAL.Migrations
                         .HasColumnType("nvarchar(40)");
 
                     b.Property<string>("Manufacturer")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -164,10 +165,10 @@ namespace DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("DoctorID")
+                    b.Property<int>("DoctorId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PatientID")
+                    b.Property<int>("PatientId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("PrescriptionDate")
@@ -175,9 +176,9 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DoctorID");
+                    b.HasIndex("DoctorId");
 
-                    b.HasIndex("PatientID");
+                    b.HasIndex("PatientId");
 
                     b.ToTable("Prescriptions");
                 });
@@ -212,13 +213,13 @@ namespace DAL.Migrations
                 {
                     b.HasOne("DAL.Entities.Doctor", "Doctor")
                         .WithMany("Prescriptions")
-                        .HasForeignKey("DoctorID")
+                        .HasForeignKey("DoctorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("DAL.Entities.Patient", "Patient")
                         .WithMany("Prescriptions")
-                        .HasForeignKey("PatientID")
+                        .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

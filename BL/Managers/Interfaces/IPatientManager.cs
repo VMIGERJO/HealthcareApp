@@ -17,5 +17,6 @@ namespace BL.Managers.Interfaces
         Task<PatientDTO> SearchPatientWithAdressAsync(PatientSearchValuesDTO patientQuery);
         void Update(PatientDTO patientDTO);
         bool Add(PatientDTO patientDTO);
+        List<string> ValidatePatient(PatientDTO patientDTO);
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +33,14 @@ namespace HealthCareAppWPF
         public void NavigateToView(UserControl view)
         {
             _viewHistory.Push(view);
+            if (view is LandingControl)
+            {
+                BackButton.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                BackButton.Visibility = Visibility.Visible;
+            }
             MainContentControl.Content = view;
         }
 
@@ -41,6 +50,14 @@ namespace HealthCareAppWPF
             {
                 _viewHistory.Pop(); // Pop the current view
                 UserControl previousView = _viewHistory.Peek(); // Get the previous view
+                if (previousView is LandingControl)
+                {
+                    BackButton.Visibility = Visibility.Hidden;
+                }
+                else
+                {
+                    BackButton.Visibility = Visibility.Visible;
+                }
                 MainContentControl.Content = previousView; // Set it as the content
             }
         }

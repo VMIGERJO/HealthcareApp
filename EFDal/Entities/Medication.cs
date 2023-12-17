@@ -13,7 +13,7 @@ namespace DAL.Entities
         public string? ActiveSubstance { get; set; }
         public string Name { get; set; }
         public String Dosage { get; set; }
-        //todo eric: varchar max
+        //todo eric: varchar max -> done
         public string? Manufacturer { get; set; }
         [Navigation]
         public List<Prescription> Prescriptions { get; } = new();

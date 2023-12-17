@@ -39,19 +39,14 @@ namespace HealthCareAppWPF
         {
             // base.OnStartup(e);
 
-            var mapperConfig = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<PatientMappingProfile>();
-                cfg.AddProfile<DoctorMappingProfile>();
-                cfg.AddProfile<PrescriptionMappingProfile>();
-                cfg.AddProfile<MedicationMappingProfile>();
-            });
-
-            IMapper mapper = new Mapper(mapperConfig);
+            
 
 
             // Create a service collection and register your dependencies.
             var services = new ServiceCollection();
+
+            // Add AutoMapper configuration using extension method, based on feedback
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies()); 
 
             // Register your services and dependencies.
             var connectionString = Settings.Default.ConnectionString;
@@ -81,7 +76,6 @@ namespace HealthCareAppWPF
             services.AddTransient<DoctorSearchControl>();
             services.AddTransient<PastPrescriptionsControl>();
             services.AddTransient<HealthAgencyDashboardControl>();
-            services.AddSingleton(mapper);
 
             // Build the service provider.
             ServiceProvider = services.BuildServiceProvider();

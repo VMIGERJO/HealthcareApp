@@ -1,7 +1,6 @@
 ﻿using BL.DTO;
 using BL.Managers.Interfaces;
 using DAL.Entities;
-using DAL.Exceptions;
 using HealthCareAppWPF.UserControls;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -104,18 +103,16 @@ namespace HealthCareAppWPF
                 Age = age
             };
 
-            bool registrationSuccess = false;
-            try
-            {
-                registrationSuccess = _patientManager.Add(newPatient);
-            }
-            catch (ArgumentException invalidArgEx)
-            {
+            List<string> validationErrors = _patientManager.ValidatePatient(newPatient);
 
-                MessageBox.Show(invalidArgEx.Message);
+            if (validationErrors.Count > 0)
+            {
+                // Display all validation errors to the user
+                MessageBox.Show(string.Join("\n", validationErrors));
                 return;
-            } 
+            }
 
+            bool registrationSuccess = _patientManager.Add(newPatient);
 
             if (registrationSuccess)
             {
@@ -187,25 +184,23 @@ namespace HealthCareAppWPF
             try
             {
                 PatientDTO loggedInPatient = await _patientManager.SearchPatientWithAdressAsync(patientQuery);
+                if (loggedInPatient == null)
+                {
+                    MessageBox.Show($"This Patient was not found, please create an account first.", "No results found", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
                 IPrescriptionManager prescriptionManager = App.ServiceProvider.GetService<IPrescriptionManager>();
                 IPatientManager patientManager = App.ServiceProvider.GetService<IPatientManager>();
                 PatientLandingControl patientLandingControl = new(patientManager, prescriptionManager, loggedInPatient.Id, _mainWindow);
                 _mainWindow.NavigateToView(patientLandingControl);
             }
-            catch (NoResultsFoundException noResultsEx)
-            {
-
-                MessageBox.Show($"This Patient was not found, please create an account first.", "No results found", MessageBoxButton.OK, MessageBoxImage.Error);
-
-            }
-            catch (NonUniqueQueryException)
+            catch (InvalidOperationException invalidOperationEx)
             {
                 MessageBox.Show($"Please review your input, too many results were found", "Too many results", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             catch (Exception ex)
             {
-                // Handle other exceptions
-                throw ex; // or log, rethrow, etc.
+                throw ex; 
             }
         }
 

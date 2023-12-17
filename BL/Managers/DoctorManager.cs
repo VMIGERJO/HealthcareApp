@@ -1,7 +1,6 @@
 ﻿using BL.Managers.Interfaces;
 using DAL.Repositories.Interfaces;
 using DAL.Entities;
-using DAL.Exceptions;
 using HealthCareAppWPF.DTO;
 using BL.DTO;
 using System.Linq.Expressions;

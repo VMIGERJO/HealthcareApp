@@ -1,6 +1,6 @@
 ﻿using DAL.DapperAttributes;
 using DAL.Entities;
-using DAL.Exceptions;
+
 using Dapper;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -172,8 +172,7 @@ namespace DAL.Repositories.DapperRepositories
         public virtual int Insert(TEntity entity)
         {
             string tableName = GetTableName().ToLower();
-            IEnumerable<string> navigationPropertyNames = GetNavigationPropertyNames();
-            IEnumerable<string> propertyNames = GetPropertyNames(entity).Where(p => p != "Id" && !navigationPropertyNames.Contains(p)).ToList();
+            IEnumerable<string> propertyNames = GetPropertyNames(entity);
 
             string query = $"INSERT INTO {tableName} ({string.Join(", ", propertyNames)}) VALUES ({string.Join(", ", propertyNames.Select(p => "@" + p))}) SELECT SCOPE_IDENTITY()";
 
@@ -197,7 +196,9 @@ namespace DAL.Repositories.DapperRepositories
 
         protected IEnumerable<string> GetPropertyNames(TEntity entity)
         {
-            return typeof(TEntity).GetProperties().Select(property => property.Name);
+            var propertyNames = typeof(TEntity).GetProperties().Select(property => property.Name);
+            IEnumerable<string> navigationPropertyNames = GetNavigationPropertyNames();
+            return propertyNames.Where(p => p != "Id" && !navigationPropertyNames.Contains(p)).ToList();
         }
 
         public void Update(TEntity entity)
@@ -238,8 +239,14 @@ namespace DAL.Repositories.DapperRepositories
 
             IncludeRelatedEntities(includes, query, tableName);
 
-            return await ExecuteQueryAsync(query.ToString(), parameters);
+            using (var connection = _dbConnectionFactory.CreateConnection())
+            {
+                var results = await connection.QueryAsync<TEntity>(query.ToString(), parameters);
+
+                return results.SingleOrDefault();
+            }
         }
+
 
         protected void ApplyFilters(List<Expression<Func<TEntity, bool>>> filters, StringBuilder query, DynamicParameters parameters)
         {
@@ -320,22 +327,12 @@ namespace DAL.Repositories.DapperRepositories
             }
         }
 
-        protected async Task<TEntity> ExecuteQueryAsync(string query, DynamicParameters parameters, bool unique = true)
+        protected async Task<TEntity> ExecuteQueryAsync(string query, DynamicParameters parameters)
         {
             using (var connection = _dbConnectionFactory.CreateConnection())
             {
-                var results = await connection.QueryAsync<TEntity>(query, parameters);
-
-                if (!results.Any())
-                {
-                    throw new NoResultsFoundException();
-                }
-                else if (unique && results.Count() > 1)
-                {
-                    throw new NonUniqueQueryException();
-                }
-
-                return results.First();
+                var result = await connection.QueryAsync<TEntity>(query, parameters);
+                return result.First();
             }
         }
         protected object GetPropertyValue(MemberExpression memberExpression)

@@ -1,5 +1,4 @@
 ﻿using DAL.Data;
-using DAL.Exceptions;
 using DAL.Repositories.Interfaces;
 using DAL.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -115,21 +114,11 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
         // Include related entities
         queryAble = includes.Aggregate(queryAble, (current, include) => current.Include(include));
 
-        //todo eric: .singleordef
-        List<TEntity> result = await queryAble.ToListAsync();
-        //var result2 = await queryAble.SingleOrDefaultAsync();
+        //todo eric: .singleordef -> done
+        TEntity result = await queryAble.SingleOrDefaultAsync();
 
-        if (queryAble.Count() == 0)
-        {
-            throw new NoResultsFoundException();
 
-        } else if (queryAble.Count() > 1)
-        {
-            throw new NonUniqueQueryException();
-        } else
-        {
-            return queryAble.First();
-        }
+        return result;
 
     }
 
