@@ -47,10 +47,18 @@ namespace DAL.Repositories.DapperRepositories
                         return prescription;
                     },
                     parameters,
-                    splitOn: "Id,Id" // Adjust based on the column where the split should occur
+                    splitOn: "Id" 
                 ).ToList();
 
-                return prescriptions;
+                var result = prescriptions.GroupBy(p => p.Id).Select(g =>
+                {
+                    var groupedPrescription = g.First();
+                    groupedPrescription.Medications.AddRange(g.Select(p => p.Medications.Single()).ToList().Except(groupedPrescription.Medications));
+                    return groupedPrescription;
+
+                });
+
+                return result.ToList();
             }
 
         }
