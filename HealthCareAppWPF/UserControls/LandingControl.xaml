@@ -11,7 +11,7 @@
         <!-- Title and Toggle Button -->
         <Label Name="SignInTitle" Content="Log in as a:" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="24" Margin="122,65,0,0" Foreground="#003366"/>
         <!-- Dark blue text -->
-        <ToggleButton Content="Create account" Click="RegistrationToggle_Click" Name="RegistrationToggle" HorizontalAlignment="Left" VerticalAlignment="Top" Width="132" Height="31" Margin="27,23,0,0" Background="#003366" Foreground="White"/>
+        <ToggleButton Content="Create account" Click="RegistrationToggle_Click" Name="RegistrationToggle" HorizontalAlignment="Left" VerticalAlignment="Top" Width="132" Height="31" Margin="27,23,0,0"/>
         <!-- Dark blue button with white text -->
 
         <!-- Role Dropdown -->
