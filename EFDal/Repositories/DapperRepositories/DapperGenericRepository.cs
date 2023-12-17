@@ -40,6 +40,23 @@ namespace DAL.Repositories.DapperRepositories
             return await ExecuteQueryListAsync(query.ToString(), parameters);
         }
 
+        private MemberExpression GetMemberExpression(Expression expression)
+        {
+            if (expression is MemberExpression memberExpression)
+            {
+                // If it's already a MemberExpression, return it
+                return memberExpression;
+            }
+            else if (expression is UnaryExpression unaryExpression && unaryExpression.Operand is MemberExpression operand)
+            {
+                // If it's a UnaryExpression, extract the MemberExpression from its operand
+                return operand;
+            }
+
+            // If it's not a MemberExpression or UnaryExpression, return null or throw an exception as needed
+            return null;
+        }
+
         protected void ApplyOrder<TEntity>(Expression<Func<TEntity, object>> orderExpression, bool orderAsc, StringBuilder query, string tableName)
         {
             var columnName = GetColumnName(orderExpression);
@@ -87,7 +104,7 @@ namespace DAL.Repositories.DapperRepositories
             {
                 case LambdaExpression lambdaExpression when lambdaExpression.Body is BinaryExpression lambdaBinaryExpression:
                     // Handle BinaryExpression (e.g., ==)
-                    var binaryMemberExpression = lambdaBinaryExpression.Left as MemberExpression;
+                    var binaryMemberExpression = GetMemberExpression(lambdaBinaryExpression.Left);
                     return binaryMemberExpression?.Member.Name.ToLower() ?? string.Empty;
 
                 case LambdaExpression lambdaExpression when lambdaExpression.Body is MethodCallExpression lambdaMethodCallExpression:
@@ -269,8 +286,9 @@ namespace DAL.Repositories.DapperRepositories
         protected void ApplyBinaryExpressionFilter(BinaryExpression binaryExpression, Expression<Func<TEntity, bool>> filter, StringBuilder query, DynamicParameters parameters)
         {
             // Handle BinaryExpression (e.g., ==)
-            MemberExpression left = binaryExpression.Left as MemberExpression;
-            MemberExpression right = binaryExpression.Right as MemberExpression;
+            MemberExpression left = GetMemberExpression(binaryExpression.Left);
+            MemberExpression right = GetMemberExpression(binaryExpression.Right);
+
 
             if (left != null)
             {

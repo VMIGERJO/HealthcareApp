@@ -43,7 +43,6 @@ namespace HealthCareAppWPF
         {
             IPrescriptionManager prescriptionManager = App.ServiceProvider.GetService<IPrescriptionManager>();
             PastPrescriptionsControl pastPrescriptionsControl = new(prescriptionManager, _doctor.Id);
-            ;
             _mainWindow.NavigateToView(pastPrescriptionsControl);
         }
 
