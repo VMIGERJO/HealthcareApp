@@ -62,11 +62,11 @@ namespace DAL.Repositories.DapperRepositories
             var columnName = GetColumnName(orderExpression);
             if (orderAsc)
             {
-                query.Append(orderAsc ? $" ORDER BY {columnName} ASC" : $" ORDER BY {columnName}");
+                query.Append($" ORDER BY {columnName} ASC");
             }
             else
             {
-                query.Append(orderAsc ? $" ORDER BY {columnName} DESC" : $" ORDER BY {columnName}");
+                query.Append($" ORDER BY {columnName} DESC");
             }
             
         }
